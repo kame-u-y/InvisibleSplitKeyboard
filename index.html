@@ -5,33 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
+    <link rel="stylesheet" type="text/css" href="src/style.css">
 </head>
 <body ontouchstart="" id="target">
-    <div style="background-color: brown">
-        x = <p id="x"></p>
-        y = <p id="y"></p>
+    <div id="values">
+        <p>x = <span id="x"></span></p>
+        <p>y = <span id="y"></span></p>
+        <p id="input_text"></p>
     </div>
 
-    <div>
-        <p>hoge</p>
-        <p>hoge</p>
-        <p>hoge</p>
-        <p>hoge</p>
-        <p>hoge</p>
-        <p>hoge</p>
-        <p>hoge</p>
-        <p>hoge</p>
-        <p>hoge</p>
+    <div id="footer">
+        <div id="right_keyboard"></div>
+        <div id="left_keyboard"></div>
     </div>
-    
-    <script>
-    // <div id="target">...</div>などの要素にタッチイベントを設定
-        let target = document.getElementById("target")
-        target.addEventListener("click", (event) => {
-            console.log(true);
-            let [x, y] = [event.pageX, event.pageY]
-            console.log(`x:${x}, y:${y}`)
-        })
-    </script>
+    <script src="src/script.js"></script>
 </body>
 </html>
