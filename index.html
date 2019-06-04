@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body ontouchstart="" id="target">
+    <div style="background-color: brown">
+        x = <p id="x"></p>
+        y = <p id="y"></p>
+    </div>
+
+    <div>
+        <p>hoge</p>
+        <p>hoge</p>
+        <p>hoge</p>
+        <p>hoge</p>
+        <p>hoge</p>
+        <p>hoge</p>
+        <p>hoge</p>
+        <p>hoge</p>
+        <p>hoge</p>
+    </div>
+    
+    <script>
+    // <div id="target">...</div>などの要素にタッチイベントを設定
+        let target = document.getElementById("target")
+        target.addEventListener("click", (event) => {
+            console.log(true);
+            let [x, y] = [event.pageX, event.pageY]
+            console.log(`x:${x}, y:${y}`)
+        })
+    </script>
+</body>
+</html>
