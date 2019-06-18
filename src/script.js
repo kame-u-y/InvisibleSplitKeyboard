@@ -9,7 +9,7 @@ function inputKey(ev, x, y) {
 }
 
 let target = document.getElementById("target")
-target.addEventListener("touchend", (ev) => {
+target.addEventListener("touchstart", (ev) => {
     ev.preventDefault();
     console.log(true);
     let [x, y] = [ev.changedTouches[0].pageX, ev.changedTouches[0].pageY]
