@@ -1,4 +1,4 @@
-let preparedText = "Hello world!! This text is prepared before your input for WoZ.";
+let preparedText = "give when open without quickly long most car would away mean need mile few saw until say picture soon once because";
 
 let target = document.getElementById("target")
 target.addEventListener("click", (event) => {
