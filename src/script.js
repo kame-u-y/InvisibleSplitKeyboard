@@ -14,7 +14,7 @@ target.addEventListener("touchstart", (ev) => {
     console.log(true);
     let [x, y] = [ev.changedTouches[0].pageX, ev.changedTouches[0].pageY]
     inputKey(ev, x, y);
-})
+}, {passive: false})
 
 target.addEventListener("click", (ev) => {
     console.log(true);
