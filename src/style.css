@@ -1,35 +1,93 @@
 html {
-    height: 100vh;
+  height: 100vh;
 }
 
 body {
-    height: 100vh;
-    background-color: gray;
-    margin: 0;
+  height: 100vh;
+  background-color: gray;
+  margin: 0;
 }
 
 #values > p {
-    margin: 0;
+  margin: 0;
 }
 
 #footer {
-    position: fixed;
-    width: 100%;
-    bottom: 0;
-    height: 300px;
-    background-color: yellowgreen;
+  position: fixed;
+  width: 100%;
+  bottom: 0;
+  background-color: yellowgreen;
 }
 
 #left_keyboard {
-    width: 300px;
-    height: 300px;
-    background-color: darkgray;
+  float: left;
+  background-color: darkgray;
+}
+
+#left_top {
+  list-style-type: none;
+  height: 10mm;
+  padding: 2.5mm;
+  margin: 0;
+}
+
+#left_middle {
+  list-style-type: none;
+  height: 10mm;
+  padding: 2.5mm;
+  margin: 0;
+}
+
+#left_bottom {
+  list-style-type: none;
+  height: 10mm;
+  padding: 2.5mm;
+  margin: 0;
+}
+
+.left_key {
+  background-color: gray;
+  float: left;
+  width: 6.2mm;
+  height: 8mm;
+  margin-right: 1.7mm;
+  margin-bottom: 1.7mm;
+  text-align: center;
 }
 
 #right_keyboard {
-    float: right;
-    padding-right: 0;
-    width: 300px;
-    height: 300px;
-    background-color: darkgray;
+  float: right;
+  padding-right: 0;
+  background-color: darkgray;
+}
+
+#right_top {
+  list-style-type: none;
+  height: 10mm;
+  padding: 2.5mm;
+  margin: 0;
+}
+
+#right_middle {
+  list-style-type: none;
+  height: 10mm;
+  padding: 2.5mm;
+  margin: 0;
+}
+
+#right_bottom {
+  list-style-type: none;
+  height: 10mm;
+  padding: 2.5mm;
+  margin: 0;
+}
+
+.right_key {
+  background-color: gray;
+  float: right;
+  width: 6.2mm;
+  height: 8mm;
+  margin-right: 1.7mm;
+  margin-bottom: 1.7mm;
+  text-align: center;
 }
