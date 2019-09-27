@@ -20,6 +20,10 @@ function addDot(x, y) {
     dotContainer.appendChild(dot);
 }
 
+function testEvent(str) {
+    document.getElementById("test-event").innerHTML += str;
+}
+
 // target
 // inputPositionを実行
 let target = document.getElementById("target")
@@ -42,15 +46,16 @@ let keys = document.getElementsByClassName("key")
 
 Array.from(keys).forEach(elem => {
     elem.addEventListener("touchend", (ev) => {
-        console.log("touch")
         let [x, y] = [ev.changedTouches[0].pageX, ev.changedTouches[0].pageY];
         inputKey(elem.innerText);
         // inputPosition(x, y);
+        testEvent("touch");
     });
     elem.addEventListener("click", (ev) => {
-        console.log("click");
         let [x, y] = [ev.pageX, ev.pageY];
         inputKey(elem.innerText);
         // inputPosition(x, y);
+        testEvent("click");
     });
 })
+
