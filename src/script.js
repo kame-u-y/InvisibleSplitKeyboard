@@ -46,7 +46,7 @@ let keys = document.getElementsByClassName("key")
 
 Array.from(keys).forEach(elem => {
     elem.addEventListener("touchend", (ev) => {
-        event.preventDefault();
+        ev.preventDefault();
         let [x, y] = [ev.changedTouches[0].pageX, ev.changedTouches[0].pageY];
         inputKey(elem.innerText);
         // inputPosition(x, y);
