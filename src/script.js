@@ -1,8 +1,4 @@
-let preparedText = "give when open without quickly long most car would away mean need mile few saw until say picture soon once because";
-
 function inputKey(k) {
-    // document.getElementById("input_text").innerHTML += preparedText[0]===" " ? "&nbsp;" : preparedText[0];
-    // preparedText = preparedText.slice(1);
     document.getElementById("input_text").innerHTML += k;
 }
 
@@ -18,10 +14,6 @@ function addDot(x, y) {
     dot.setAttribute("class", "dot");
     dot.style.cssText = `left: ${x}px; top: ${y}px`;
     dotContainer.appendChild(dot);
-}
-
-function testEvent(str) {
-    document.getElementById("test-event").innerHTML += str;
 }
 
 // target
@@ -49,14 +41,10 @@ Array.from(keys).forEach(elem => {
         ev.preventDefault();
         let [x, y] = [ev.changedTouches[0].pageX, ev.changedTouches[0].pageY];
         inputKey(elem.innerText);
-        // inputPosition(x, y);
-        testEvent("touch");
     });
     elem.addEventListener("click", (ev) => {
         let [x, y] = [ev.pageX, ev.pageY];
         inputKey(elem.innerText);
-        // inputPosition(x, y);
-        testEvent("click");
     });
 })
 
