@@ -42,11 +42,13 @@ let keys = document.getElementsByClassName("key")
 
 Array.from(keys).forEach(elem => {
     elem.addEventListener("touchend", (ev) => {
+        console.log("touch")
         let [x, y] = [ev.changedTouches[0].pageX, ev.changedTouches[0].pageY];
         inputKey(elem.innerText);
         // inputPosition(x, y);
     });
     elem.addEventListener("click", (ev) => {
+        console.log("click");
         let [x, y] = [ev.pageX, ev.pageY];
         inputKey(elem.innerText);
         // inputPosition(x, y);
