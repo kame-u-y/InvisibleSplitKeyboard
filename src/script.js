@@ -24,7 +24,7 @@ function addDot(x, y) {
 // inputPositionを実行
 let target = document.getElementById("target")
 
-target.addEventListener("touchstart", (ev) => {
+target.addEventListener("touchend", (ev) => {
     let [x, y] = [ev.changedTouches[0].pageX, ev.changedTouches[0].pageY]
     inputPosition(x, y);
     addDot(x, y);
@@ -41,7 +41,7 @@ target.addEventListener("click", (ev) => {
 let keys = document.getElementsByClassName("key")
 
 Array.from(keys).forEach(elem => {
-    elem.addEventListener("touchstart", (ev) => {
+    elem.addEventListener("touchend", (ev) => {
         let [x, y] = [ev.changedTouches[0].pageX, ev.changedTouches[0].pageY];
         inputKey(elem.innerText);
         // inputPosition(x, y);
