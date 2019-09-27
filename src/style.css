@@ -27,21 +27,21 @@ body {
 #left_top {
   list-style-type: none;
   height: 10mm;
-  padding: 2.5mm;
+  padding: 0 0 0 2.5mm;
   margin: 0;
 }
 
 #left_middle {
   list-style-type: none;
   height: 10mm;
-  padding: 2.5mm;
+  padding: 0 0 0 2.5mm;
   margin: 0;
 }
 
 #left_bottom {
   list-style-type: none;
   height: 10mm;
-  padding: 2.5mm;
+  padding: 0 0 0 2.5mm;
   margin: 0;
 }
 
@@ -64,21 +64,21 @@ body {
 #right_top {
   list-style-type: none;
   height: 10mm;
-  padding: 2.5mm;
+  padding: 0 2.5mm 0 0;
   margin: 0;
 }
 
 #right_middle {
   list-style-type: none;
   height: 10mm;
-  padding: 2.5mm;
+  padding: 0 2.5mm 0 0;
   margin: 0;
 }
 
 #right_bottom {
   list-style-type: none;
   height: 10mm;
-  padding: 2.5mm;
+  padding: 0 2.5mm 0 0;
   margin: 0;
 }
 
@@ -87,7 +87,15 @@ body {
   float: right;
   width: 6.2mm;
   height: 8mm;
-  margin-right: 1.7mm;
+  margin-left: 1.7mm;
   margin-bottom: 1.7mm;
   text-align: center;
+}
+
+.dot {
+  position: absolute;
+  background-color: #F00;
+  width: 5px;
+  height: 5px;
+  margin: 0;
 }
