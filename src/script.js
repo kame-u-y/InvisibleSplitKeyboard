@@ -25,13 +25,15 @@ function addDot(x, y) {
 let target = document.getElementById("target")
 
 target.addEventListener("touchstart", (ev) => {
-    inputPosition(ev.changedTouches[0].pageX, ev.changedTouches[0].pageY);
+    let [x, y] = [ev.changedTouches[0].pageX, ev.changedTouches[0].pageY]
+    inputPosition(x, y);
     addDot(x, y);
 }, {passive: false})
 
 target.addEventListener("click", (ev) => {
-    inputPosition(ev.pageX, ev.pageY)
-    addDot(ev.pageX, ev.pageY);
+    let [x, y] = [ev.pageX, ev.pageY]
+    inputPosition(x, y)
+    addDot(x, y);
 })
 
 // keys
