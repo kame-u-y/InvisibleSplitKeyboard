@@ -1,8 +1,12 @@
 :root {
-  --key-width: 32.611px;
-  --key-height: 41.725px;
-  --key-margin-horizontal: 9.131px;
-  --key-margin-vertical: 9.127px;
+  --lt-padding-left: 2.5mm;
+  --lm-padding-left: 9mm;
+  --lb-padding-left: 2.5mm;
+
+  --key-width: 32.611px; /*1024*6.25/196.25*/
+  --key-margin-horizontal: 9.131px; /*1024*1.75/196.25*/
+  --key-height: 41.725px; /*768*8.0/147.25*/
+  --key-margin-vertical: 9.127px; /*768*1.75/147.25*/
   --key-radius: 4px;
 }
 
@@ -27,27 +31,28 @@ body {
   background-color: yellowgreen;
 }
 
+/********* left keyboard *********/
 #left_keyboard {
   float: left;
   background-color: darkgray;
 }
 
-#left_top {
+.left_row {
   list-style-type: none;
-  padding: 0 0 0 2.5mm;
-  margin: 0;
+  height: var(--key-height);
+  margin: 0 0 var(--key-margin-vertical) 0;
+}
+
+#left_top {
+  padding-left: var(--lt-padding-left);
 }
 
 #left_middle {
-  list-style-type: none;
-  padding: 0 0 0 2.5mm;
-  margin: 0;
+  padding-left: var(--lm-padding-left);
 }
 
 #left_bottom {
-  list-style-type: none;
-  padding: 0 0 0 2.5mm;
-  margin: 0;
+  padding-left: var(--lb-padding-left);
 }
 
 .left_key {
@@ -56,34 +61,34 @@ body {
   width: var(--key-width);
   height: var(--key-height);
   margin-right: var(--key-margin-horizontal);
-  margin-bottom: var(--key-margin-vertical);
   border-radius: var(--key-radius);
   text-align: center;
 }
 
+/********* right keyboard *********/
 #right_keyboard {
   float: right;
   padding-right: 0;
   background-color: darkgray;
 }
 
-#right_top {
+
+.right_row {
   list-style-type: none;
-  padding: 0 2.5mm 0 0;
-  margin: 0;
+  height: var(--key-height);
+  margin: 0 0 var(--key-margin-vertical) 0;
+  padding-right: 2.5mm;
+}
+
+/* 
+#right_top {
 }
 
 #right_middle {
-  list-style-type: none;
-  padding: 0 2.5mm 0 0;
-  margin: 0;
 }
 
 #right_bottom {
-  list-style-type: none;
-  padding: 0 2.5mm 0 0;
-  margin: 0;
-}
+} */
 
 .right_key {
   background-color: gray;
@@ -91,11 +96,16 @@ body {
   width: var(--key-width);
   height: var(--key-height);
   margin-left: var(--key-margin-horizontal);
-  margin-bottom: var(--key-margin-vertical);
   border-radius: var(--key-radius);
   text-align: center;
 }
 
+.right_back {
+  width: var(--back-width);
+  height: var(--back-height);
+}
+
+/********* dot *********/
 .dot {
   position: absolute;
   background-color: #F00;
