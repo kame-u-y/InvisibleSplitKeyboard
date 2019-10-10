@@ -1,3 +1,9 @@
+:root {
+  --key-width: 19.482px;
+  --key-height: 24.937px;
+  --key-margin: 5.455px; 
+}
+
 html {
   height: 100vh;
 }
@@ -26,21 +32,18 @@ body {
 
 #left_top {
   list-style-type: none;
-  height: 10mm;
   padding: 0 0 0 2.5mm;
   margin: 0;
 }
 
 #left_middle {
   list-style-type: none;
-  height: 10mm;
   padding: 0 0 0 2.5mm;
   margin: 0;
 }
 
 #left_bottom {
   list-style-type: none;
-  height: 10mm;
   padding: 0 0 0 2.5mm;
   margin: 0;
 }
@@ -48,10 +51,10 @@ body {
 .left_key {
   background-color: gray;
   float: left;
-  width: 6.2mm;
-  height: 8mm;
-  margin-right: 1.7mm;
-  margin-bottom: 1.7mm;
+  width: var(--key-width);
+  height: var(--key-height);
+  margin-right: var(--key-margin);
+  margin-bottom: var(--key-margin);
   text-align: center;
 }
 
@@ -63,21 +66,18 @@ body {
 
 #right_top {
   list-style-type: none;
-  height: 10mm;
   padding: 0 2.5mm 0 0;
   margin: 0;
 }
 
 #right_middle {
   list-style-type: none;
-  height: 10mm;
   padding: 0 2.5mm 0 0;
   margin: 0;
 }
 
 #right_bottom {
   list-style-type: none;
-  height: 10mm;
   padding: 0 2.5mm 0 0;
   margin: 0;
 }
@@ -85,10 +85,10 @@ body {
 .right_key {
   background-color: gray;
   float: right;
-  width: 6.2mm;
-  height: 8mm;
-  margin-left: 1.7mm;
-  margin-bottom: 1.7mm;
+  width: var(--key-width);
+  height: var(--key-height);
+  margin-left: var(--key-margin);
+  margin-bottom: var(--key-margin);
   text-align: center;
 }
 
