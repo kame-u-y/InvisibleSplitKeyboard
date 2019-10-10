@@ -5,24 +5,24 @@
   --ls-padding-left: 3.5mm;
   --r-padding-right: 3.5mm;
 
-  --key-width: 34px; /*1024*6.25/196.25*/
-  --key-margin-horizontal: 9.131px; /*1024*1.75/196.25*/
-  --key-height: 41.725px; /*768*8.0/147.25*/
-  --key-margin-vertical: 9.127px; /*768*1.75/147.25*/
-  --key-radius: 4px;
+  --letter-width: 34px; /*1024*6.25/196.25*/
+  --letter-margin-horizontal: 9.131px; /*1024*1.75/196.25*/
+  --letter-height: 41.725px; /*768*8.0/147.25*/
+  --letter-margin-vertical: 9.127px; /*768*1.75/147.25*/
+  --letter-radius: 4px;
 
   --shift-width: 41.743px; /*1024*8.0/196.25*/
   
   --l-symbol-width: 62.614px;
-  --language-width: 32.611px;
-  --mic-width: 32.611px;
-  --l-space-width: 70px;
+  --language-width: 34px;
+  --mic-width: 34px;
+  --l-space-width: 73px;
 
   --back-width: 41.743px; /*1024*8.0/196.25*/
   --enter-width: 62.614px; /*1024*12/196.25*/
   --close-width: 41.743px; /*1024*8.0/196.25*/
-  --r-symbol-width: 95.224px;
-  --r-space-width: 95.224px;
+  --r-symbol-width: 98.6965px;
+  --r-space-width: 98.6965px;
 }
 
 html {
@@ -54,8 +54,8 @@ body {
 
 .left_row {
   list-style-type: none;
-  height: var(--key-height);
-  margin: 0 0 var(--key-margin-vertical) 0;
+  height: var(--letter-height);
+  margin: 0 0 var(--letter-margin-vertical) 0;
 }
 
 #left_top {
@@ -80,13 +80,13 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  height: var(--key-height);
-  margin-right: var(--key-margin-horizontal);
-  border-radius: var(--key-radius);
+  height: var(--letter-height);
+  margin-right: var(--letter-margin-horizontal);
+  border-radius: var(--letter-radius);
 }
 
 .left_letter {
-  width: var(--key-width);
+  width: var(--letter-width);
 }
 
 .left_symbol {
@@ -114,8 +114,8 @@ body {
 
 .right_row {
   list-style-type: none;
-  height: var(--key-height);
-  margin: 0 0 var(--key-margin-vertical) 0;
+  height: var(--letter-height);
+  margin: 0 0 var(--letter-margin-vertical) 0;
   padding-left: 0;
   padding-right: var(--r-padding-right);
 }
@@ -136,13 +136,13 @@ body {
   align-items: center;
   justify-content: center;
   float: right;
-  height: var(--key-height);
-  margin-left: var(--key-margin-horizontal);
-  border-radius: var(--key-radius);
+  height: var(--letter-height);
+  margin-left: var(--letter-margin-horizontal);
+  border-radius: var(--letter-radius);
 }
 
 .right_letter {
-  width: var(--key-width);
+  width: var(--letter-width);
 }
 
 /********* right function **********/
