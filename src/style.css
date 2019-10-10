@@ -1,13 +1,18 @@
 :root {
-  --lt-padding-left: 2.5mm;
-  --lm-padding-left: 9mm;
-  --lb-padding-left: 2.5mm;
+  --lt-padding-left: 3mm;
+  --lm-padding-left: 10mm;
+  --lb-padding-left: 3mm;
+  --r-padding-right: 3mm;
 
   --key-width: 32.611px; /*1024*6.25/196.25*/
   --key-margin-horizontal: 9.131px; /*1024*1.75/196.25*/
   --key-height: 41.725px; /*768*8.0/147.25*/
   --key-margin-vertical: 9.127px; /*768*1.75/147.25*/
   --key-radius: 4px;
+
+  --back-width: 41.743px; /*1024*8.0/196.25*/
+  --shift-width: 41.743px; /*1024*8.0/196.25*/
+  --enter-width: 62.614px; /*1024*12/196.25*/
 }
 
 html {
@@ -58,11 +63,14 @@ body {
 .left_key {
   background-color: gray;
   float: left;
-  width: var(--key-width);
   height: var(--key-height);
   margin-right: var(--key-margin-horizontal);
   border-radius: var(--key-radius);
   text-align: center;
+}
+
+.left_letter {
+  width: var(--key-width);
 }
 
 /********* right keyboard *********/
@@ -72,16 +80,16 @@ body {
   background-color: darkgray;
 }
 
-
 .right_row {
   list-style-type: none;
   height: var(--key-height);
   margin: 0 0 var(--key-margin-vertical) 0;
-  padding-right: 2.5mm;
+  padding-left: 0;
+  padding-right: var(--r-padding-right);
 }
 
-/* 
-#right_top {
+ 
+/* #right_top {
 }
 
 #right_middle {
@@ -93,16 +101,27 @@ body {
 .right_key {
   background-color: gray;
   float: right;
-  width: var(--key-width);
   height: var(--key-height);
   margin-left: var(--key-margin-horizontal);
   border-radius: var(--key-radius);
   text-align: center;
 }
 
-.right_back {
+.right_letter {
+  width: var(--key-width);
+}
+
+/********* function **********/
+.back {
   width: var(--back-width);
-  height: var(--back-height);
+}
+
+.shift {
+  width: var(--shift-width);
+}
+
+.enter {
+  width: var(--enter-width);
 }
 
 /********* dot *********/
