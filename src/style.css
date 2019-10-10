@@ -1,8 +1,9 @@
 :root {
-  --lt-padding-left: 3mm;
+  --lt-padding-left: 3.5mm;
   --lm-padding-left: 10mm;
-  --lb-padding-left: 3mm;
-  --r-padding-right: 3mm;
+  --lb-padding-left: 3.5mm;
+  --ls-padding-left: 3.5mm;
+  --r-padding-right: 3.5mm;
 
   --key-width: 32.611px; /*1024*6.25/196.25*/
   --key-margin-horizontal: 9.131px; /*1024*1.75/196.25*/
@@ -10,9 +11,18 @@
   --key-margin-vertical: 9.127px; /*768*1.75/147.25*/
   --key-radius: 4px;
 
-  --back-width: 41.743px; /*1024*8.0/196.25*/
   --shift-width: 41.743px; /*1024*8.0/196.25*/
+  
+  --l-symbol-width: 62.614px;
+  --language-width: 32.611px;
+  --mic-width: 32.611px;
+  --l-space-width: 70px;
+
+  --back-width: 41.743px; /*1024*8.0/196.25*/
   --enter-width: 62.614px; /*1024*12/196.25*/
+  --close-width: 41.743px; /*1024*8.0/196.25*/
+  --r-symbol-width: 95.224px;
+  --r-space-width: 95.224px;
 }
 
 html {
@@ -60,17 +70,39 @@ body {
   padding-left: var(--lb-padding-left);
 }
 
+#left_special {
+  padding-left: var(--ls-padding-left);
+}
+
 .left_key {
   background-color: gray;
   float: left;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   height: var(--key-height);
   margin-right: var(--key-margin-horizontal);
   border-radius: var(--key-radius);
-  text-align: center;
 }
 
 .left_letter {
   width: var(--key-width);
+}
+
+.left_symbol {
+  width: var(--l-symbol-width);
+}
+
+.language {
+  width: var(--language-width);
+}
+
+.mic {
+  width: var(--mic-width);
+}
+
+.left_space {
+  width: var(--l-space-width);
 }
 
 /********* right keyboard *********/
@@ -100,18 +132,20 @@ body {
 
 .right_key {
   background-color: gray;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   float: right;
   height: var(--key-height);
   margin-left: var(--key-margin-horizontal);
   border-radius: var(--key-radius);
-  text-align: center;
 }
 
 .right_letter {
   width: var(--key-width);
 }
 
-/********* function **********/
+/********* right function **********/
 .back {
   width: var(--back-width);
 }
@@ -122,6 +156,18 @@ body {
 
 .enter {
   width: var(--enter-width);
+}
+
+.close {
+  width: var(--close-width);
+}
+
+.right_symbol {
+  width: var(--r-symbol-width);
+}
+
+.right_space {
+  width: var(--r-space-width);
 }
 
 /********* dot *********/
