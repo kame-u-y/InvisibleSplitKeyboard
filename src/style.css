@@ -1,7 +1,8 @@
 :root {
-  --key-width: 25.976px;
-  --key-height: 33.249px;
-  --key-margin: 7.273px; 
+  --key-width: 26.667px;
+  --key-height: 36.248px;
+  --key-margin-horizontal: 7.467px;
+  --key-margin-vertical: 7.929px 
 }
 
 html {
@@ -53,8 +54,8 @@ body {
   float: left;
   width: var(--key-width);
   height: var(--key-height);
-  margin-right: var(--key-margin);
-  margin-bottom: var(--key-margin);
+  margin-right: var(--key-margin-horizontal);
+  margin-bottom: var(--key-margin-vertical);
   text-align: center;
 }
 
@@ -87,8 +88,8 @@ body {
   float: right;
   width: var(--key-width);
   height: var(--key-height);
-  margin-left: var(--key-margin);
-  margin-bottom: var(--key-margin);
+  margin-left: var(--key-margin-horizontal);
+  margin-bottom: var(--key-margin-vertical);
   text-align: center;
 }
 
