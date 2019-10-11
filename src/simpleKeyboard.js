@@ -13,12 +13,31 @@ function addTapInfo(num, letter, x, y) {
     tapInfoArray.push({num: num, letter: letter, x: x, y: y})
 }
 
+// visual_modeの設定
+function addRadioEvent() {
+    $("#visual_mode input:radio[name=visual_mode]").on('change', (ev, a) => {
+        switch(ev.target.value) {
+            case "visible":
+                $(".key").css("opacity", "1");
+                break;
+            case "semi_invisible":
+                console.log(2)
+                // document.getElementsByClassName(".key").style.opacity = ;
+                break;
+            case "invisible":
+                $(".key").css("opacity", "0");
+                break;
+        }
+    })
+}
+
 // target
 // inputPositionを実行
 function addBodyTapEvent() {
     const body = document.getElementById("target")
     const eventFunction = (x, y) => {
-        if(nextLetterNum >= givenText.length) {
+        if (y<150) return;
+        if (nextLetterNum >= givenText.length) {
             console.log("task ended");
         }
         inputPosition(x, y);
@@ -64,5 +83,6 @@ function addKeyTapEvent() {
 }
 
 init();
+addRadioEvent();
 addBodyTapEvent();
 addKeyTapEvent();

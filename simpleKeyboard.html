@@ -9,6 +9,11 @@
   </head>
   <body ontouchstart="" id="target">
     <div id="values">
+      <div id="visual_mode">
+        <input name="visual_mode" type="radio" value="visible" checked>visible
+        <input name="visual_mode" type="radio" value="semi_invisible">semi-visible
+        <input name="visual_mode" type="radio" value="invisible">invisible
+      </div>
       <p>x = <span id="x"></span></p>
       <p>y = <span id="y"></span></p>
       <pre id="given_text">give when until</pre>
@@ -80,6 +85,10 @@
     <div id="dot-container">
       
     </div>
+    <script
+      src="https://code.jquery.com/jquery-3.4.1.min.js"
+      integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+      crossorigin="anonymous"></script>
     <script type="module" src="src/simpleKeyboard.js"></script>
   </body>
 </html>
