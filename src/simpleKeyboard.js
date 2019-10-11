@@ -22,6 +22,7 @@ function addBodyTapEvent() {
         if (y<150) return;
         if (nextLetterNum >= givenText.length) {
             console.log("task ended");
+            return;
         }
         inputPosition(x, y);
         addTapInfo(nextLetterNum, givenText.charAt(nextLetterNum), x, y);
