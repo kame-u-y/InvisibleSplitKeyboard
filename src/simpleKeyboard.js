@@ -1,4 +1,5 @@
 import {inputLetter, inputPosition, displayTapInfo} from "./InputFunction.js";
+import {addRadioEvent} from "./RadioEvent.js";
 
 let tapInfoArray = []
 let givenText = "";
@@ -11,24 +12,6 @@ function init() {
 
 function addTapInfo(num, letter, x, y) {
     tapInfoArray.push({num: num, letter: letter, x: x, y: y})
-}
-
-// visual-modeの設定
-function addRadioEvent() {
-    $("#visual-mode input:radio[name=visual-mode]").on('change', (ev, a) => {
-        switch(ev.target.value) {
-            case "visible":
-                $(".key").css("opacity", "1");
-                break;
-            case "semi-invisible":
-                console.log(2)
-                // document.getElementsByClassName(".key").style.opacity = ;
-                break;
-            case "invisible":
-                $(".key").css("opacity", "0");
-                break;
-        }
-    })
 }
 
 // target

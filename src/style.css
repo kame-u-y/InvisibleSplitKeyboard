@@ -45,7 +45,7 @@ body {
   position: fixed;
   width: 100%;
   bottom: var(--footer-bottom);
-  background-color: white;
+  background-color: rgba(180, 180, 180, 0.452);
 }
 
 /********* left keyboard *********/
@@ -54,6 +54,7 @@ body {
   background-color: #303030;
   padding-top: 9.12px;
   border-radius: 4px;
+  border: solid 5px rgb(48, 48, 48);
 }
 
 .left-row {
@@ -116,6 +117,7 @@ body {
   padding-top: 9.12px;
   padding-right: 0;
   border-radius: 4px;
+  border: solid 5px rgb(48, 48, 48);
 }
 
 .right-row {
