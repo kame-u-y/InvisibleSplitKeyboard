@@ -9,8 +9,8 @@ function init() {
     givenText = document.getElementById("given_text").innerText;
 }
 
-function addTapInfo(letter, x, y) {
-    tapInfoArray.push({letter: letter, x: x, y: y})
+function addTapInfo(num, letter, x, y) {
+    tapInfoArray.push({num: num, letter: letter, x: x, y: y})
 }
 
 // target
@@ -22,7 +22,7 @@ function addBodyTapEvent() {
             console.log("task ended");
         }
         inputPosition(x, y);
-        addTapInfo(givenText.charAt(nextLetterNum), x, y);
+        addTapInfo(nextLetterNum, givenText.charAt(nextLetterNum), x, y);
         if(goNextFlag) {
             nextLetterNum++;
             goNextFlag = false;

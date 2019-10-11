@@ -13,15 +13,15 @@ export function inputPosition(x, y) {
     document.getElementById("y").innerHTML = y;
 }
 
-function addDot(x, y) {
+function addDot(num, x, y) {
     let dotContainer = document.getElementById("dot-container");
     let dot = document.createElement("p")
     dot.setAttribute("class", "dot");
-    dot.style.cssText = `left: ${x}px; top: ${y}px`;
+    dot.style.cssText = `background-color: hsl(${num*20}, 50%, 50%); left: ${x}px; top: ${y}px`;
     dotContainer.appendChild(dot);
 }
 
 export function displayTapInfo(tapInfoArray) {
-    tapInfoArray.filter((info) => addDot(info.x, info.y))
+    tapInfoArray.filter((info) => addDot(info.num, info.x, info.y))
     console.log(tapInfoArray);
 }

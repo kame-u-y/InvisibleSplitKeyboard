@@ -179,7 +179,7 @@ body {
 /********* dot *********/
 .dot {
   position: absolute;
-  background-color: #F00;
+  background-color: rgb(255, 0, 0);
   width: 5px;
   height: 5px;
   margin: 0;
