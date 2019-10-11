@@ -1,5 +1,5 @@
 import {inputLetter, inputPosition, displayTapInfo} from "./InputFunction.js";
-import {addRadioEvent} from "./RadioEvent.js";
+import {addVisualEvent} from "./RadioEvent.js";
 
 let tapInfoArray = []
 let givenText = "";
@@ -66,6 +66,6 @@ function addKeyTapEvent() {
 }
 
 init();
-addRadioEvent();
+addVisualEvent();
 addBodyTapEvent();
 addKeyTapEvent();

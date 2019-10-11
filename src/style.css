@@ -108,6 +108,8 @@ body {
 
 .left-space {
   width: var(--l-space-width);
+  border: 1px solid #303030;
+  box-sizing: border-box;
 }
 
 /********* right keyboard *********/
@@ -176,6 +178,8 @@ body {
 
 .right-space {
   width: var(--r-space-width);
+  border: solid 1px rgb(48, 48, 48);
+  box-sizing: border-box;
 }
 
 /********* dot *********/
