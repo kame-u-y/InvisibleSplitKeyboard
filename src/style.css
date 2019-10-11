@@ -49,36 +49,36 @@ body {
 }
 
 /********* left keyboard *********/
-#left_keyboard {
+#left-keyboard {
   float: left;
   background-color: #303030;
   padding-top: 9.12px;
   border-radius: 4px;
 }
 
-.left_row {
+.left-row {
   list-style-type: none;
   height: var(--letter-height);
   margin: 0 0 var(--letter-margin-vertical) 0;
 }
 
-#left_top {
+#left-top {
   padding-left: var(--lt-padding-left);
 }
 
-#left_middle {
+#left-middle {
   padding-left: var(--lm-padding-left);
 }
 
-#left_bottom {
+#left-bottom {
   padding-left: var(--lb-padding-left);
 }
 
-#left_special {
+#left-special {
   padding-left: var(--ls-padding-left);
 }
 
-.left_key {
+.left-key {
   background-color: white;
   float: left;
   display: flex;
@@ -89,11 +89,11 @@ body {
   border-radius: var(--letter-radius);
 }
 
-.left_letter {
+.left-letter {
   width: var(--letter-width);
 }
 
-.left_symbol {
+.left-symbol {
   width: var(--l-symbol-width);
 }
 
@@ -105,12 +105,12 @@ body {
   width: var(--mic-width);
 }
 
-.left_space {
+.left-space {
   width: var(--l-space-width);
 }
 
 /********* right keyboard *********/
-#right_keyboard {
+#right-keyboard {
   float: right;
   background-color: #303030;
   padding-top: 9.12px;
@@ -118,7 +118,7 @@ body {
   border-radius: 4px;
 }
 
-.right_row {
+.right-row {
   list-style-type: none;
   height: var(--letter-height);
   margin: 0 0 var(--letter-margin-vertical) 0;
@@ -127,16 +127,16 @@ body {
 }
 
  
-/* #right_top {
+/* #right-top {
 }
 
-#right_middle {
+#right-middle {
 }
 
-#right_bottom {
+#right-bottom {
 } */
 
-.right_key {
+.right-key {
   background-color: white;
   display: flex;
   align-items: center;
@@ -147,7 +147,7 @@ body {
   border-radius: var(--letter-radius);
 }
 
-.right_letter {
+.right-letter {
   width: var(--letter-width);
 }
 
@@ -168,11 +168,11 @@ body {
   width: var(--close-width);
 }
 
-.right_symbol {
+.right-symbol {
   width: var(--r-symbol-width);
 }
 
-.right_space {
+.right-space {
   width: var(--r-space-width);
 }
 

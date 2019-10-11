@@ -1,9 +1,9 @@
 export function inputLetter(letter) {
     if (letter==="BS") {
-        const t = document.getElementById("input_text");
+        const t = document.getElementById("input-text");
         t.innerText = t.innerText.slice(0, -1);
     } else {
-        document.getElementById("input_text").innerText += letter;
+        document.getElementById("input-text").innerText += letter;
     }
 }
 

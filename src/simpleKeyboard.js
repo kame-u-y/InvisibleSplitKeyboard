@@ -6,21 +6,21 @@ let goNextFlag = false;
 let nextLetterNum = 0;
 
 function init() {
-    givenText = document.getElementById("given_text").innerText;
+    givenText = document.getElementById("given-text").innerText;
 }
 
 function addTapInfo(num, letter, x, y) {
     tapInfoArray.push({num: num, letter: letter, x: x, y: y})
 }
 
-// visual_modeの設定
+// visual-modeの設定
 function addRadioEvent() {
-    $("#visual_mode input:radio[name=visual_mode]").on('change', (ev, a) => {
+    $("#visual-mode input:radio[name=visual-mode]").on('change', (ev, a) => {
         switch(ev.target.value) {
             case "visible":
                 $(".key").css("opacity", "1");
                 break;
-            case "semi_invisible":
+            case "semi-invisible":
                 console.log(2)
                 // document.getElementsByClassName(".key").style.opacity = ;
                 break;
