@@ -1,11 +1,11 @@
 :root {
   --footer-bottom: 70px;
   
-  --lt-padding-left: 2mm;
-  --lm-padding-left: 8.5mm;
-  --lb-padding-left: 2mm;
-  --ls-padding-left: 2mm;
-  --r-padding-right: 2mm;
+  --lt-padding-left: 2.5mm;
+  --lm-padding-left: 9.0mm;
+  --lb-padding-left: 2.5mm;
+  --ls-padding-left: 2.5mm;
+  --r-padding-right: 2.5mm;
 
   --letter-width: 34px; /*1024*6.25/196.25*/
   --letter-margin-horizontal: 9.131px; /*1024*1.75/196.25*/
@@ -45,7 +45,7 @@ body {
   position: fixed;
   width: 100%;
   bottom: var(--footer-bottom);
-  background-color: rgba(180, 180, 180, 0.452);
+  background-color: rgba(255, 255, 255, 0);
 }
 
 /********* left keyboard *********/
