@@ -1,4 +1,6 @@
 :root {
+  --footer-bottom: 100px;
+  
   --lt-padding-left: 3.5mm;
   --lm-padding-left: 10mm;
   --lb-padding-left: 3.5mm;
@@ -42,7 +44,7 @@ body {
 #footer {
   position: fixed;
   width: 100%;
-  bottom: 0;
+  bottom: var(--footer-bottom);
   background-color: yellowgreen;
 }
 
