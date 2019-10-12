@@ -12,7 +12,6 @@ function init() {
 function addTapInfo(num, letter, x, y) {
     tapInfoArray.push({num: num, letter: letter, x: x, y: y})
 }
-
 // target
 // inputPositionを実行
 function addBodyTapEvent() {
@@ -33,6 +32,7 @@ function addBodyTapEvent() {
     }
 
     body.addEventListener("touchend", (ev) => {
+        ev.preventDefault();
         eventFunction(ev.changedTouches[0].pageX, ev.changedTouches[0].pageY);
     }, {passive: false})
 
