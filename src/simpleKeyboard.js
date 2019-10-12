@@ -36,7 +36,6 @@ function addBodyTapEvent() {
     }
 
     body.addEventListener("touchend", (ev) => {
-        ev.preventDefault();
         eventFunction(ev.changedTouches[0].pageX, ev.changedTouches[0].pageY);
     }, {passive: false})
 

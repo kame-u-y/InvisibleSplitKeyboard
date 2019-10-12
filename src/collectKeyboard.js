@@ -17,7 +17,6 @@ function addTapInfo(num, letter, x, y) {
 function addBodyTapEvent() {
     const body = document.getElementById("target")
     const eventFunction = (x, y) => {
-        if (y<150) return;
         if (nextLetterNum >= givenText.length) {
             console.log("task ended");
             return;
@@ -32,6 +31,7 @@ function addBodyTapEvent() {
     }
 
     body.addEventListener("touchend", (ev) => {
+        if (ev.changedTouches[0].pageY<150) return;
         ev.preventDefault();
         eventFunction(ev.changedTouches[0].pageX, ev.changedTouches[0].pageY);
     }, {passive: false})
