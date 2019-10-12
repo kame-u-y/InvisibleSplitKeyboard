@@ -5,9 +5,14 @@ let tapInfoArray = []
 let givenText = "";
 let goNextFlag = false;
 let nextLetterNum = 0;
+let initFlag = false;
 
 function init() {
     givenText = document.getElementById("given-text").innerText;
+    tapInfoArray = [];
+    nextLetterNum = 0;
+    document.getElementById("input-text").innerText = "";
+    document.getElementById("dot-container").innerHTML = '';
 }
 
 function addTapInfo(num, letter, x, y) {
@@ -19,6 +24,10 @@ function addTapInfo(num, letter, x, y) {
 function addBodyTapEvent() {
     const body = document.getElementById("target")
     const eventFunction = (x, y) => {
+        if (initFlag) {
+            initFlag = false;
+            return;
+        }
         if (y<150) return;
         if (nextLetterNum >= givenText.length) {
             console.log("task ended");
@@ -49,6 +58,11 @@ function addBodyTapEvent() {
 function addKeyTapEvent() {
     const keys = document.getElementsByClassName("key");
     const eventFunction = (elem, x, y) => {
+        if(elem.dataset.letter==="enter") {
+            init();
+            initFlag = true;
+            return;
+        } 
         if(nextLetterNum >= givenText.length) return;
         if(elem.dataset.letter!==givenText.charAt(nextLetterNum)) return;
         inputLetter(elem.dataset.letter);
@@ -70,4 +84,3 @@ init();
 addVisualEvent();
 addBodyTapEvent();
 addKeyTapEvent();
-

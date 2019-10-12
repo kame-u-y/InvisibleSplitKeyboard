@@ -4,9 +4,14 @@ import {addVisualEvent} from "./RadioEvent.js";
 let tapInfoArray = []
 let givenText = "";
 let nextLetterNum = 0;
+let initFlag = false;
 
 function init() {
     givenText = document.getElementById("given-text").innerText;
+    tapInfoArray = [];
+    nextLetterNum = 0;
+    document.getElementById("input-text").innerText = "";
+    document.getElementById("dot-container").innerHTML = '';
 }
 
 function addTapInfo(num, letter, x, y) {
@@ -17,6 +22,10 @@ function addTapInfo(num, letter, x, y) {
 function addBodyTapEvent() {
     const body = document.getElementById("target")
     const eventFunction = (x, y) => {
+        if (initFlag) {
+            initFlag = false;
+            return;
+        }
         if (nextLetterNum >= givenText.length) {
             console.log("task ended");
             return;
@@ -41,6 +50,20 @@ function addBodyTapEvent() {
     })
 }
 
+function addEnterTapEvent() {
+    const enter = document.getElementsByClassName("enter")[0];
+    enter.addEventListener("touchend", (ev) => {
+        ev.preventDefault();
+        init();
+        initFlag = true;
+    });
+    enter.addEventListener("click", (ev) => {
+        init();
+        initFlag = true;
+    })
+}
+
 init();
 addVisualEvent();
 addBodyTapEvent();
+addEnterTapEvent();
