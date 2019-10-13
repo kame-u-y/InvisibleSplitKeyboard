@@ -21,7 +21,7 @@ function addTapInfo(num, letter, x, y) {
 // inputPositionを実行
 function addBodyTapEvent() {
     const body = document.getElementById("target")
-    const eventFunction = (x, y) => {
+    const bodyEvent = (x, y) => {
         if (initFlag) {
             initFlag = false;
             return;
@@ -42,11 +42,11 @@ function addBodyTapEvent() {
     body.addEventListener("touchend", (ev) => {
         if (ev.changedTouches[0].pageY<150) return;
         ev.preventDefault();
-        eventFunction(ev.changedTouches[0].pageX, ev.changedTouches[0].pageY);
+        bodyEvent(ev.changedTouches[0].pageX, ev.changedTouches[0].pageY);
     }, {passive: false})
 
     body.addEventListener("click", (ev) => {
-        eventFunction(ev.pageX, ev.pageY);
+        bodyEvent(ev.pageX, ev.pageY);
     })
 }
 
