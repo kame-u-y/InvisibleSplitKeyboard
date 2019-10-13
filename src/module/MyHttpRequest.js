@@ -12,8 +12,8 @@ export function postTapData(tapInfoArray) {
             }
             console.log("success!!!");
         },
-        error: () => {
-            alert("error")
+        error: (e) => {
+            console.log(e)
         },
         complete: () => {
         }
