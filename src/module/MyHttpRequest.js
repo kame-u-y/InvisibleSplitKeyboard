@@ -1,7 +1,7 @@
 export function postTapData(tapInfoArray) {
     $.ajax({
         type: "post",
-        url: "http://localhost:5000/invisiblesplitkeyboard/us-central1/helloWorld",
+        url: "https://us-central1-invisiblesplitkeyboard.cloudfunctions.net/helloWorld",
         data: JSON.stringify(tapInfoArray),
         contentType: 'application/json',
         dataType: "json",
