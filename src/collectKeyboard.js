@@ -40,7 +40,6 @@ function addBodyTapEvent() {
     }
 
     body.addEventListener("touchend", (ev) => {
-        if (ev.changedTouches[0].pageY<150) return;
         ev.preventDefault();
         bodyEvent(ev.changedTouches[0].pageX, ev.changedTouches[0].pageY);
     }, {passive: false})

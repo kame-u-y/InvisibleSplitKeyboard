@@ -28,7 +28,6 @@ function addBodyTapEvent() {
             initFlag = false;
             return;
         }
-        if (y<150) return;
         if (nextLetterNum >= givenText.length) {
             console.log("task ended");
             return;

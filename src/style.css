@@ -1,5 +1,5 @@
 :root {
-  --footer-bottom: 70px;
+  --footer-bottom: 0px;
   
   --lt-padding-left: 2.5mm;
   --lm-padding-left: 9.0mm;
@@ -45,11 +45,13 @@ body {
   border-right: solid 3px #ddd;
 }
 
-#footer {
+#target {
   position: fixed;
   width: 100%;
   bottom: var(--footer-bottom);
   background-color: rgba(255, 255, 255, 0);
+  padding-bottom: 0;
+  padding-top: 150px;
 }
 
 /********* left keyboard *********/
