@@ -3,7 +3,7 @@ import {addVisualEvent} from "./module/RadioEvent.js";
 import {getRandomWords} from "./module/GetRandomWords.js";
 import {initFirebase, postTapData} from "./module/MyHttpRequest.js";
 
-let tapInfoArray = []
+let tapInfoArray = [];
 let givenText = "";
 let nextLetterNum = 0;
 let initFlag = false;
