@@ -17,7 +17,11 @@ export function initFirebase() {
 
 export function postTapData(tapInfoArray) {
     let db = firebase.firestore();
-    db.collection("users").add("kuma")
+    db.collection("users").add({
+        first: "Ada",
+        last: "Lovelace",
+        born: 1815
+    })
     .then((docRef) => {
         console.log(docRef);
     })
