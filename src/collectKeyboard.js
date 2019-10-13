@@ -1,5 +1,6 @@
-import {inputLetter, inputPosition, displayTapInfo} from "./InputFunction.js";
-import {addVisualEvent} from "./RadioEvent.js";
+import {inputLetter, inputPosition, displayTapInfo} from "./module/InputFunction.js";
+import {addVisualEvent} from "./module/RadioEvent.js";
+import {getRandomWords} from "./module/GetRandomWords.js";
 
 let tapInfoArray = []
 let givenText = "";
@@ -7,6 +8,7 @@ let nextLetterNum = 0;
 let initFlag = false;
 
 function init() {
+    document.getElementById("given-text").innerText = getRandomWords().join(" ");
     givenText = document.getElementById("given-text").innerText;
     tapInfoArray = [];
     nextLetterNum = 0;
@@ -15,7 +17,7 @@ function init() {
 }
 
 function addTapInfo(num, letter, x, y) {
-    tapInfoArray.push({num: num, letter: letter, x: x, y: y})
+    tapInfoArray.push({num: num, letter: letter, x: x, y: y, timestamp: Date.now()})
 }
 // target
 // inputPositionを実行
