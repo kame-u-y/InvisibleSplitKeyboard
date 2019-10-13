@@ -9,7 +9,6 @@ let nextLetterNum = 0;
 let initFlag = false;
 
 function init() {
-    initFirebase();
     document.getElementById("given-text").innerText = getRandomWords().join(" ");
     givenText = document.getElementById("given-text").innerText;
     tapInfoArray = [];
@@ -74,6 +73,7 @@ function addEnterTapEvent() {
 }
 
 init();
+initFirebase();
 addVisualEvent();
 addBodyTapEvent();
 addEnterTapEvent();

@@ -29,9 +29,14 @@ export function postTapData(tapInfoArray) {
             timestamp: v.timestamp,
         });
     })
+    const user = $("#user-name").val();
+    const keyboardType = $("#visual-mode input:radio[name=visual-mode]:checked").val();
+    const spaceVisual = $("#spaceVisible").prop('checked') ? "visible" : "invisible";
     let db = firebase.firestore();
-    db.collection("users").doc("kame")
+    db.collection("users").doc(user)
     .collection("devices").doc("ipad9.7")
+    .collection("keyboardTypes").doc(keyboardType)
+    .collection("spaceVisual").doc(spaceVisual)
     .set(arr, {merge: true})
     .then((docRef) => {
         console.log(docRef);
@@ -39,28 +44,4 @@ export function postTapData(tapInfoArray) {
     .catch((error) => {
         console.log("Error adding document: ", error);
     })
-
-    // const processData = (tapInfoArray) => {
-    //     return JSON.stringify({
-    //         user: "kame",
-    //         device: "ipad9.7",
-    //         tapInfo: tapInfoArray,
-    //     });
-    // }
-
-    // $.ajax({
-    //     type: "post",
-    //     url: "https://us-central1-invisiblesplitkeyboard.cloudfunctions.net/helloWorld",
-    //     data: processData(tapInfoArray),
-    //     contentType: 'application/json',
-    //     dataType: "json",
-    //     success: () => {
-    //         console.log("success!!!");
-    //     },
-    //     error: (e) => {
-    //         console.log(e)
-    //     },
-    //     complete: () => {
-    //     }
-    // })
 }
