@@ -41,6 +41,10 @@ body {
   margin: 0;
 }
 
+#input-text {
+  border-right: solid 3px #ddd;
+}
+
 #footer {
   position: fixed;
   width: 100%;
