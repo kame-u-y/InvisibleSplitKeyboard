@@ -1,6 +1,7 @@
 import {inputLetter, inputPosition, displayTapInfo} from "./module/InputFunction.js";
 import {addVisualEvent} from "./module/RadioEvent.js";
 import {getRandomWords} from "./module/GetRandomWords.js";
+import {postTapData} from "./module/MyHttpRequest.js";
 
 let tapInfoArray = []
 let givenText = "";
@@ -38,6 +39,7 @@ function addBodyTapEvent() {
         nextLetterNum++;
         if(nextLetterNum===givenText.length) {
             displayTapInfo(tapInfoArray);
+            postTapData(tapInfoArray);
         }
     }
 
