@@ -1,15 +1,19 @@
 export function postTapData(tapInfoArray) {
+    const processData = (tapInfoArray) => {
+        return JSON.stringify({
+            user: "kame",
+            device: "ipad9.7",
+            tapInfo: tapInfoArray,
+        });
+    }
+
     $.ajax({
         type: "post",
         url: "https://us-central1-invisiblesplitkeyboard.cloudfunctions.net/helloWorld",
-        data: JSON.stringify(tapInfoArray),
+        data: processData(tapInfoArray),
         contentType: 'application/json',
         dataType: "json",
-        success: (jsonData) => {
-            if (!jsonData[0]) {
-                alert("Transaction error. " + jsonData[1]);
-                return;
-            }
+        success: () => {
             console.log("success!!!");
         },
         error: (e) => {

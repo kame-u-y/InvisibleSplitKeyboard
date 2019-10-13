@@ -7,6 +7,8 @@ const cors = corsLib({
 // Start writing Firebase Functions
 // https://firebase.google.com/docs/functions/typescript
 
+
+
 export const helloWorld = functions.https.onRequest((request, response) => {
     return cors(request, response, () => {
         console.log(request.body);

@@ -18,7 +18,13 @@ function init() {
 }
 
 function addTapInfo(num, letter, x, y) {
-    tapInfoArray.push({num: num, letter: letter, x: x, y: y, timestamp: Date.now()})
+    tapInfoArray.push({
+        num: num, 
+        letter: letter, 
+        x: x, 
+        y: y,
+        timestamp: Date.now(),
+    })
 }
 // target
 // inputPositionを実行
