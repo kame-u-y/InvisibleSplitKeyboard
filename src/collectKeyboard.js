@@ -1,7 +1,7 @@
 import {inputLetter, inputPosition, displayTapInfo} from "./module/InputFunction.js";
 import {addVisualEvent} from "./module/RadioEvent.js";
 import {getRandomWords} from "./module/GetRandomWords.js";
-import {postTapData} from "./module/MyHttpRequest.js";
+import {initFirebase, postTapData} from "./module/MyHttpRequest.js";
 
 let tapInfoArray = []
 let givenText = "";
@@ -9,6 +9,7 @@ let nextLetterNum = 0;
 let initFlag = false;
 
 function init() {
+    initFirebase();
     document.getElementById("given-text").innerText = getRandomWords().join(" ");
     givenText = document.getElementById("given-text").innerText;
     tapInfoArray = [];
