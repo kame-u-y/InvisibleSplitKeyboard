@@ -22,7 +22,11 @@ function addDot(letter, x, y) {
     dotContainer.appendChild(dot);
 }
 
-export function displayTapInfo(tapInfoArray) {
-    tapInfoArray.filter((info) => addDot(info.letter, info.x, info.y))
-    console.log(tapInfoArray);
+export function displayTapData(tapData) {
+    if (!tapData) return;
+    Object.keys(tapData).filter(v => {
+        tapData[v].filter(data => {
+            addDot(v, data.position.x, data.position.y);
+        })
+    })
 }

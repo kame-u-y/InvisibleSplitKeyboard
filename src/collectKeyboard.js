@@ -1,9 +1,9 @@
-import {inputLetter, inputPosition, displayTapInfo} from "./module/InputFunction.js";
+import {inputLetter, inputPosition, displayTapData} from "./module/InputFunction.js";
 import {addVisualEvent} from "./module/RadioEvent.js";
 import {getRandomWords} from "./module/GetRandomWords.js";
 import {initFirebase, postTapData} from "./module/MyHttpRequest.js";
 
-let tapInfoArray = [];
+let tapData = {};
 let givenText = "";
 let nextLetterNum = 0;
 let initFlag = false;
@@ -11,18 +11,21 @@ let initFlag = false;
 function init() {
     document.getElementById("given-text").innerText = getRandomWords().join(" ");
     givenText = document.getElementById("given-text").innerText;
-    tapInfoArray = [];
+    tapData = {};
     nextLetterNum = 0;
     document.getElementById("input-text").innerText = "";
     document.getElementById("dot-container").innerHTML = '';
 }
 
-function addTapInfo(num, letter, x, y) {
-    tapInfoArray.push({
-        num: num, 
-        letter: letter, 
-        x: x, 
-        y: y,
+function addTapInfo(letter, x, y) {
+    if (!tapData[letter]) {
+        tapData[letter] = [];
+    }
+    tapData[letter].push({
+        position: {
+            x: x, 
+            y: y,
+        },
         timestamp: Date.now(),
     })
 }
@@ -41,11 +44,11 @@ function addBodyTapEvent() {
         }
         inputLetter(givenText.charAt(nextLetterNum));
         inputPosition(x, y);
-        addTapInfo(nextLetterNum, givenText.charAt(nextLetterNum), x, y);
+        addTapInfo(givenText.charAt(nextLetterNum), x, y);
         nextLetterNum++;
         if(nextLetterNum===givenText.length) {
-            displayTapInfo(tapInfoArray);
-            postTapData(tapInfoArray);
+            displayTapData(tapData);
+            postTapData(tapData);
         }
     }
 

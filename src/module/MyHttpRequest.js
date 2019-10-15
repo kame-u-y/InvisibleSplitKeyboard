@@ -15,22 +15,9 @@ export function initFirebase() {
     firebase.analytics();
 }
 
-export function postTapData(tapInfoArray) {
-    const arr = {}
-    tapInfoArray.filter((v) => {
-        if (!arr[v.letter]) {
-            arr[v.letter] = [];
-        }
-        arr[v.letter].push({
-            position: {
-                x: v.x,
-                y: v.y,
-            },
-            timestamp: v.timestamp,
-        });
-    });
-    Object.keys(arr).filter((v) => {
-        arr[v] = firebase.firestore.FieldValue.arrayUnion(...arr[v]);
+export function postTapData(tapData) {
+    Object.keys(tapData).filter((v) => {
+        tapData[v] = firebase.firestore.FieldValue.arrayUnion(...tapData[v]);
     })
     const user = $("#user-name").val();
     const keyboardType = $("#visual-mode input:radio[name=visual-mode]:checked").val();
@@ -42,7 +29,7 @@ export function postTapData(tapInfoArray) {
     .collection("devices").doc("ipad9.7")
     .collection("keyboardTypes").doc(keyboardType)
     .collection("spaceVisual").doc(spaceVisual)
-    .set(arr, {merge: true})
+    .set(tapData, {merge: true})
     .then((docRef) => {
         console.log(docRef);
     })
