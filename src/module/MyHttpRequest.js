@@ -28,6 +28,9 @@ export function postTapData(tapInfoArray) {
             },
             timestamp: v.timestamp,
         });
+    });
+    Object.keys(arr).filter((v) => {
+        arr[v] = firebase.firestore.FieldValue.arrayUnion(...arr[v]);
     })
     const user = $("#user-name").val();
     const keyboardType = $("#visual-mode input:radio[name=visual-mode]:checked").val();
