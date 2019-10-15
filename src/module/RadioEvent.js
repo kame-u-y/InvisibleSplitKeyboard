@@ -4,7 +4,7 @@ let rightKeyboard = $("#right-keyboard");
 let keys = $(".key");
 let leftSpace = $(".left-space");
 let rightSpace = $(".right-space");
-let spaceVisible = $("#spaceVisible");
+let spaceVisible = $("#space-visible");
 
 function setKeyboardBGColor(isVisible) {
     if (isVisible) {
@@ -80,7 +80,7 @@ function addRadioEvent() {
 }
 
 function addSpaceCheckEvent() {
-    $("#spaceVisible").on('change', (ev) => {
+    $("#space-visible").on('change', (ev) => {
         if ($("#visual-mode input:radio[name=visual-mode]:checked").val()==="visible") return;
         if (ev.target.checked) {
             setSpaceOpacity(true);

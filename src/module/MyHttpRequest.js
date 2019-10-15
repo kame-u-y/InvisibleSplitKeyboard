@@ -31,7 +31,9 @@ export function postTapData(tapInfoArray) {
     })
     const user = $("#user-name").val();
     const keyboardType = $("#visual-mode input:radio[name=visual-mode]:checked").val();
-    const spaceVisual = $("#spaceVisible").prop('checked') ? "visible" : "invisible";
+    const spaceVisual = $("#space-visible").prop('checked') | keyboardType==="visible" 
+        ? "visible" 
+        : "invisible";
     let db = firebase.firestore();
     db.collection("users").doc(user)
     .collection("devices").doc("ipad9.7")
@@ -43,5 +45,30 @@ export function postTapData(tapInfoArray) {
     })
     .catch((error) => {
         console.log("Error adding document: ", error);
+    })
+}
+
+export function getTapData(callback) {
+    const user = $("#user-name").val();
+    const keyboardType = $("#visual-mode input:radio[name=visual-mode]:checked").val();
+    const spaceVisual = $("#space-visible").prop('checked') | keyboardType==="visible" 
+        ? "visible" 
+        : "invisible";
+
+    let db = firebase.firestore();
+    db.collection("users").doc(user)
+    .collection("devices").doc("ipad9.7")
+    .collection("keyboardTypes").doc(keyboardType)
+    .collection("spaceVisual").doc(spaceVisual).get()
+    .then((doc) => {
+        if (doc.exists) {
+            console.log(doc.data())
+            callback(doc.data());
+        } else {
+            console.log("no such document");
+        }
+    })
+    .catch((error) => {
+        console.log("error getting document:", error);
     })
 }
