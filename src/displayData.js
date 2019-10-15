@@ -1,6 +1,7 @@
 import {addVisualEvent} from "./module/RadioEvent.js";
 import {initFirebase, getTapData} from "./module/MyHttpRequest.js";
 import {displayTapData} from "./module/InputFunction.js";
+import { displaySpacialModel } from "./module/SpacialModel.js";
 let tapDatas = [];
 
 function init() {
@@ -21,6 +22,7 @@ function addButtonEvent() {
 
         if (tapData) {
             displayTapData(tapData.data);
+            displaySpacialModel(tapData.data)
         } else {
             if (user==="") {
                 console.log("user is not defined");
@@ -28,6 +30,7 @@ function addButtonEvent() {
             }
             getTapData(user, keyboardType, spaceVisual, (data) => {
                 displayTapData(data);
+                displaySpacialModel(data)
                 tapDatas.push({
                     user: user,
                     keyboard: keyboardType,
