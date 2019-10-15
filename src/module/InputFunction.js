@@ -9,7 +9,7 @@ export function inputLetter(letter) {
 
 export function inputPosition(x, y) {
     console.log(`x:${x}, y:${y}`);
-    document.getElementById("x").innerHTML = x; 
+    document.getElementById("x").innerHTML = x;
     document.getElementById("y").innerHTML = y;
 }
 

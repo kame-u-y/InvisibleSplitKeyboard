@@ -51,13 +51,7 @@ export function postTapData(tapInfoArray) {
     })
 }
 
-export function getTapData(callback) {
-    const user = $("#user-name").val();
-    const keyboardType = $("#visual-mode input:radio[name=visual-mode]:checked").val();
-    const spaceVisual = $("#space-visible").prop('checked') | keyboardType==="visible" 
-        ? "visible" 
-        : "invisible";
-
+export function getTapData(user, keyboardType, spaceVisual, callback) {
     let db = firebase.firestore();
     db.collection("users").doc(user)
     .collection("devices").doc("ipad9.7")
