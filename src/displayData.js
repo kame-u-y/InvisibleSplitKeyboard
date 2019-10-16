@@ -1,7 +1,7 @@
 import {addVisualEvent} from "./module/RadioEvent.js";
 import {initFirebase, getTapData} from "./module/MyHttpRequest.js";
 import {displayTapData} from "./module/InputFunction.js";
-import { displaySpacialModel } from "./module/SpacialModel.js";
+import { displaySpacialModel, getSMProbability } from "./module/SpacialModel.js";
 let tapDatas = [];
 
 function init() {
@@ -51,7 +51,25 @@ function addButtonEvent() {
     })
 }
 
+
+function addTargetTapEvent() {
+    const target = document.getElementById("target")
+    const targetEvent = (x, y) => {
+        getSMProbability(x, y);
+    }
+
+    target.addEventListener("touchend", (ev) => {
+        targetEvent(ev.changedTouches[0].pageX, ev.changedTouches[0].pageY);
+    }, {passive: false})
+
+    target.addEventListener("click", (ev) => {
+        targetEvent(ev.pageX, ev.pageY);
+    })
+}
+
+
 init();
 initFirebase();
 addVisualEvent();
 addButtonEvent();
+addTargetTapEvent();

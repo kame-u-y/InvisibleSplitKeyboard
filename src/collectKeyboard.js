@@ -31,9 +31,9 @@ function addTapInfo(letter, x, y) {
 }
 // target
 // inputPositionを実行
-function addBodyTapEvent() {
-    const body = document.getElementById("target")
-    const bodyEvent = (x, y) => {
+function addTargetTapEvent() {
+    const target = document.getElementById("target")
+    const targetEvent = (x, y) => {
         if (initFlag) {
             initFlag = false;
             return;
@@ -52,13 +52,13 @@ function addBodyTapEvent() {
         }
     }
 
-    body.addEventListener("touchend", (ev) => {
+    target.addEventListener("touchend", (ev) => {
         ev.preventDefault();
-        bodyEvent(ev.changedTouches[0].pageX, ev.changedTouches[0].pageY);
+        targetEvent(ev.changedTouches[0].pageX, ev.changedTouches[0].pageY);
     }, {passive: false})
 
-    body.addEventListener("click", (ev) => {
-        bodyEvent(ev.pageX, ev.pageY);
+    target.addEventListener("click", (ev) => {
+        targetEvent(ev.pageX, ev.pageY);
     })
 }
 
@@ -78,5 +78,5 @@ function addEnterTapEvent() {
 init();
 initFirebase();
 addVisualEvent();
-addBodyTapEvent();
+addTargetTapEvent();
 addEnterTapEvent();

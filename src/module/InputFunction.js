@@ -14,11 +14,11 @@ export function inputPosition(x, y) {
 }
 
 function addDot(letter, x, y) {
-    const initial = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"]
+    const initial = ["q", "w", "e", "r", "t", "y", "u", "i", "o", "p", "a", "s", "d", "f", "g", "h", "j", "k", "l", "z", "x", "c", "v", "b", "n", "m"]
     let dotContainer = document.getElementById("dot-container");
     let dot = document.createElement("p")
     dot.setAttribute("class", "dot");
-    dot.style.cssText = `background-color: hsl(${initial.indexOf(letter)*20}, 50%, 50%); left: ${x}px; top: ${y}px`;
+    dot.style.cssText = `background-color: hsl(${initial.indexOf(letter)*15}, 50%, 50%); left: ${x}px; top: ${y}px`;
     dotContainer.appendChild(dot);
 }
 
