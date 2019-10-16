@@ -1,8 +1,12 @@
 import {addVisualEvent} from "./module/RadioEvent.js";
 import {initFirebase, getTapData} from "./module/MyHttpRequest.js";
 import {displayTapData} from "./module/InputFunction.js";
-import { displaySpacialModel, getSMProbability } from "./module/SpacialModel.js";
+import {displaySpacialModel, getSMProbability} from "./module/SpacialModel.js";
+import {getLMProbability} from "./module/LanguageModel.js";
+
 let tapDatas = [];
+let letterPs = [];
+let inputText = "";
 
 function init() {
     document.getElementById("dot-container").innerHTML = '';
@@ -55,10 +59,48 @@ function addButtonEvent() {
 function addTargetTapEvent() {
     const target = document.getElementById("target")
     const targetEvent = (x, y) => {
-        getSMProbability(x, y);
+        // タップ位置をもとにSMからキー確率取得
+        let probabilities = getSMProbability(x, y);
+
+        if (letterPs.length===0) {
+            letterPs = probabilities;
+            document.getElementById("predicted-letter").innerText = probabilities.slice(0, 5).map(v=>v.letter).join(" ");
+            return;
+        }
+
+        // 文字列の結合・確率を組み合わせで掛け合わせ
+        let newLetterPs = [];
+        letterPs.map((v0) => {
+            if (v0.letter===" ") return;
+            let arr = probabilities.map((v1) => {
+                return {
+                    letter: v0.letter + v1.letter,
+                    probability: v0.probability * v1.probability,
+                }
+            })
+            newLetterPs = newLetterPs.concat(arr);
+        })
+        letterPs = newLetterPs
+            .sort((a, b) => b.probability - a.probability)
+            .slice(0, 1000);
+        
+        // 予測された文字列のfreqをLMから取得・SM*LM
+        let pLM = [];
+        letterPs.map((v) => {
+            getLMProbability(v.letter).map((w) => {
+                pLM.push({
+                    letter: w.word,
+                    probability: v.probability * Number(w.ratio),
+                });
+            })
+        })
+        pLM.sort((a, b) => b.probability - a.probability);
+        
+        document.getElementById("predicted-letter").innerText = pLM.slice(0, 5).map(v=>v.letter).join(" ");
     }
 
     target.addEventListener("touchend", (ev) => {
+        ev.preventDefault();
         targetEvent(ev.changedTouches[0].pageX, ev.changedTouches[0].pageY);
     }, {passive: false})
 
@@ -73,3 +115,6 @@ initFirebase();
 addVisualEvent();
 addButtonEvent();
 addTargetTapEvent();
+// initLanguageModel();
+
+// console.log( searchWord("wo") );

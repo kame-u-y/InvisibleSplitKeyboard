@@ -66,7 +66,7 @@ export function displaySpacialModel(tapData) {
     Object.keys(tapData).filter((letter) => {
         gaussianData[letter] = calcGaussian(tapData[letter]);
     })
-    console.log(gaussianData);
+    // console.log(gaussianData);
 }
 
 
@@ -90,6 +90,5 @@ export function getSMProbability(x, y) {
         });
     });
     probabilities.sort((a, b) => b.probability - a.probability)
-    console.log(probabilities)
-    document.getElementById("predicted-letter").innerText = probabilities.slice(0, 5).map(v=>v.letter).join(" ");
+    return probabilities;
 }

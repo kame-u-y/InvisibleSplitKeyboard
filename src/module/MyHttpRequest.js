@@ -46,7 +46,7 @@ export function getTapData(user, keyboardType, spaceVisual, callback) {
     .collection("spaceVisual").doc(spaceVisual).get()
     .then((doc) => {
         if (doc.exists) {
-            console.log(doc.data())
+            // console.log(doc.data())
             callback(doc.data());
         } else {
             console.log("no such document");
