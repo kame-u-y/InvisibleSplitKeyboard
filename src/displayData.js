@@ -6,7 +6,7 @@ import {getLMProbability} from "./module/LanguageModel.js";
 
 let tapDatas = [];
 let letterPs = [];
-let inputText = "";
+let initFlag = false;
 
 function init() {
     document.getElementById("dot-container").innerHTML = '';
@@ -59,6 +59,10 @@ function addButtonEvent() {
 function addTargetTapEvent() {
     const target = document.getElementById("target")
     const targetEvent = (x, y) => {
+        if (initFlag) {
+            initFlag = false;
+            return;
+        }
         // タップ位置をもとにSMからキー確率取得
         let probabilities = getSMProbability(x, y);
 
@@ -109,12 +113,25 @@ function addTargetTapEvent() {
     })
 }
 
+function addEnterTapEvent() {
+    const enter = document.getElementsByClassName("enter")[0];
+    const enterEvent = () => {
+        letterPs = [];
+        document.getElementById("predicted-letter").innerText = "";
+        initFlag = true;
+    }
+    enter.addEventListener("touchend", (ev) => {
+        ev.preventDefault();
+        enterEvent();
+    });
+    enter.addEventListener("click", (ev) => {
+        enterEvent();
+    })
+}
 
 init();
 initFirebase();
 addVisualEvent();
 addButtonEvent();
 addTargetTapEvent();
-// initLanguageModel();
-
-// console.log( searchWord("wo") );
+addEnterTapEvent();
