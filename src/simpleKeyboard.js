@@ -1,6 +1,6 @@
-import {inputLetter, inputPosition, displayTapData} from "./module/InputFunction.js";
-import {addVisualEvent} from "./module/RadioEvent.js";
-import {getRandomWords} from "./module/GetRandomWords.js";
+import {inputLetter, inputPosition, displayTapData} from "./module/InputFunction/InputFunction.js";
+import {addVisualEvent} from "./module/RadioEvent/RadioEvent.js";
+import {getRandomWords} from "./module/GetRandomWords/GetRandomWords.js";
 
 let tapData = {}
 let givenText = "";
