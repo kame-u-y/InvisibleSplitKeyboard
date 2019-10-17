@@ -7,6 +7,7 @@ let tapDatas = [];
 
 function init() {
     document.getElementById("dot-container").innerHTML = '';
+    document.getElementById("circle-container").innerHTML = '';
 }
 
 function addButtonEvent() {
@@ -22,7 +23,7 @@ function addButtonEvent() {
         );
 
         if (tapData) {
-            wp.createSpacialModel(tapData.data)
+            wp.createSpacialModel(tapData.data);
             input.displayTapData(tapData.data);
             wp.drawCircle();
         } else {
