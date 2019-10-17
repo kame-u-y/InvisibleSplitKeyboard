@@ -24,6 +24,7 @@ function addButtonEvent() {
         if (tapData) {
             wp.createSpacialModel(tapData.data)
             input.displayTapData(tapData.data);
+            wp.drawCircle();
         } else {
             if (user==="") {
                 console.log("user is not defined");
@@ -33,9 +34,10 @@ function addButtonEvent() {
                 // input.displayTapData(data);
                 wp.createSpacialModel(data)
                 console.log(data)
-                data = wp.removeSMOutlier(data);
-                console.log(data);
                 input.displayTapData(data);
+                data = wp.removeSMOutlier(data);
+                wp.createSpacialModel(data)
+                wp.drawCircle();
                 tapDatas.push({
                     user: user,
                     keyboard: keyboardType,

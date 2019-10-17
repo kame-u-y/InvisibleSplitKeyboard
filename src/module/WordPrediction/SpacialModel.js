@@ -80,3 +80,30 @@ export function getSMProbability(x, y) {
     probabilities.sort((a, b) => b.probability - a.probability)
     return probabilities;
 }
+
+export function drawCircle() {
+    console.log(gaussianData);
+    Object.keys(gaussianData).filter((letter) => {
+        const getH = (letter) => {
+            const initial = [
+                ["q", "w", "e", "r", "t", "y", "u", "i", "o", "p"],
+                ["a", "s", "d", "f", "g", "h", "j", "k", "l"],
+                ["z", "x", "c", "v", "b", "n", "m"]
+            ]
+            if( initial[0].indexOf(letter)!==-1 ) return initial[0].indexOf(letter)*30;
+            if( initial[1].indexOf(letter)!==-1 ) return 180 + initial[1].indexOf(letter)*30;
+            if( initial[2].indexOf(letter)!==-1 ) return initial[2].indexOf(letter)*30;
+        }
+        const width = gaussianData[letter].x.sigma * 3 * 2;
+        const height = gaussianData[letter].y.sigma * 3 * 2;
+        const left = gaussianData[letter].x.average;
+        const top = gaussianData[letter].y.average;
+        let circleContainer = document.getElementById("circle-container");
+        let circle = document.createElement("div");
+        circle.setAttribute("class", "circle");
+        circle.style.cssText
+            = `background-color: hsla(${getH(letter)}, 100%, 80%, 0.1); border: solid 1px hsla(${getH(letter)}, 50%, 50%);
+               width: ${width}px; height: ${height}px; left: ${left}px; top: ${top}px;`
+        circleContainer.appendChild(circle);
+    })
+}

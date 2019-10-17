@@ -72,3 +72,7 @@ export function predictWord(x, y) {
 
     document.getElementById("predicted-letter").innerText = pLM.slice(0, 5).map(v=>v.letter).join(" ");
 }
+
+export function drawCircle() {
+    sm.drawCircle();
+}

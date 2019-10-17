@@ -191,8 +191,14 @@ body {
 /********* dot *********/
 .dot {
   position: absolute;
-  background-color: rgb(255, 0, 0);
   width: 1px;
   height: 1px;
   margin: 0;
+}
+
+.circle {
+  position: absolute;
+  margin: 0;
+  transform: translateX(-50%) translateY(-50%);
+  border-radius: 50%;
 }
