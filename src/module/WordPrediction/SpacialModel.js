@@ -54,7 +54,10 @@ export function createSpacialModel(tapData) {
     })
 }
 
-
+export function isOutlier(letter, x, y) {
+    return Math.abs(gaussianData[letter].x.average - x) > 3*gaussianData[letter].x.sigma 
+        || Math.abs(gaussianData[letter].y.average - y) > 3*gaussianData[letter].y.sigma;
+}
 
 export function getSMProbability(x, y) {
 

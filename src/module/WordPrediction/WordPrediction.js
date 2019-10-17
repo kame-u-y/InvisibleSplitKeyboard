@@ -18,6 +18,15 @@ export function createSpacialModel(tapData) {
     sm.createSpacialModel(tapData);
 }
 
+export function removeSMOutlier(tapData) {
+    Object.keys(tapData).filter((letter) => {
+        tapData[letter] = tapData[letter].filter((v) => {
+            return !sm.isOutlier(letter, v.position.x, v.position.y);
+        })
+    })
+    return tapData;
+}
+
 export function predictWord(x, y) {
     if (initFlag) {
         initFlag = false;

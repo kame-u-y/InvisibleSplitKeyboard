@@ -22,16 +22,20 @@ function addButtonEvent() {
         );
 
         if (tapData) {
-            input.displayTapData(tapData.data);
             wp.createSpacialModel(tapData.data)
+            input.displayTapData(tapData.data);
         } else {
             if (user==="") {
                 console.log("user is not defined");
                 return;
             }
             hr.getTapData(user, keyboardType, spaceVisual, (data) => {
-                input.displayTapData(data);
+                // input.displayTapData(data);
                 wp.createSpacialModel(data)
+                console.log(data)
+                data = wp.removeSMOutlier(data);
+                console.log(data);
+                input.displayTapData(data);
                 tapDatas.push({
                     user: user,
                     keyboard: keyboardType,
