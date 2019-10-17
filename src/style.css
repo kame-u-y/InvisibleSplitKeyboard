@@ -192,7 +192,7 @@ body {
 .dot {
   position: absolute;
   background-color: rgb(255, 0, 0);
-  width: 5px;
-  height: 5px;
+  width: 1px;
+  height: 1px;
   margin: 0;
 }
