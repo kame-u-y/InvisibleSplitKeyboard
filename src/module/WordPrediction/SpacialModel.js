@@ -1,17 +1,3 @@
-/*
-{
-    letter: {
-        x: {
-            average: number,
-            standardDeviation: number
-        },
-        y: {
-            average: number,
-            standardDeviation: number
-        }        
-    }
-}
-*/
 let gaussianData = {};
 
 function calcAverage(arr) {
@@ -62,11 +48,10 @@ function calcGaussian(letterData) {
     };
 }
 
-export function displaySpacialModel(tapData) {
+export function createSpacialModel(tapData) {
     Object.keys(tapData).filter((letter) => {
         gaussianData[letter] = calcGaussian(tapData[letter]);
     })
-    // console.log(gaussianData);
 }
 
 

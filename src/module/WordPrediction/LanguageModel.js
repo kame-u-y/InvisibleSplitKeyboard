@@ -1,4 +1,4 @@
-import {freqJson} from '../../data/wordFreqJson.js';
+import {freqJson} from './wordFreqJson.js';
 
 export function getLMProbability(str) {
     let regexp = new RegExp(`^${str}`)

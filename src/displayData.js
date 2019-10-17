@@ -1,12 +1,9 @@
-import {addVisualEvent} from "./module/RadioEvent.js";
-import {initFirebase, getTapData} from "./module/MyHttpRequest.js";
-import {displayTapData} from "./module/InputFunction.js";
-import {displaySpacialModel, getSMProbability} from "./module/SpacialModel.js";
-import {getLMProbability} from "./module/LanguageModel.js";
+import * as re from "./module/RadioEvent/RadioEvent.js";
+import * as hr from "./module/MyHttpRequest/MyHttpRequest.js";
+import * as input from "./module/InputFunction/InputFunction.js";
+import * as wp from "./module/WordPrediction/WordPrediction.js";
 
 let tapDatas = [];
-let letterPs = [];
-let initFlag = false;
 
 function init() {
     document.getElementById("dot-container").innerHTML = '';
@@ -20,21 +17,21 @@ function addButtonEvent() {
         const spaceVisual = $("#space-visible").prop('checked') | keyboardType==="visible" 
             ? "visible" 
             : "invisible";
-        const tapData = tapDatas.find((v) => {
-            return v.user===user && v.keyboard===keyboardType && v.space===spaceVisual;
-        });
+        const tapData = tapDatas.find((v) =>
+            v.user===user && v.keyboard===keyboardType && v.space===spaceVisual
+        );
 
         if (tapData) {
-            displayTapData(tapData.data);
-            displaySpacialModel(tapData.data)
+            input.displayTapData(tapData.data);
+            wp.createSpacialModel(tapData.data)
         } else {
             if (user==="") {
                 console.log("user is not defined");
                 return;
             }
-            getTapData(user, keyboardType, spaceVisual, (data) => {
-                displayTapData(data);
-                displaySpacialModel(data)
+            hr.getTapData(user, keyboardType, spaceVisual, (data) => {
+                input.displayTapData(data);
+                wp.createSpacialModel(data)
                 tapDatas.push({
                     user: user,
                     keyboard: keyboardType,
@@ -55,52 +52,10 @@ function addButtonEvent() {
     })
 }
 
-
 function addTargetTapEvent() {
     const target = document.getElementById("target")
     const targetEvent = (x, y) => {
-        if (initFlag) {
-            initFlag = false;
-            return;
-        }
-        // タップ位置をもとにSMからキー確率取得
-        let probabilities = getSMProbability(x, y);
-
-        if (letterPs.length===0) {
-            letterPs = probabilities;
-            document.getElementById("predicted-letter").innerText = probabilities.slice(0, 5).map(v=>v.letter).join(" ");
-            return;
-        }
-
-        // 文字列の結合・確率を組み合わせで掛け合わせ
-        let newLetterPs = [];
-        letterPs.map((v0) => {
-            if (v0.letter===" ") return;
-            let arr = probabilities.map((v1) => {
-                return {
-                    letter: v0.letter + v1.letter,
-                    probability: v0.probability * v1.probability,
-                }
-            })
-            newLetterPs = newLetterPs.concat(arr);
-        })
-        letterPs = newLetterPs
-            .sort((a, b) => b.probability - a.probability)
-            .slice(0, 1000);
-        
-        // 予測された文字列のfreqをLMから取得・SM*LM
-        let pLM = [];
-        letterPs.map((v) => {
-            getLMProbability(v.letter).map((w) => {
-                pLM.push({
-                    letter: w.word,
-                    probability: v.probability * Number(w.ratio),
-                });
-            })
-        })
-        pLM.sort((a, b) => b.probability - a.probability);
-        
-        document.getElementById("predicted-letter").innerText = pLM.slice(0, 5).map(v=>v.letter).join(" ");
+        wp.predictWord(x, y);
     }
 
     target.addEventListener("touchend", (ev) => {
@@ -116,9 +71,7 @@ function addTargetTapEvent() {
 function addEnterTapEvent() {
     const enter = document.getElementsByClassName("enter")[0];
     const enterEvent = () => {
-        letterPs = [];
-        document.getElementById("predicted-letter").innerText = "";
-        initFlag = true;
+        wp.initProbability();
     }
     enter.addEventListener("touchend", (ev) => {
         ev.preventDefault();
@@ -130,8 +83,8 @@ function addEnterTapEvent() {
 }
 
 init();
-initFirebase();
-addVisualEvent();
+hr.initFirebase();
+re.addVisualEvent();
 addButtonEvent();
 addTargetTapEvent();
 addEnterTapEvent();

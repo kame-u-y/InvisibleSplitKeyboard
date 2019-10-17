@@ -1,7 +1,7 @@
-import {inputLetter, inputPosition, displayTapData} from "./module/InputFunction.js";
-import {addVisualEvent} from "./module/RadioEvent.js";
-import {getRandomWords} from "./module/GetRandomWords.js";
-import {initFirebase, postTapData} from "./module/MyHttpRequest.js";
+import {inputLetter, inputPosition, displayTapData} from "./module/InputFunction/InputFunction.js";
+import {addVisualEvent} from "./module/RadioEvent/RadioEvent.js";
+import {getRandomWords} from "./module/GetRandomWords/GetRandomWords.js";
+import {initFirebase, postTapData} from "./module/MyHttpRequest/MyHttpRequest.js";
 
 let tapData = {};
 let givenText = "";
