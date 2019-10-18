@@ -112,6 +112,7 @@ function addEnterTapEvent() {
   const enter = document.getElementsByClassName("enter")[0];
   const enterEvent = () => {
     wp.initProbability();
+    init();
   };
   enter.addEventListener("touchend", ev => {
     ev.preventDefault();
