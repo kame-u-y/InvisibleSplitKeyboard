@@ -18,6 +18,7 @@ function init() {
 }
 
 function addTapInfo(letter, x, y) {
+    if (letter===" " || letter==="-" || letter==="?" || letter==="�") return;
     if (!tapData[letter]) {
         tapData[letter] = [];
     }

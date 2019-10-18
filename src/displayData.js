@@ -35,9 +35,9 @@ function addButtonEvent() {
                 // input.displayTapData(data);
                 wp.createSpacialModel(data)
                 console.log(data)
-                input.displayTapData(data);
                 data = wp.removeSMOutlier(data);
                 wp.createSpacialModel(data)
+                input.displayTapData(data);
                 wp.drawCircle();
                 tapDatas.push({
                     user: user,

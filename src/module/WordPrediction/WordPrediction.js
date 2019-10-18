@@ -38,14 +38,14 @@ export function predictWord(x, y) {
     if (getLetterPs().length===0) {
         letterPs = probabilities;
         document.getElementById("predicted-letter").innerText
-            = probabilities.slice(0, 5).map(v=>v.letter).join(" ");
+            = probabilities.slice(0, 2).map(v=>v.letter).join(" ");
         return;
     }
 
     // 文字列の結合・確率を掛け合わせ
     let newLetterPs = [];
     letterPs.map((v0) => {
-        if (v0.letter===" ") return;
+        // if (v0.letter===" ") return;
         let arr = probabilities.map((v1) => {
             return {
                 letter: v0.letter + v1.letter,
