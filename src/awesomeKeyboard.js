@@ -1,18 +1,18 @@
 import * as re from "./module/RadioEvent/RadioEvent.js";
 import * as hr from "./module/MyHttpRequest/MyHttpRequest.js";
-import * as input from "./module/InputFunction/InputFunction.js";
+// import * as input from "./module/InputFunction/InputFunction.js";
 import * as wp from "./module/WordPrediction/WordPrediction.js";
+import { getRandomWords } from "./module/GetRandomWords/GetRandomWords.js";
 
 let tapDatas = [];
+let isSpace = false;
 
 function init() {
-  document.getElementById("dot-container").innerHTML = "";
-  document.getElementById("circle-container").innerHTML = "";
+  document.getElementById("given-text").innerText = getRandomWords().join(" ");
 }
 
 function addButtonEvent() {
   const buttonEvent = () => {
-    init();
     const user = $("#user-name").val();
     const keyboardType = $(
       "#visual-mode input:radio[name=visual-mode]:checked"
@@ -30,8 +30,6 @@ function addButtonEvent() {
 
     if (tapData) {
       wp.createSpacialModel(tapData.data);
-      input.displayTapData(tapData.data);
-      wp.drawCircle();
     } else {
       if (user === "") {
         console.log("user is not defined");
@@ -41,14 +39,15 @@ function addButtonEvent() {
         wp.createSpacialModel(data);
         data = wp.removeSMOutlier(data);
         wp.createSpacialModel(data);
-        input.displayTapData(data);
-        wp.drawCircle();
         tapDatas.push({
           user: user,
           keyboard: keyboardType,
           space: spaceVisual,
           data: data
         });
+        document.getElementById(
+          "is-ok"
+        ).innerText = `ok, ${keyboardType} ${spaceVisual}`;
       });
     }
   };
@@ -66,6 +65,10 @@ function addButtonEvent() {
 function addTargetTapEvent() {
   const target = document.getElementById("target");
   const targetEvent = (x, y) => {
+    if (isSpace) {
+      isSpace = false;
+      return;
+    }
     wp.predictWord(x, y);
   };
 
@@ -80,6 +83,28 @@ function addTargetTapEvent() {
 
   target.addEventListener("click", ev => {
     targetEvent(ev.pageX, ev.pageY);
+  });
+}
+
+function addSpaceTapEvent() {
+  const space = [
+    document.getElementsByClassName("right-space")[0],
+    document.getElementsByClassName("left-space")[0]
+  ];
+  const spaceEvent = () => {
+    wp.nextProbability();
+    isSpace = true;
+  };
+  Array.from(space).filter(v => {
+    v.addEventListener("touchend", ev => {
+      ev.preventDefault();
+      spaceEvent();
+    });
+  });
+  Array.from(space).filter(v => {
+    v.addEventListener("click", ev => {
+      spaceEvent();
+    });
   });
 }
 
@@ -102,4 +127,5 @@ hr.initFirebase();
 re.addVisualEvent();
 addButtonEvent();
 addTargetTapEvent();
+addSpaceTapEvent();
 addEnterTapEvent();

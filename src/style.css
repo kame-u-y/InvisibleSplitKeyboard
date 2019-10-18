@@ -45,6 +45,10 @@ body {
   border-right: solid 3px #ddd;
 }
 
+#predicted-letter {
+  border-right: solid 3px #ddd;
+}
+
 #target {
   position: fixed;
   width: 100%;

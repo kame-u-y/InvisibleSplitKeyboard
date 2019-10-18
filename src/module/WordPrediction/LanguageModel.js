@@ -11,7 +11,7 @@ export function getLMProbability(str) {
     res = {
       value: 0.0000000000000000000000000001 * (1 / Number(freqJson.total)),
       isKnown: false,
-    } 
+    }
   }
   return res;
 }

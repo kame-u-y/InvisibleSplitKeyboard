@@ -1,8 +1,9 @@
-import * as sm from './SpacialModel.js';
-import * as lm from './LanguageModel.js';
+import * as sm from "./SpacialModel.js";
+import * as lm from "./LanguageModel.js";
 
 let letterPs = [];
 let initFlag = false;
+let typedLetters = "";
 
 export function getLetterPs() {
   return letterPs;
@@ -10,9 +11,17 @@ export function getLetterPs() {
 
 export function initProbability() {
   letterPs = [];
-  document.getElementById('predicted-letter').innerText = '';
-  document.getElementById('predicted-word').innerText = '';
+  document.getElementById("predicted-letter").innerText = "";
+  document.getElementById("predicted-word").innerText = "";
+  typedLetters = "";
   initFlag = true;
+}
+
+export function nextProbability() {
+  letterPs = [];
+  document.getElementById("predicted-word").innerText = "";
+  document.getElementById("predicted-letter").innerText += " ";
+  typedLetters = document.getElementById("predicted-letter").innerText;
 }
 
 export function createSpacialModel(tapData) {
@@ -36,12 +45,13 @@ export function predictWord(x, y) {
   // タップ位置をもとにSMからキー確率取得
   let probabilities = sm.getSMProbability(x, y);
 
-  document.getElementById('predicted-letter').innerText = probabilities
-    .slice(0, 5)
-    .map(v => v.letter)
-    .join(' ');
-
   if (getLetterPs().length === 0) {
+    document.getElementById("predicted-letter").innerText =
+      typedLetters + probabilities[0].letter;
+    document.getElementById("predicted-word").innerText = probabilities
+      .slice(0, 5)
+      .map(v => v.letter)
+      .join(" ");
     letterPs = probabilities.slice(0, 5);
     return;
   }
@@ -61,40 +71,34 @@ export function predictWord(x, y) {
     .sort((a, b) => b.probability - a.probability)
     .slice(0, 1000);
 
-  document.getElementById('predicted-word').innerText = letterPs
-    .slice(0, 10)
-    .map(v => v.letter)
-    .join(' ');
+  document.getElementById("predicted-letter").innerText =
+    typedLetters + letterPs[0].letter;
 
   // 予測された文字列のfreqをLMから取得・SM*LM
   let pLM = [];
   let unknownPLM = [];
   letterPs.map(v => {
-    // pLM.push({
-    //   letter: v.letter,
-    //   probability: v.probability * lm.getLMProbability(v.letter)
-    // });
     const prob = lm.getLMProbability(v.letter);
     if (prob.isKnown) {
       pLM.push({
         letter: v.letter,
-        probability: prob.value,
-      })
+        probability: prob.value
+      });
     } else {
       unknownPLM.push({
         letter: v.letter,
-        probability: prob.value,
-      })
+        probability: prob.value
+      });
     }
   });
   pLM.sort((a, b) => b.probability - a.probability);
   unknownPLM.sort((a, b) => b.probability - a.probability);
   pLM = pLM.concat(unknownPLM);
 
-  document.getElementById('predicted-letter').innerText = pLM
+  document.getElementById("predicted-word").innerText = pLM
     .slice(0, 5)
     .map(v => v.letter)
-    .join(' ');
+    .join(" ");
 }
 
 export function drawCircle() {
