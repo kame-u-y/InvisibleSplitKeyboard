@@ -68,13 +68,28 @@ export function predictWord(x, y) {
 
   // 予測された文字列のfreqをLMから取得・SM*LM
   let pLM = [];
+  let unknownPLM = [];
   letterPs.map(v => {
-    pLM.push({
-      letter: v.letter,
-      probability: v.probability * lm.getLMProbability(v.letter)
-    });
+    // pLM.push({
+    //   letter: v.letter,
+    //   probability: v.probability * lm.getLMProbability(v.letter)
+    // });
+    const prob = lm.getLMProbability(v.letter);
+    if (prob.isKnown) {
+      pLM.push({
+        letter: v.letter,
+        probability: prob.value,
+      })
+    } else {
+      unknownPLM.push({
+        letter: v.letter,
+        probability: prob.value,
+      })
+    }
   });
   pLM.sort((a, b) => b.probability - a.probability);
+  unknownPLM.sort((a, b) => b.probability - a.probability);
+  pLM = pLM.concat(unknownPLM);
 
   document.getElementById('predicted-letter').innerText = pLM
     .slice(0, 5)
