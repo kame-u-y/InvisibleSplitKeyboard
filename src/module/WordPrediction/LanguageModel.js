@@ -1,7 +1,7 @@
 import { freqJson } from './wordFreqJson.js';
 
 export function getLMProbability(str) {
-  const rambda = 0.9999999995;
+  const rambda = 0.9999999999999999999999999999;
   let res = freqJson[str[0]].find(v => v.word === str);
   if (res) {
     res = Number(res.ratio) * rambda;
@@ -10,7 +10,7 @@ export function getLMProbability(str) {
     console.log(1 - rambda);
     res = {
       word: str,
-      ratio: (1 - rambda) * (1 / Number(freqJson.total))
+      ratio: 0.0000000000000000000000000001 * (1 / Number(freqJson.total))
     };
   }
   return res;
