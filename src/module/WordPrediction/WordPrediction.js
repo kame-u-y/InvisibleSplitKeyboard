@@ -11,6 +11,7 @@ export function getLetterPs() {
 export function initProbability() {
     letterPs = [];
     document.getElementById("predicted-letter").innerText = "";
+    document.getElementById("predicted-word").innerText = "";
     initFlag = true;
 }
 
@@ -34,19 +35,23 @@ export function predictWord(x, y) {
     }
     // タップ位置をもとにSMからキー確率取得
     let probabilities = sm.getSMProbability(x, y);
+    console.log(probabilities);
 
     if (getLetterPs().length===0) {
-        letterPs = probabilities;
         document.getElementById("predicted-letter").innerText
-            = probabilities.slice(0, 2).map(v=>v.letter).join(" ");
+            = probabilities.slice(0, 5).map(v=>v.letter).join(" ");
+        letterPs = probabilities.slice(0, 5);
         return;
     }
+    
+    document.getElementById("predicted-letter").innerText
+        = probabilities.slice(0, 5).map(v=>v.letter).join(" ");
 
     // 文字列の結合・確率を掛け合わせ
     let newLetterPs = [];
     letterPs.map((v0) => {
         // if (v0.letter===" ") return;
-        let arr = probabilities.map((v1) => {
+        let arr = probabilities.slice(0, 5).map((v1) => {
             return {
                 letter: v0.letter + v1.letter,
                 probability: v0.probability * v1.probability,
@@ -56,7 +61,13 @@ export function predictWord(x, y) {
     })
     letterPs = newLetterPs
         .sort((a, b) => b.probability - a.probability)
-        .slice(0, 1000);
+        // .slice(0, 1000);
+    console.log(letterPs);
+
+    
+    document.getElementById("predicted-word").innerText
+        = letterPs.slice(0, 10).map(v=>v.letter).join(" ");
+    return;
 
     // 予測された文字列のfreqをLMから取得・SM*LM
     let pLM = [];
