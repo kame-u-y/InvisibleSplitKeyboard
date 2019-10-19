@@ -62,6 +62,23 @@ function addButtonEvent() {
   });
 }
 
+function addPredictedButtonEvent() {
+  const buttons = document.getElementsByClassName("predicted-button");
+  const predictEvent = value => {
+    wp.pushedPredictedButton(value);
+  };
+
+  Array.from(buttons).filter(v => {
+    v.addEventListener("touchend", ev => {
+      preventDefault();
+      predictEvent(v.innerText);
+    });
+    v.addEventListener("click", ev => {
+      predictEvent(v.innerText);
+    });
+  });
+}
+
 function addTargetTapEvent() {
   const target = document.getElementById("target");
   const targetEvent = (x, y) => {
@@ -128,5 +145,6 @@ hr.initFirebase();
 re.addVisualEvent();
 addButtonEvent();
 addTargetTapEvent();
+addPredictedButtonEvent();
 addSpaceTapEvent();
 addEnterTapEvent();

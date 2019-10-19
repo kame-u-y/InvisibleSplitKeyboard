@@ -49,6 +49,18 @@ body {
   border-right: solid 3px #ddd;
 }
 
+#predicted-button-list {
+  font-size: 0;
+}
+
+.predicted-button {
+  background-color: #ddd;
+  display: inline-block;
+  font-size: 15px;
+  margin-right: 10px;
+  padding: 5px 10px;
+}
+
 #target {
   position: fixed;
   width: 100%;

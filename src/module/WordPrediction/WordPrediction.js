@@ -12,14 +12,18 @@ export function getLetterPs() {
 export function initProbability() {
   letterPs = [];
   document.getElementById("predicted-letter").innerText = "";
-  document.getElementById("predicted-word").innerText = "";
+  Array.from(document.getElementsByClassName("predicted-button")).filter(v => {
+    v.innerText = "";
+  });
   typedLetters = "";
   initFlag = true;
 }
 
 export function nextProbability() {
   letterPs = [];
-  document.getElementById("predicted-word").innerText = "";
+  Array.from(document.getElementsByClassName("predicted-button")).filter(v => {
+    v.innerText = "";
+  });
   document.getElementById("predicted-letter").innerText += " ";
   typedLetters = document.getElementById("predicted-letter").innerText;
 }
@@ -37,6 +41,10 @@ export function removeSMOutlier(tapData) {
   return tapData;
 }
 
+export function drawCircle() {
+  sm.drawCircle();
+}
+
 export function predictWord(x, y) {
   if (initFlag) {
     initFlag = false;
@@ -48,10 +56,10 @@ export function predictWord(x, y) {
   if (getLetterPs().length === 0) {
     document.getElementById("predicted-letter").innerText =
       typedLetters + probabilities[0].letter;
-    document.getElementById("predicted-word").innerText = probabilities
-      .slice(0, 5)
-      .map(v => v.letter)
-      .join(" ");
+    let predictedButton = document.getElementsByClassName("predicted-button");
+    for (let i = 0; i < 5; i++) {
+      predictedButton[i].innerText = probabilities[i].letter;
+    }
     letterPs = probabilities.slice(0, 5);
     return;
   }
@@ -95,12 +103,12 @@ export function predictWord(x, y) {
   unknownPLM.sort((a, b) => b.probability - a.probability);
   pLM = pLM.concat(unknownPLM);
 
-  document.getElementById("predicted-word").innerText = pLM
-    .slice(0, 5)
-    .map(v => v.letter)
-    .join(" ");
+  let predictedButton = document.getElementsByClassName("predicted-button");
+  for (let i = 0; i < 5; i++) {
+    predictedButton[i].innerText = pLM[i].letter;
+  }
 }
 
-export function drawCircle() {
-  sm.drawCircle();
+export function pushedPredictedButton(value) {
+  document.getElementById("predicted-letter").innerText = typedLetters + value;
 }
