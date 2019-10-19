@@ -11,6 +11,10 @@ function init() {
   document.getElementById("given-text").innerText = getRandomWords().join(" ");
 }
 
+function restrictScroll() {
+  $("body").oss("overflow", "hidden");
+}
+
 function addButtonEvent() {
   const buttonEvent = () => {
     const user = $("#user-name").val();
@@ -141,6 +145,7 @@ function addEnterTapEvent() {
 }
 
 init();
+restrictScroll();
 hr.initFirebase();
 re.addVisualEvent();
 addButtonEvent();
