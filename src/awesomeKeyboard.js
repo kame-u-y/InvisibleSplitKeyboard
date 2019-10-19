@@ -1,14 +1,13 @@
 import * as re from "./module/RadioEvent/RadioEvent.js";
 import * as hr from "./module/MyHttpRequest/MyHttpRequest.js";
-// import * as input from "./module/InputFunction/InputFunction.js";
 import * as wp from "./module/WordPrediction/WordPrediction.js";
-import { getRandomWords } from "./module/GetRandomWords/GetRandomWords.js";
+import * as rp from "./module/GetRandomWords/GetRandomWords.js";
 
 let tapDatas = [];
 let isSpace = false;
 
 function init() {
-  document.getElementById("given-text").innerText = getRandomWords().join(" ");
+  document.getElementById("given-text").innerText = rp.getRandomPhrase();
 }
 
 function restrictScroll() {

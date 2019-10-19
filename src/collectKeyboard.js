@@ -4,7 +4,10 @@ import {
   displayTapData
 } from "./module/InputFunction/InputFunction.js";
 import { addVisualEvent } from "./module/RadioEvent/RadioEvent.js";
-import { getRandomWords } from "./module/GetRandomWords/GetRandomWords.js";
+import {
+  getRandomWords,
+  getRandomPhrase
+} from "./module/GetRandomWords/GetRandomWords.js";
 import {
   initFirebase,
   postTapData
@@ -16,7 +19,7 @@ let nextLetterNum = 0;
 let initFlag = false;
 
 function init() {
-  document.getElementById("given-text").innerText = getRandomWords().join(" ");
+  document.getElementById("given-text").innerText = getRandomPhrase();
   givenText = document.getElementById("given-text").innerText;
   tapData = {};
   nextLetterNum = 0;
