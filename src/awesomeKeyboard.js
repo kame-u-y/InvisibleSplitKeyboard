@@ -12,7 +12,16 @@ function init() {
 }
 
 function restrictScroll() {
-  $("body").oss("overflow", "hidden");
+  $("body").css("overflow", "hidden");
+  document.addEventListener(
+    "touchmove",
+    ev => {
+      ev.preventDefault();
+    },
+    {
+      passive: false
+    }
+  );
 }
 
 function addButtonEvent() {
