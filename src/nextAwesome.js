@@ -190,6 +190,7 @@ function addScrollEvent() {
     ];
     wp.pushedPredictedButton(selected.innerText);
     wp.nextProbability();
+    isSpace = false;
     selected.style.backgroundColor = "#ddd";
     selectStartX = -1;
   };
