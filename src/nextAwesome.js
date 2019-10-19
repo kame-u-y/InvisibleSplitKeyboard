@@ -177,8 +177,7 @@ function addScrollEvent() {
     let [dx, w] = dxwProcess(x, selectStartX);
     const buttons = document.getElementsByClassName("predicted-button");
     for (let i = 0; i < buttons.length; i++) {
-      if (i === Math.ceil(dx / w) - 1)
-        buttons[i].style.backgroundColor = "#ccc";
+      if (i === Math.ceil(dx / w)) buttons[i].style.backgroundColor = "#ccc";
       else buttons[i].style.backgroundColor = "#ddd";
     }
   };
@@ -187,7 +186,7 @@ function addScrollEvent() {
     if (x - selectStartX < 10) return;
     let [dx, w] = dxwProcess(x, selectStartX);
     const selected = document.getElementsByClassName("predicted-button")[
-      Math.ceil(dx / w) - 1
+      Math.ceil(dx / w)
     ];
     wp.pushedPredictedButton(selected.innerText);
     wp.nextProbability();
