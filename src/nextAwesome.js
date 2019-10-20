@@ -127,7 +127,7 @@ function addTargetTapEvent() {
       console.log('move y');
       Array.from(document.getElementsByClassName('predicted-button')).filter(
         v => {
-          v.style.backgroundColor = '#ddd';
+          v.style.backgroundColor = '#eee';
         }
       );
       selectFlag = false;
@@ -149,6 +149,11 @@ function addTargetTapEvent() {
     if (!isStarted(selectStartX, selectStartY)) return;
 
     if (y - selectStartY < -150) {
+      Array.from(document.getElementsByClassName('predicted-button')).filter(
+        v => {
+          v.style.backgroundColor = '#ddd';
+        }
+      );
     } else {
       if (!selectFlag) {
         initStartXY();
