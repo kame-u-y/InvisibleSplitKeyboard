@@ -6,9 +6,6 @@ import * as rp from "./module/GetRandomWords/GetRandomWords.js";
 let tapDatas = [];
 let isSpace = false;
 
-let selectFlag = false;
-let selectStartX, selectStartY;
-
 function init() {
   document.getElementById("given-text").innerText = rp.getRandomPhrase();
 }
@@ -96,7 +93,82 @@ function addPredictedButtonEvent() {
 }
 
 function addTargetTapEvent() {
+  let selectFlag = false;
+  let selectStartX = -1;
+  let selectStartY = -1;
   const target = document.getElementById("target");
+  const initStartXY = () => {
+    selectStartX = -1;
+    selectStartY = -1;
+  };
+  const isStarted = () => selectStartX !== -1 && selectStartY !== -1;
+
+  const startEvent = (x, y) => {
+    console.log("start");
+    if (isStarted) return;
+    console.log(x);
+    selectStartX = x;
+    selectStartY = y;
+    console.log("start excecuted");
+  };
+
+  const dxwProcess = (x, selectStartX) => {
+    let dx = x - selectStartX;
+    let w = 30;
+    if (dx < 0) dx = 0;
+    if (dx > w * 5) dx = w * 5;
+    return [dx, w];
+  };
+
+  const moveEvent = (x, y) => {
+    console.log("move");
+    if (!isStarted) return;
+
+    console.log(y - selectStartY);
+    if (y - selectStartY < -300) {
+      console.log("move y");
+      Array.from(document.getElementsByClassName("predicted-button")).filter(
+        v => {
+          v.style.backgroundColor = "#ddd";
+        }
+      );
+      selectFlag = false;
+    } else {
+      if (x - selectStartX < 10) return;
+      console.log("move x");
+      selectFlag = true;
+      let [dx, w] = dxwProcess(x, selectStartX);
+      const buttons = document.getElementsByClassName("predicted-button");
+      for (let i = 0; i < buttons.length; i++) {
+        if (i === Math.floor(dx / w)) buttons[i].style.backgroundColor = "#ccc";
+        else buttons[i].style.backgroundColor = "#ddd";
+      }
+    }
+    console.log("move excecuted");
+  };
+  const endEvent = (x, y) => {
+    console.log("end");
+    if (!isStarted) return;
+
+    if (y - selectStartY < -300) {
+    } else {
+      if (!selectFlag) {
+        initStartXY;
+        return;
+      }
+      let [dx, w] = dxwProcess(x, selectStartX);
+      const selected = document.getElementsByClassName("predicted-button")[
+        Math.floor(dx / w)
+      ];
+      wp.pushedPredictedButton(selected.innerText);
+      selected.style.backgroundColor = "#ddd";
+    }
+    wp.nextProbability();
+    isSpace = true;
+    initStartXY();
+    console.log("end excecuted");
+  };
+
   const targetEvent = (x, y) => {
     if (isSpace || selectFlag) {
       isSpace = false;
@@ -106,18 +178,60 @@ function addTargetTapEvent() {
     wp.predictWord(x, y);
   };
 
+  // touchstart, mousedown
+  target.addEventListener(
+    "touchstart",
+    ev => {
+      ev.preventDefault();
+      startEvent(ev.changedTouches[0].pageX, ev.changedTouches[0].pageY);
+    },
+    { passive: false }
+  );
+  target.addEventListener("mousedown", ev => {
+    startEvent(ev.pageX, ev.pageY);
+  });
+
+  // touchmove, mousemove
+  target.addEventListener(
+    "touchmove",
+    ev => {
+      ev.preventDefault();
+      moveEvent(ev.changedTouches[0].pageX, ev.changedTouches[0].pageY);
+    },
+    { passive: false }
+  );
+  target.addEventListener("mousemove", ev => {
+    moveEvent(ev.pageX, ev.pageY);
+  });
+
+  //touchend, mouseup, click
   target.addEventListener(
     "touchend",
     ev => {
       ev.preventDefault();
+      endEvent(ev.changedTouches[0].pageX, ev.changedTouches[0].pageY);
       targetEvent(ev.changedTouches[0].pageX, ev.changedTouches[0].pageY);
     },
     { passive: false }
   );
-
+  target.addEventListener("mouseup", ev => {
+    endEvent(ev.pageX, ev.pageY);
+  });
   target.addEventListener("click", ev => {
     targetEvent(ev.pageX, ev.pageY);
   });
+
+  // target.addEventListener(
+  //   "touchend",
+  //   ev => {
+  //     ev.preventDefault();
+  //     endEvent(ev.changedTouches[0].pageX);
+  //   },
+  //   { passive: false }
+  // );
+  // target.addEventListener("mouseup", ev => {
+  //   endEvent(ev.pageX);
+  // });
 }
 
 function addSpaceTapEvent() {
@@ -159,75 +273,6 @@ function addEnterTapEvent() {
 
 function addScrollEvent() {
   const target = document.getElementById("target");
-  const startEvent = x => {
-    console.log(x);
-    selectStartX = x;
-  };
-  const dxwProcess = (x, selectStartX) => {
-    let dx = x - selectStartX;
-    let w = 30;
-    if (dx < w) dx = w;
-    if (dx > w * 5) dx = w * 5;
-    return [dx, w];
-  };
-  const moveEvent = x => {
-    if (selectStartX === -1) return;
-    if (x - selectStartX < 10) return;
-    selectFlag = true;
-    let [dx, w] = dxwProcess(x, selectStartX);
-    const buttons = document.getElementsByClassName("predicted-button");
-    for (let i = 0; i < buttons.length; i++) {
-      if (i === Math.ceil(dx / w)) buttons[i].style.backgroundColor = "#ccc";
-      else buttons[i].style.backgroundColor = "#ddd";
-    }
-  };
-  const endEvent = x => {
-    if (selectStartX === -1) return;
-    if (x - selectStartX < 10) return;
-    let [dx, w] = dxwProcess(x, selectStartX);
-    const selected = document.getElementsByClassName("predicted-button")[
-      Math.ceil(dx / w)
-    ];
-    wp.pushedPredictedButton(selected.innerText);
-    wp.nextProbability();
-    isSpace = false;
-    selected.style.backgroundColor = "#ddd";
-    selectStartX = -1;
-  };
-
-  target.addEventListener(
-    "touchstart",
-    ev => {
-      ev.preventDefault();
-      startEvent(ev.changedTouches[0].pageX);
-    },
-    { passive: false }
-  );
-  target.addEventListener("mousedown", ev => {
-    scrollEvent(ev.pageX, ev.pageY);
-  });
-  target.addEventListener(
-    "touchmove",
-    ev => {
-      ev.preventDefault();
-      moveEvent(ev.changedTouches[0].pageX);
-    },
-    { passive: false }
-  );
-  target.addEventListener("mousemove", ev => {
-    moveEvent(ev.pageX);
-  });
-  target.addEventListener(
-    "touchend",
-    ev => {
-      ev.preventDefault();
-      endEvent(ev.changedTouches[0].pageX);
-    },
-    { passive: false }
-  );
-  target.addEventListener("mouseup", ev => {
-    endEvent(ev.pageX);
-  });
 }
 
 init();
@@ -239,4 +284,4 @@ addTargetTapEvent();
 addPredictedButtonEvent();
 addSpaceTapEvent();
 addEnterTapEvent();
-addScrollEvent();
+// addScrollEvent();
