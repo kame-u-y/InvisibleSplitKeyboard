@@ -1,10 +1,13 @@
 export function inputLetter(letter) {
-  if (letter === "BS") {
-    const t = document.getElementById("input-text");
-    t.innerText = t.innerText.slice(0, -1);
-  } else {
-    document.getElementById("input-text").innerText += letter;
-  }
+  document.getElementById("input-text").innerText += letter;
+}
+
+export function deleteLetter(tapData, nextLetterNum) {
+  const t = document.getElementById("input-text");
+  t.innerText = t.innerText.slice(0, -1);
+  delete tapData[nextLetterNum - 1];
+  nextLetterNum = nextLetterNum === 0 ? 0 : nextLetterNum - 1;
+  return [tapData, nextLetterNum];
 }
 
 export function inputPosition(x, y) {

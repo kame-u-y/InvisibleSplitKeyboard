@@ -7,6 +7,7 @@ let givenText = "";
 let goNextFlag = false;
 let nextLetterNum = 0;
 let initFlag = false;
+let isBS = false;
 
 function init() {
   document.getElementById("given-text").innerText = rp.getRandomPhrase();
@@ -40,6 +41,10 @@ function addTargetTapEvent() {
     }
     if (nextLetterNum >= givenText.length) {
       console.log("task ended");
+      return;
+    }
+    if (isBS) {
+      isBS = false;
       return;
     }
     input.inputPosition(x, y);
@@ -77,10 +82,9 @@ function addKeyTapEvent() {
       return;
     }
     if (elem.dataset.letter === "BS") {
-      delete tapData[nextLetterNum - 1];
-      let elem = document.getElementById("input-text");
-      elem.innerText = elem.innerText.slice(0, -1);
-      nextLetterNum = nextLetterNum === 0 ? 0 : nextLetterNum - 1;
+      [tapData, nextLetterNum] = input.deleteLetter(tapData, nextLetterNum);
+      isBS = true;
+      return;
     }
 
     if (nextLetterNum >= givenText.length) return;
