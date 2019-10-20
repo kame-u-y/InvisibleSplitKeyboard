@@ -114,8 +114,8 @@ function addTargetTapEvent() {
   const dxwProcess = (x, selectStartX) => {
     let dx = x - selectStartX;
     let w = 30;
-    if (dx < 0) dx = 0;
-    if (dx > w * 5) dx = w * 5;
+    if (dx < 30) dx = 30;
+    if (dx > w * 6 - 0.1) dx = w * 6 - 0.1;
     return [dx, w];
   };
 
@@ -123,7 +123,7 @@ function addTargetTapEvent() {
     console.log('move');
     if (!isStarted(selectStartX, selectStartY)) return;
 
-    if (y - selectStartY < -150) {
+    if (y - selectStartY < -100) {
       console.log('move y');
       Array.from(document.getElementsByClassName('predicted-button')).filter(
         v => {
@@ -138,7 +138,8 @@ function addTargetTapEvent() {
       let [dx, w] = dxwProcess(x, selectStartX);
       const buttons = document.getElementsByClassName('predicted-button');
       for (let i = 0; i < buttons.length; i++) {
-        if (i === Math.floor(dx / w)) buttons[i].style.backgroundColor = '#ccc';
+        if (i === Math.floor(dx / w) - 1)
+          buttons[i].style.backgroundColor = '#ccc';
         else buttons[i].style.backgroundColor = '#ddd';
       }
     }
@@ -148,7 +149,7 @@ function addTargetTapEvent() {
     console.log('end');
     if (!isStarted(selectStartX, selectStartY)) return;
 
-    if (y - selectStartY < -150) {
+    if (y - selectStartY < -100) {
       Array.from(document.getElementsByClassName('predicted-button')).filter(
         v => {
           v.style.backgroundColor = '#ddd';
@@ -161,7 +162,7 @@ function addTargetTapEvent() {
       }
       let [dx, w] = dxwProcess(x, selectStartX);
       const selected = document.getElementsByClassName('predicted-button')[
-        Math.floor(dx / w)
+        Math.floor(dx / w) - 1
       ];
       wp.pushedPredictedButton(selected.innerText);
       selected.style.backgroundColor = '#ddd';
