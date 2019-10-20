@@ -76,6 +76,13 @@ function addKeyTapEvent() {
       initFlag = true;
       return;
     }
+    if (elem.dataset.letter === "BS") {
+      delete tapData[nextLetterNum - 1];
+      let elem = document.getElementById("input-text");
+      elem.innerText = elem.innerText.slice(0, -1);
+      nextLetterNum = nextLetterNum === 0 ? 0 : nextLetterNum - 1;
+    }
+
     if (nextLetterNum >= givenText.length) return;
     if (elem.dataset.letter !== givenText.charAt(nextLetterNum)) return;
     input.inputLetter(elem.dataset.letter);
