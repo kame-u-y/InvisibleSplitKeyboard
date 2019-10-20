@@ -7,6 +7,7 @@ let tapData = {};
 let givenText = "";
 let nextLetterNum = 0;
 let initFlag = false;
+let isBS = false;
 
 function init() {
   document.getElementById("given-text").innerText = rp.getRandomPhrase();
@@ -42,6 +43,10 @@ function addTargetTapEvent() {
     }
     if (nextLetterNum >= givenText.length) {
       console.log("task ended");
+      return;
+    }
+    if (isBS) {
+      isBS = false;
       return;
     }
     input.inputLetter(givenText.charAt(nextLetterNum));
@@ -81,8 +86,25 @@ function addEnterTapEvent() {
   });
 }
 
+function addBSTapEvent() {
+  const bs = document.getElementsByClassName("back")[0];
+  const bsEvent = () => {
+    [tapData, nextLetterNum] = input.deleteLetter(tapData, nextLetterNum);
+    isBS = true;
+    console.log(tapData);
+  };
+  bs.addEventListener("touchend", ev => {
+    ev.preventDefault();
+    bsEvent();
+  });
+  bs.addEventListener("click", ev => {
+    bsEvent();
+  });
+}
+
 init();
 hr.initFirebase();
 re.addVisualEvent();
 addTargetTapEvent();
 addEnterTapEvent();
+addBSTapEvent();
