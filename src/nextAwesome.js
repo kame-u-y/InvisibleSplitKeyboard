@@ -104,11 +104,9 @@ function addTargetTapEvent() {
   const isStarted = (x, y) => x !== -1 && y !== -1;
 
   const startEvent = (x, y) => {
-    console.log('start');
     if (isStarted(selectStartX, selectStartY)) return;
     selectStartX = x;
     selectStartY = y;
-    console.log('start excecuted');
   };
 
   const dxwProcess = (x, selectStartX) => {
@@ -120,11 +118,9 @@ function addTargetTapEvent() {
   };
 
   const moveEvent = (x, y) => {
-    console.log('move');
     if (!isStarted(selectStartX, selectStartY)) return;
 
     if (y - selectStartY < -100) {
-      console.log('move y');
       Array.from(document.getElementsByClassName('predicted-button')).filter(
         v => {
           v.style.backgroundColor = '#eee';
@@ -133,7 +129,6 @@ function addTargetTapEvent() {
       selectFlag = false;
     } else {
       if (x - selectStartX < 10) return;
-      console.log('move x');
       selectFlag = true;
       let [dx, w] = dxwProcess(x, selectStartX);
       const buttons = document.getElementsByClassName('predicted-button');
@@ -143,10 +138,8 @@ function addTargetTapEvent() {
         else buttons[i].style.backgroundColor = '#ddd';
       }
     }
-    console.log('move excecuted');
   };
   const endEvent = (x, y) => {
-    console.log('end');
     if (!isStarted(selectStartX, selectStartY)) return;
 
     if (y - selectStartY < -100) {
@@ -170,7 +163,6 @@ function addTargetTapEvent() {
     wp.nextProbability();
     isSpace = true;
     initStartXY();
-    console.log('end excecuted');
   };
 
   const targetEvent = (x, y) => {
