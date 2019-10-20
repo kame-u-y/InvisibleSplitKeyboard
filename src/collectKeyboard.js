@@ -1,17 +1,7 @@
-import {
-  inputLetter,
-  inputPosition,
-  displayTapData
-} from "./module/InputFunction/InputFunction.js";
-import { addVisualEvent } from "./module/RadioEvent/RadioEvent.js";
-import {
-  getRandomWords,
-  getRandomPhrase
-} from "./module/GetRandomWords/GetRandomWords.js";
-import {
-  initFirebase,
-  postTapData
-} from "./module/MyHttpRequest/MyHttpRequest.js";
+import * as input from "./module/InputFunction/InputFunction.js";
+import * as re from "./module/RadioEvent/RadioEvent.js";
+import * as rp from "./module/GetRandomWords/GetRandomWords.js";
+import * as hr from "./module/MyHttpRequest/MyHttpRequest.js";
 
 let tapData = {};
 let givenText = "";
@@ -19,7 +9,7 @@ let nextLetterNum = 0;
 let initFlag = false;
 
 function init() {
-  document.getElementById("given-text").innerText = getRandomPhrase();
+  document.getElementById("given-text").innerText = rp.getRandomPhrase();
   givenText = document.getElementById("given-text").innerText;
   tapData = {};
   nextLetterNum = 0;
@@ -54,13 +44,13 @@ function addTargetTapEvent() {
       console.log("task ended");
       return;
     }
-    inputLetter(givenText.charAt(nextLetterNum));
-    inputPosition(x, y);
+    input.inputLetter(givenText.charAt(nextLetterNum));
+    input.inputPosition(x, y);
     addTapInfo(givenText.charAt(nextLetterNum), x, y);
     nextLetterNum++;
     if (nextLetterNum === givenText.length) {
-      displayTapData(tapData);
-      postTapData(tapData);
+      input.displayTapData(tapData);
+      hr.postTapData(tapData);
     }
   };
 
@@ -92,7 +82,7 @@ function addEnterTapEvent() {
 }
 
 init();
-initFirebase();
-addVisualEvent();
+hr.initFirebase();
+re.addVisualEvent();
 addTargetTapEvent();
 addEnterTapEvent();

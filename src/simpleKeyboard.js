@@ -1,10 +1,6 @@
-import {
-  inputLetter,
-  inputPosition,
-  displayTapData
-} from "./module/InputFunction/InputFunction.js";
-import { addVisualEvent } from "./module/RadioEvent/RadioEvent.js";
-import { getRandomPhrase } from "./module/GetRandomWords/GetRandomWords.js";
+import * as input from "./module/InputFunction/InputFunction.js";
+import * as re from "./module/RadioEvent/RadioEvent.js";
+import * as rp from "./module/GetRandomWords/GetRandomWords.js";
 
 let tapData = {};
 let givenText = "";
@@ -13,7 +9,7 @@ let nextLetterNum = 0;
 let initFlag = false;
 
 function init() {
-  document.getElementById("given-text").innerText = getRandomPhrase();
+  document.getElementById("given-text").innerText = rp.getRandomPhrase();
   givenText = document.getElementById("given-text").innerText;
   tapData = {};
   nextLetterNum = 0;
@@ -34,7 +30,7 @@ function addTapInfo(letter, x, y) {
   });
 }
 // target
-// inputPositionを実行
+// input.inputPositionを実行
 function addTargetTapEvent() {
   const target = document.getElementById("target");
   const targetEvent = (x, y) => {
@@ -46,13 +42,13 @@ function addTargetTapEvent() {
       console.log("task ended");
       return;
     }
-    inputPosition(x, y);
+    input.inputPosition(x, y);
     addTapInfo(nextLetterNum, givenText.charAt(nextLetterNum), x, y);
     if (goNextFlag) {
       nextLetterNum++;
       goNextFlag = false;
       if (nextLetterNum === givenText.length) {
-        displayTapData(tapData);
+        input.displayTapData(tapData);
       }
     }
   };
@@ -71,7 +67,7 @@ function addTargetTapEvent() {
 }
 
 // keys
-// inputLetterを実行
+// input.inputLetterを実行
 function addKeyTapEvent() {
   const keys = document.getElementsByClassName("key");
   const keyEvent = (elem, x, y) => {
@@ -82,7 +78,7 @@ function addKeyTapEvent() {
     }
     if (nextLetterNum >= givenText.length) return;
     if (elem.dataset.letter !== givenText.charAt(nextLetterNum)) return;
-    inputLetter(elem.dataset.letter);
+    input.inputLetter(elem.dataset.letter);
     goNextFlag = true;
   };
 
@@ -98,6 +94,6 @@ function addKeyTapEvent() {
 }
 
 init();
-addVisualEvent();
+re.addVisualEvent();
 addTargetTapEvent();
 addKeyTapEvent();
