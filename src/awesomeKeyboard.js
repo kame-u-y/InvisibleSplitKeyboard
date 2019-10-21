@@ -1,19 +1,20 @@
-import * as re from "./module/RadioEvent/RadioEvent.js";
-import * as hr from "./module/MyHttpRequest/MyHttpRequest.js";
-import * as wp from "./module/WordPrediction/WordPrediction.js";
-import * as rp from "./module/GetRandomWords/GetRandomWords.js";
+import * as re from './module/RadioEvent/RadioEvent.js';
+import * as hr from './module/MyHttpRequest/MyHttpRequest.js';
+import * as wp from './module/WordPrediction/WordPrediction.js';
+import * as rp from './module/GetRandomWords/GetRandomWords.js';
 
 let tapDatas = [];
 let isSpace = false;
+let isBS = false;
 
 function init() {
-  document.getElementById("given-text").innerText = rp.getRandomPhrase();
+  document.getElementById('given-text').innerText = rp.getRandomPhrase();
 }
 
 function restrictScroll() {
-  $("body").css("overflow", "hidden");
+  $('body').css('overflow', 'hidden');
   document.addEventListener(
-    "touchmove",
+    'touchmove',
     ev => {
       ev.preventDefault();
     },
@@ -25,14 +26,14 @@ function restrictScroll() {
 
 function addButtonEvent() {
   const buttonEvent = () => {
-    const user = $("#user-name").val();
+    const user = $('#user-name').val();
     const keyboardType = $(
-      "#visual-mode input:radio[name=visual-mode]:checked"
+      '#visual-mode input:radio[name=visual-mode]:checked'
     ).val();
     const spaceVisual =
-      $("#space-visible").prop("checked") | (keyboardType === "visible")
-        ? "visible"
-        : "invisible";
+      $('#space-visible').prop('checked') | (keyboardType === 'visible')
+        ? 'visible'
+        : 'invisible';
     const tapData = tapDatas.find(
       v =>
         v.user === user &&
@@ -43,8 +44,8 @@ function addButtonEvent() {
     if (tapData) {
       wp.createSpacialModel(tapData.data);
     } else {
-      if (user === "") {
-        console.log("user is not defined");
+      if (user === '') {
+        console.log('user is not defined');
         return;
       }
       hr.getTapData(user, keyboardType, spaceVisual, data => {
@@ -58,51 +59,55 @@ function addButtonEvent() {
           data: data
         });
         document.getElementById(
-          "is-ok"
+          'is-ok'
         ).innerText = `ok, ${keyboardType} ${spaceVisual}`;
       });
     }
   };
-  const getDataButton = document.getElementById("get-tap-data");
+  const getDataButton = document.getElementById('get-tap-data');
 
-  getDataButton.addEventListener("touchend", ev => {
+  getDataButton.addEventListener('touchend', ev => {
     ev.preventDefault();
     buttonEvent();
   });
-  getDataButton.addEventListener("click", ev => {
+  getDataButton.addEventListener('click', ev => {
     buttonEvent();
   });
 }
 
 function addPredictedButtonEvent() {
-  const buttons = document.getElementsByClassName("predicted-button");
+  const buttons = document.getElementsByClassName('predicted-button');
   const predictEvent = value => {
     wp.pushedPredictedButton(value);
   };
 
   Array.from(buttons).filter(v => {
-    v.addEventListener("touchend", ev => {
+    v.addEventListener('touchend', ev => {
       preventDefault();
       predictEvent(v.innerText);
     });
-    v.addEventListener("click", ev => {
+    v.addEventListener('click', ev => {
       predictEvent(v.innerText);
     });
   });
 }
 
 function addTargetTapEvent() {
-  const target = document.getElementById("target");
+  const target = document.getElementById('target');
   const targetEvent = (x, y) => {
     if (isSpace) {
       isSpace = false;
+      return;
+    }
+    if (isBS) {
+      isBS = false;
       return;
     }
     wp.predictWord(x, y);
   };
 
   target.addEventListener(
-    "touchend",
+    'touchend',
     ev => {
       ev.preventDefault();
       targetEvent(ev.changedTouches[0].pageX, ev.changedTouches[0].pageY);
@@ -110,44 +115,60 @@ function addTargetTapEvent() {
     { passive: false }
   );
 
-  target.addEventListener("click", ev => {
+  target.addEventListener('click', ev => {
     targetEvent(ev.pageX, ev.pageY);
   });
 }
 
 function addSpaceTapEvent() {
   const space = [
-    document.getElementsByClassName("right-space")[0],
-    document.getElementsByClassName("left-space")[0]
+    document.getElementsByClassName('right-space')[0],
+    document.getElementsByClassName('left-space')[0]
   ];
   const spaceEvent = () => {
     wp.nextProbability();
     isSpace = true;
   };
   Array.from(space).filter(v => {
-    v.addEventListener("touchend", ev => {
+    v.addEventListener('touchend', ev => {
       ev.preventDefault();
       spaceEvent();
     });
   });
   Array.from(space).filter(v => {
-    v.addEventListener("click", ev => {
+    v.addEventListener('click', ev => {
       spaceEvent();
     });
   });
 }
 
+function addBSTapEvent() {
+  const bs = document.getElementsByClassName('back')[0];
+  const bsEvent = () => {
+    wp.predictWordBS();
+    isBS = true;
+  };
+  bs.addEventListener('touchend', ev => {
+    ev.preventDefault();
+    bsEvent();
+  });
+  bs.addEventListener('click', ev => {
+    event.preventDefault();
+    bsEvent();
+  });
+}
+
 function addEnterTapEvent() {
-  const enter = document.getElementsByClassName("enter")[0];
+  const enter = document.getElementsByClassName('enter')[0];
   const enterEvent = () => {
     wp.initProbability();
     init();
   };
-  enter.addEventListener("touchend", ev => {
+  enter.addEventListener('touchend', ev => {
     ev.preventDefault();
     enterEvent();
   });
-  enter.addEventListener("click", ev => {
+  enter.addEventListener('click', ev => {
     enterEvent();
   });
 }
@@ -160,4 +181,5 @@ addButtonEvent();
 addTargetTapEvent();
 addPredictedButtonEvent();
 addSpaceTapEvent();
+addBSTapEvent();
 addEnterTapEvent();

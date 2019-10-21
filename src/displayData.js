@@ -1,26 +1,26 @@
-import * as re from "./module/RadioEvent/RadioEvent.js";
-import * as hr from "./module/MyHttpRequest/MyHttpRequest.js";
-import * as input from "./module/InputFunction/InputFunction.js";
-import * as wp from "./module/WordPrediction/WordPrediction.js";
+import * as re from './module/RadioEvent/RadioEvent.js';
+import * as hr from './module/MyHttpRequest/MyHttpRequest.js';
+import * as input from './module/InputFunction/InputFunction.js';
+import * as wp from './module/WordPrediction/WordPrediction.js';
 
 let tapDatas = [];
 
 function init() {
-  document.getElementById("dot-container").innerHTML = "";
-  document.getElementById("circle-container").innerHTML = "";
+  document.getElementById('dot-container').innerHTML = '';
+  document.getElementById('circle-container').innerHTML = '';
 }
 
 function addButtonEvent() {
   const buttonEvent = () => {
     init();
-    const user = $("#user-name").val();
+    const user = $('#user-name').val();
     const keyboardType = $(
-      "#visual-mode input:radio[name=visual-mode]:checked"
+      '#visual-mode input:radio[name=visual-mode]:checked'
     ).val();
     const spaceVisual =
-      $("#space-visible").prop("checked") | (keyboardType === "visible")
-        ? "visible"
-        : "invisible";
+      $('#space-visible').prop('checked') | (keyboardType === 'visible')
+        ? 'visible'
+        : 'invisible';
     const tapData = tapDatas.find(
       v =>
         v.user === user &&
@@ -33,8 +33,8 @@ function addButtonEvent() {
       input.displayTapData(tapData.data);
       wp.drawCircle();
     } else {
-      if (user === "") {
-        console.log("user is not defined");
+      if (user === '') {
+        console.log('user is not defined');
         return;
       }
       hr.getTapData(user, keyboardType, spaceVisual, data => {
@@ -52,25 +52,25 @@ function addButtonEvent() {
       });
     }
   };
-  const getDataButton = document.getElementById("get-tap-data");
+  const getDataButton = document.getElementById('get-tap-data');
 
-  getDataButton.addEventListener("touchend", ev => {
+  getDataButton.addEventListener('touchend', ev => {
     ev.preventDefault();
     buttonEvent();
   });
-  getDataButton.addEventListener("click", ev => {
+  getDataButton.addEventListener('click', ev => {
     buttonEvent();
   });
 }
 
 function addTargetTapEvent() {
-  const target = document.getElementById("target");
+  const target = document.getElementById('target');
   const targetEvent = (x, y) => {
     wp.predictWord(x, y);
   };
 
   target.addEventListener(
-    "touchend",
+    'touchend',
     ev => {
       ev.preventDefault();
       targetEvent(ev.changedTouches[0].pageX, ev.changedTouches[0].pageY);
@@ -78,21 +78,21 @@ function addTargetTapEvent() {
     { passive: false }
   );
 
-  target.addEventListener("click", ev => {
+  target.addEventListener('click', ev => {
     targetEvent(ev.pageX, ev.pageY);
   });
 }
 
 function addEnterTapEvent() {
-  const enter = document.getElementsByClassName("enter")[0];
+  const enter = document.getElementsByClassName('enter')[0];
   const enterEvent = () => {
     wp.initProbability();
   };
-  enter.addEventListener("touchend", ev => {
+  enter.addEventListener('touchend', ev => {
     ev.preventDefault();
     enterEvent();
   });
-  enter.addEventListener("click", ev => {
+  enter.addEventListener('click', ev => {
     enterEvent();
   });
 }

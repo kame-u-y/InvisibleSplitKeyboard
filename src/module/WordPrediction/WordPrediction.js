@@ -1,31 +1,31 @@
-import * as sm from "./SpacialModel.js";
-import * as lm from "./LanguageModel.js";
+import * as sm from './SpacialModel.js';
+import * as lm from './LanguageModel.js';
 
 let letterPs = [];
 let initFlag = false;
-let typedLetters = "";
+let typedLetters = '';
 
-export function getLetterPs() {
-  return letterPs;
-}
+// function getLetterPs() {
+//   return letterPs;
+// }
 
 export function initProbability() {
   letterPs = [];
-  document.getElementById("predicted-letter").innerText = "";
-  Array.from(document.getElementsByClassName("predicted-button")).filter(v => {
-    v.innerText = "";
+  document.getElementById('predicted-letter').innerText = '';
+  Array.from(document.getElementsByClassName('predicted-button')).filter(v => {
+    v.innerText = '';
   });
-  typedLetters = "";
+  typedLetters = '';
   initFlag = true;
 }
 
 export function nextProbability() {
   letterPs = [];
-  Array.from(document.getElementsByClassName("predicted-button")).filter(v => {
-    v.innerText = "";
+  Array.from(document.getElementsByClassName('predicted-button')).filter(v => {
+    v.innerText = '';
   });
-  document.getElementById("predicted-letter").innerText += " ";
-  typedLetters = document.getElementById("predicted-letter").innerText;
+  document.getElementById('predicted-letter').innerText += ' ';
+  typedLetters = document.getElementById('predicted-letter').innerText;
 }
 
 export function createSpacialModel(tapData) {
@@ -45,23 +45,19 @@ export function drawCircle() {
   sm.drawCircle();
 }
 
-export function predictWord(x, y) {
-  if (initFlag) {
-    initFlag = false;
-    return;
-  }
+function smProbability(x, y) {
   // タップ位置をもとにSMからキー確率取得
   let probabilities = sm.getSMProbability(x, y);
 
-  if (getLetterPs().length === 0) {
-    document.getElementById("predicted-letter").innerText =
+  if (letterPs.length === 0) {
+    document.getElementById('predicted-letter').innerText =
       typedLetters + probabilities[0].letter;
-    let predictedButton = document.getElementsByClassName("predicted-button");
+    let predictedButton = document.getElementsByClassName('predicted-button');
     for (let i = 0; i < 5; i++) {
       predictedButton[i].innerText = probabilities[i].letter;
     }
     letterPs = probabilities.slice(0, 5);
-    return;
+    return true;
   }
 
   // 文字列の結合・確率を掛け合わせ
@@ -79,9 +75,12 @@ export function predictWord(x, y) {
     .sort((a, b) => b.probability - a.probability)
     .slice(0, 1000);
 
-  document.getElementById("predicted-letter").innerText =
+  document.getElementById('predicted-letter').innerText =
     typedLetters + letterPs[0].letter;
+  return false;
+}
 
+function getLMProbability() {
   // 予測された文字列のfreqをLMから取得・SM*LM
   let pLM = [];
   let unknownPLM = [];
@@ -103,12 +102,46 @@ export function predictWord(x, y) {
   unknownPLM.sort((a, b) => b.probability - a.probability);
   pLM = pLM.concat(unknownPLM);
 
-  let predictedButton = document.getElementsByClassName("predicted-button");
+  let predictedButton = document.getElementsByClassName('predicted-button');
   for (let i = 0; i < 5; i++) {
     predictedButton[i].innerText = pLM[i].letter;
   }
 }
 
+export function predictWordBS() {
+  let inputLetter = document.getElementById('predicted-letter');
+  if (inputLetter.innerText === '') return;
+  console.log(inputLetter.innerText.substring(typedLetters));
+
+  inputLetter.innerText = inputLetter.innerText.slice(0, -1);
+
+  if (typedLetters.slice(0, -1) === inputLetter.innerText) {
+    // "hoge " > "hoge": pop typedLetters
+    console.log(0);
+    typedLetters = typedLetters.slice(0, -1);
+    return;
+  } else if (typedLetters === inputLetter.innerText) {
+    // "hoge h" > "hoge ": don't pop typedLetters
+    console.log(1);
+    return;
+  } else {
+    // "hoge ho" > "hoge h":
+    console.log(2);
+    letterPs.pop();
+    getLMProbability();
+  }
+}
+
+export function predictWord(x, y) {
+  if (initFlag) {
+    initFlag = false;
+    return;
+  }
+  let isFirstLetter = smProbability(x, y);
+  if (isFirstLetter) return;
+  getLMProbability();
+}
+
 export function pushedPredictedButton(value) {
-  document.getElementById("predicted-letter").innerText = typedLetters + value;
+  document.getElementById('predicted-letter').innerText = typedLetters + value;
 }

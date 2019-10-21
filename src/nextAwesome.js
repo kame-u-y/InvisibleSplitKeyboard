@@ -267,10 +267,6 @@ function addEnterTapEvent() {
   });
 }
 
-function addScrollEvent() {
-  const target = document.getElementById('target');
-}
-
 init();
 restrictScroll();
 hr.initFirebase();
@@ -280,4 +276,3 @@ addTargetTapEvent();
 addPredictedButtonEvent();
 addSpaceTapEvent();
 addEnterTapEvent();
-// addScrollEvent();
