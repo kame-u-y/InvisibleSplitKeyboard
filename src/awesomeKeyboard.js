@@ -3,22 +3,6 @@ import * as hr from "./module/MyHttpRequest/MyHttpRequest.js";
 import * as wp from "./module/WordPrediction/WordPrediction.js";
 import * as rp from "./module/GetRandomWords/GetRandomWords.js";
 
-/*
-after
-inputData = [
-  {
-    position: {
-      x: number,
-      y: number,
-    },
-    timestamp: timestamp,
-    initialId: number,
-  }
-]
-*/
-
-// let inputData = [];
-// let initialId = 0;
 let loadedDatas = [];
 let isSpace = false;
 let isBS = false;
@@ -120,14 +104,6 @@ function addTargetTapEvent() {
       return;
     }
     wp.predictWord(x, y);
-    // inputData.push({
-    //   position: {
-    //     x: x,
-    //     y: y
-    //   },
-    //   initialId: initialId,
-    //   timestamp: Date.now()
-    // });
   };
 
   target.addEventListener(

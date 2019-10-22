@@ -1,19 +1,20 @@
-import * as re from './module/RadioEvent/RadioEvent.js';
-import * as hr from './module/MyHttpRequest/MyHttpRequest.js';
-import * as wp from './module/WordPrediction/WordPrediction.js';
-import * as rp from './module/GetRandomWords/GetRandomWords.js';
+import * as re from "./module/RadioEvent/RadioEvent.js";
+import * as hr from "./module/MyHttpRequest/MyHttpRequest.js";
+import * as wp from "./module/WordPrediction/WordPrediction.js";
+import * as rp from "./module/GetRandomWords/GetRandomWords.js";
 
 let loadedDatas = [];
 let isSpace = false;
+let isBS = false;
 
 function init() {
-  document.getElementById('given-text').innerText = rp.getRandomPhrase();
+  document.getElementById("given-text").innerText = rp.getRandomPhrase();
 }
 
 function restrictScroll() {
-  $('body').css('overflow', 'hidden');
+  $("body").css("overflow", "hidden");
   document.addEventListener(
-    'touchmove',
+    "touchmove",
     ev => {
       ev.preventDefault();
     },
@@ -25,14 +26,14 @@ function restrictScroll() {
 
 function addButtonEvent() {
   const buttonEvent = () => {
-    const user = $('#user-name').val();
+    const user = $("#user-name").val();
     const keyboardType = $(
-      '#visual-mode input:radio[name=visual-mode]:checked'
+      "#visual-mode input:radio[name=visual-mode]:checked"
     ).val();
     const spaceVisual =
-      $('#space-visible').prop('checked') | (keyboardType === 'visible')
-        ? 'visible'
-        : 'invisible';
+      $("#space-visible").prop("checked") | (keyboardType === "visible")
+        ? "visible"
+        : "invisible";
     const loadedData = loadedDatas.find(
       v =>
         v.user === user &&
@@ -43,8 +44,8 @@ function addButtonEvent() {
     if (loadedData) {
       wp.createSpacialModel(loadedData.data);
     } else {
-      if (user === '') {
-        console.log('user is not defined');
+      if (user === "") {
+        console.log("user is not defined");
         return;
       }
       hr.getTapData(user, keyboardType, spaceVisual, data => {
@@ -58,35 +59,35 @@ function addButtonEvent() {
           data: data
         });
         document.getElementById(
-          'is-ok'
+          "is-ok"
         ).innerText = `ok, ${keyboardType} ${spaceVisual}`;
       });
     }
   };
-  const getDataButton = document.getElementById('get-tap-data');
+  const getDataButton = document.getElementById("get-tap-data");
 
-  getDataButton.addEventListener('touchend', ev => {
+  getDataButton.addEventListener("touchend", ev => {
     ev.preventDefault();
     buttonEvent();
   });
-  getDataButton.addEventListener('click', ev => {
+  getDataButton.addEventListener("click", ev => {
     buttonEvent();
   });
 }
 
 function addPredictedButtonEvent() {
-  const buttons = document.getElementsByClassName('predicted-button');
+  const buttons = document.getElementsByClassName("predicted-button");
   const predictEvent = value => {
     wp.pushedPredictedButton(value);
     wp.nextProbability();
   };
 
   Array.from(buttons).filter(v => {
-    v.addEventListener('touchend', ev => {
-      preventDefault();
+    v.addEventListener("touchend", ev => {
+      ev.preventDefault();
       predictEvent(v.innerText);
     });
-    v.addEventListener('click', ev => {
+    v.addEventListener("click", ev => {
       predictEvent(v.innerText);
     });
   });
@@ -96,7 +97,7 @@ function addTargetTapEvent() {
   let selectFlag = false;
   let selectStartX = -1;
   let selectStartY = -1;
-  const target = document.getElementById('target');
+  const target = document.getElementById("target");
   const initStartXY = () => {
     selectStartX = -1;
     selectStartY = -1;
@@ -121,9 +122,9 @@ function addTargetTapEvent() {
     if (!isStarted(selectStartX, selectStartY)) return;
 
     if (y - selectStartY < -100) {
-      Array.from(document.getElementsByClassName('predicted-button')).filter(
+      Array.from(document.getElementsByClassName("predicted-button")).filter(
         v => {
-          v.style.backgroundColor = '#eee';
+          v.style.backgroundColor = "#eee";
         }
       );
       selectFlag = false;
@@ -131,11 +132,11 @@ function addTargetTapEvent() {
       if (x - selectStartX < 10) return;
       selectFlag = true;
       let [dx, w] = dxwProcess(x, selectStartX);
-      const buttons = document.getElementsByClassName('predicted-button');
+      const buttons = document.getElementsByClassName("predicted-button");
       for (let i = 0; i < buttons.length; i++) {
         if (i === Math.floor(dx / w) - 1)
-          buttons[i].style.backgroundColor = '#ccc';
-        else buttons[i].style.backgroundColor = '#ddd';
+          buttons[i].style.backgroundColor = "#ccc";
+        else buttons[i].style.backgroundColor = "#ddd";
       }
     }
   };
@@ -143,9 +144,9 @@ function addTargetTapEvent() {
     if (!isStarted(selectStartX, selectStartY)) return;
 
     if (y - selectStartY < -100) {
-      Array.from(document.getElementsByClassName('predicted-button')).filter(
+      Array.from(document.getElementsByClassName("predicted-button")).filter(
         v => {
-          v.style.backgroundColor = '#ddd';
+          v.style.backgroundColor = "#ddd";
         }
       );
     } else {
@@ -154,11 +155,11 @@ function addTargetTapEvent() {
         return;
       }
       let [dx, w] = dxwProcess(x, selectStartX);
-      const selected = document.getElementsByClassName('predicted-button')[
+      const selected = document.getElementsByClassName("predicted-button")[
         Math.floor(dx / w) - 1
       ];
       wp.pushedPredictedButton(selected.innerText);
-      selected.style.backgroundColor = '#ddd';
+      selected.style.backgroundColor = "#ddd";
     }
     wp.nextProbability();
     isSpace = true;
@@ -171,38 +172,42 @@ function addTargetTapEvent() {
       selectFlag = false;
       return;
     }
+    if (isBS) {
+      isBS = false;
+      return;
+    }
     wp.predictWord(x, y);
   };
 
   // touchstart, mousedown
   target.addEventListener(
-    'touchstart',
+    "touchstart",
     ev => {
       ev.preventDefault();
       startEvent(ev.changedTouches[0].pageX, ev.changedTouches[0].pageY);
     },
     { passive: false }
   );
-  target.addEventListener('mousedown', ev => {
+  target.addEventListener("mousedown", ev => {
     startEvent(ev.pageX, ev.pageY);
   });
 
   // touchmove, mousemove
   target.addEventListener(
-    'touchmove',
+    "touchmove",
     ev => {
       ev.preventDefault();
       moveEvent(ev.changedTouches[0].pageX, ev.changedTouches[0].pageY);
     },
     { passive: false }
   );
-  target.addEventListener('mousemove', ev => {
+  target.addEventListener("mousemove", ev => {
     moveEvent(ev.pageX, ev.pageY);
   });
 
   //touchend, mouseup, click
   target.addEventListener(
-    'touchend',
+    "touchend",
     ev => {
       ev.preventDefault();
       endEvent(ev.changedTouches[0].pageX, ev.changedTouches[0].pageY);
@@ -210,59 +215,62 @@ function addTargetTapEvent() {
     },
     { passive: false }
   );
-  target.addEventListener('mouseup', ev => {
+  target.addEventListener("mouseup", ev => {
     endEvent(ev.pageX, ev.pageY);
   });
-  target.addEventListener('click', ev => {
+  target.addEventListener("click", ev => {
     targetEvent(ev.pageX, ev.pageY);
   });
-
-  // target.addEventListener(
-  //   "touchend",
-  //   ev => {
-  //     ev.preventDefault();
-  //     endEvent(ev.changedTouches[0].pageX);
-  //   },
-  //   { passive: false }
-  // );
-  // target.addEventListener("mouseup", ev => {
-  //   endEvent(ev.pageX);
-  // });
 }
 
 function addSpaceTapEvent() {
   const space = [
-    document.getElementsByClassName('right-space')[0],
-    document.getElementsByClassName('left-space')[0]
+    document.getElementsByClassName("right-space")[0],
+    document.getElementsByClassName("left-space")[0]
   ];
   const spaceEvent = () => {
     wp.nextProbability();
     isSpace = true;
   };
   Array.from(space).filter(v => {
-    v.addEventListener('touchend', ev => {
+    v.addEventListener("touchend", ev => {
       ev.preventDefault();
       spaceEvent();
     });
   });
   Array.from(space).filter(v => {
-    v.addEventListener('click', ev => {
+    v.addEventListener("click", ev => {
       spaceEvent();
     });
   });
 }
 
+function addBSTapEvent() {
+  const bs = document.getElementsByClassName("back")[0];
+  const bsEvent = () => {
+    wp.predictWordBS();
+    isBS = true;
+  };
+  bs.addEventListener("touchend", ev => {
+    ev.preventDefault();
+    bsEvent();
+  });
+  bs.addEventListener("click", ev => {
+    bsEvent();
+  });
+}
+
 function addEnterTapEvent() {
-  const enter = document.getElementsByClassName('enter')[0];
+  const enter = document.getElementsByClassName("enter")[0];
   const enterEvent = () => {
     wp.initProbability();
     init();
   };
-  enter.addEventListener('touchend', ev => {
+  enter.addEventListener("touchend", ev => {
     ev.preventDefault();
     enterEvent();
   });
-  enter.addEventListener('click', ev => {
+  enter.addEventListener("click", ev => {
     enterEvent();
   });
 }
@@ -275,4 +283,5 @@ addButtonEvent();
 addTargetTapEvent();
 addPredictedButtonEvent();
 addSpaceTapEvent();
+addBSTapEvent();
 addEnterTapEvent();

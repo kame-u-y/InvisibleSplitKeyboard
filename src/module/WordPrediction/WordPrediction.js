@@ -195,9 +195,6 @@ function bsLetter() {
 export function predictWordBS() {
   let inputLetter = document.getElementById("predicted-letter");
   if (inputLetter.innerText === "") return;
-  const bsLetter = inputLetter.innerText.charAt(
-    inputLetter.innerText.length - 1
-  );
   inputLetter.innerText = inputLetter.innerText.slice(0, -1);
   console.log(
     `typedLetters=${typedLetters},inputLetters=${inputLetter.innerText};`
