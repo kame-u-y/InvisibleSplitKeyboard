@@ -83,7 +83,7 @@ function addPredictedButtonEvent() {
 
   Array.from(buttons).filter(v => {
     v.addEventListener('touchend', ev => {
-      preventDefault();
+      ev.preventDefault();
       predictEvent(v.innerText);
     });
     v.addEventListener('click', ev => {
@@ -153,7 +153,6 @@ function addBSTapEvent() {
     bsEvent();
   });
   bs.addEventListener('click', ev => {
-    event.preventDefault();
     bsEvent();
   });
 }

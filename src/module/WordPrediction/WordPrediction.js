@@ -1,9 +1,9 @@
-import * as sm from './SpacialModel.js';
-import * as lm from './LanguageModel.js';
+import * as sm from "./SpacialModel.js";
+import * as lm from "./LanguageModel.js";
 
 let letterPs = [];
 let initFlag = false;
-let typedLetters = '';
+let typedLetters = "";
 
 // function getLetterPs() {
 //   return letterPs;
@@ -11,21 +11,21 @@ let typedLetters = '';
 
 export function initProbability() {
   letterPs = [];
-  document.getElementById('predicted-letter').innerText = '';
-  Array.from(document.getElementsByClassName('predicted-button')).filter(v => {
-    v.innerText = '';
+  document.getElementById("predicted-letter").innerText = "";
+  Array.from(document.getElementsByClassName("predicted-button")).filter(v => {
+    v.innerText = "";
   });
-  typedLetters = '';
+  typedLetters = "";
   initFlag = true;
 }
 
 export function nextProbability() {
   letterPs = [];
-  Array.from(document.getElementsByClassName('predicted-button')).filter(v => {
-    v.innerText = '';
+  Array.from(document.getElementsByClassName("predicted-button")).filter(v => {
+    v.innerText = "";
   });
-  document.getElementById('predicted-letter').innerText += ' ';
-  typedLetters = document.getElementById('predicted-letter').innerText;
+  document.getElementById("predicted-letter").innerText += " ";
+  typedLetters = document.getElementById("predicted-letter").innerText;
 }
 
 export function createSpacialModel(tapData) {
@@ -50,9 +50,9 @@ function smProbability(x, y) {
   let probabilities = sm.getSMProbability(x, y);
 
   if (letterPs.length === 0) {
-    document.getElementById('predicted-letter').innerText =
+    document.getElementById("predicted-letter").innerText =
       typedLetters + probabilities[0].letter;
-    let predictedButton = document.getElementsByClassName('predicted-button');
+    let predictedButton = document.getElementsByClassName("predicted-button");
     for (let i = 0; i < 5; i++) {
       predictedButton[i].innerText = probabilities[i].letter;
     }
@@ -75,7 +75,7 @@ function smProbability(x, y) {
     .sort((a, b) => b.probability - a.probability)
     .slice(0, 1000);
 
-  document.getElementById('predicted-letter').innerText =
+  document.getElementById("predicted-letter").innerText =
     typedLetters + letterPs[0].letter;
   return false;
 }
@@ -102,15 +102,16 @@ function getLMProbability() {
   unknownPLM.sort((a, b) => b.probability - a.probability);
   pLM = pLM.concat(unknownPLM);
 
-  let predictedButton = document.getElementsByClassName('predicted-button');
+  let predictedButton = document.getElementsByClassName("predicted-button");
   for (let i = 0; i < 5; i++) {
     predictedButton[i].innerText = pLM[i].letter;
   }
+  console.log(true);
 }
 
 export function predictWordBS() {
-  let inputLetter = document.getElementById('predicted-letter');
-  if (inputLetter.innerText === '') return;
+  let inputLetter = document.getElementById("predicted-letter");
+  if (inputLetter.innerText === "") return;
   console.log(inputLetter.innerText.substring(typedLetters));
 
   inputLetter.innerText = inputLetter.innerText.slice(0, -1);
@@ -127,8 +128,10 @@ export function predictWordBS() {
   } else {
     // "hoge ho" > "hoge h":
     console.log(2);
+    console.log(letterPs);
     letterPs.pop();
     getLMProbability();
+    return;
   }
 }
 
@@ -143,5 +146,5 @@ export function predictWord(x, y) {
 }
 
 export function pushedPredictedButton(value) {
-  document.getElementById('predicted-letter').innerText = typedLetters + value;
+  document.getElementById("predicted-letter").innerText = typedLetters + value;
 }
