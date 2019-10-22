@@ -1,6 +1,23 @@
 import * as sm from "./SpacialModel.js";
 import * as lm from "./LanguageModel.js";
 
+/*
+after
+inputData = [
+  {
+    position: {
+      x: number,
+      y: number,
+    },
+    timestamp: timestamp,
+    initialId: number,
+  }
+]
+*/
+
+let inputData = [];
+let initialId = 0;
+
 let letterPs = [];
 let initFlag = false;
 let typedLetters = "";
@@ -17,6 +34,10 @@ export function initProbability() {
   });
   typedLetters = "";
   initFlag = true;
+
+  // initする前にタップ列が保存される？
+  inputData = [];
+  initialId = 0;
 }
 
 export function nextProbability() {
@@ -26,19 +47,21 @@ export function nextProbability() {
   });
   document.getElementById("predicted-letter").innerText += " ";
   typedLetters = document.getElementById("predicted-letter").innerText;
+
+  initialId = inputData.length;
 }
 
-export function createSpacialModel(tapData) {
-  sm.createSpacialModel(tapData);
+export function createSpacialModel(loadedData) {
+  sm.createSpacialModel(loadedData);
 }
 
-export function removeSMOutlier(tapData) {
-  Object.keys(tapData).filter(letter => {
-    tapData[letter] = tapData[letter].filter(v => {
+export function removeSMOutlier(loadedData) {
+  Object.keys(loadedData).filter(letter => {
+    loadedData[letter] = loadedData[letter].filter(v => {
       return !sm.isOutlier(letter, v.position.x, v.position.y);
     });
   });
-  return tapData;
+  return loadedData;
 }
 
 export function drawCircle() {
@@ -112,24 +135,85 @@ function getLMProbability() {
 export function predictWordBS() {
   let inputLetter = document.getElementById("predicted-letter");
   if (inputLetter.innerText === "") return;
-  console.log(inputLetter.innerText.substring(typedLetters));
+  // console.log(inputLetter.innerText.substring(typedLetters));
 
   inputLetter.innerText = inputLetter.innerText.slice(0, -1);
+  console.log(
+    `typedLetters=${typedLetters},inputLetters=${inputLetter.innerText};`
+  );
+  letterPs = [];
+  if (typedLetters === "" && inputLetter.innerText === "") {
+    console.log(-1);
+    inputData.pop();
+    Array.from(document.getElementsByClassName("predicted-button")).filter(
+      v => {
+        v.innerText = "";
+      }
+    );
+    console.log(inputData);
 
-  if (typedLetters.slice(0, -1) === inputLetter.innerText) {
+    return;
+  } else if (typedLetters.slice(0, -1) === inputLetter.innerText) {
     // "hoge " > "hoge": pop typedLetters
     console.log(0);
-    typedLetters = typedLetters.slice(0, -1);
-    return;
+
+    if (typedLetters.lastIndexOf(" ") === typedLetters.length - 1) {
+      console.log("space space");
+      typedLetters = typedLetters.slice(0, -1);
+      typedLetters = typedLetters.substring(
+        0,
+        typedLetters.lastIndexOf(" ") + 1
+      );
+      initialId = inputData[inputData.length - 1].initialId;
+      Array.from(document.getElementsByClassName("predicted-button")).filter(
+        v => {
+          v.innerText = "";
+        }
+      );
+      console.log(inputData);
+
+      return;
+    } else {
+      typedLetters = typedLetters.slice(0, -1);
+      typedLetters = typedLetters.substring(
+        0,
+        typedLetters.lastIndexOf(" ") + 1
+      );
+
+      initialId = inputData[inputData.length - 1].initialId;
+      inputData
+        .filter(v => v.initialId === initialId)
+        .filter(v => {
+          smProbability(v.position.x, v.position.y);
+        });
+      console.log(inputData);
+
+      getLMProbability();
+      return;
+    }
   } else if (typedLetters === inputLetter.innerText) {
     // "hoge h" > "hoge ": don't pop typedLetters
     console.log(1);
+    inputData.pop();
+    Array.from(document.getElementsByClassName("predicted-button")).filter(
+      v => {
+        v.innerText = "";
+      }
+    );
+    console.log(inputData);
+
     return;
   } else {
     // "hoge ho" > "hoge h":
     console.log(2);
-    console.log(letterPs);
-    letterPs.pop();
+    inputData.pop();
+    inputData
+      .filter(v => v.initialId === initialId)
+      .filter(v => {
+        smProbability(v.position.x, v.position.y);
+      });
+    console.log(inputData);
+
     getLMProbability();
     return;
   }
@@ -141,6 +225,15 @@ export function predictWord(x, y) {
     return;
   }
   let isFirstLetter = smProbability(x, y);
+  inputData.push({
+    position: {
+      x: x,
+      y: y
+    },
+    initialId: initialId,
+    timestamp: Date.now()
+  });
+  console.log(inputData);
   if (isFirstLetter) return;
   getLMProbability();
 }

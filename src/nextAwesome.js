@@ -3,7 +3,7 @@ import * as hr from './module/MyHttpRequest/MyHttpRequest.js';
 import * as wp from './module/WordPrediction/WordPrediction.js';
 import * as rp from './module/GetRandomWords/GetRandomWords.js';
 
-let tapDatas = [];
+let loadedDatas = [];
 let isSpace = false;
 
 function init() {
@@ -33,15 +33,15 @@ function addButtonEvent() {
       $('#space-visible').prop('checked') | (keyboardType === 'visible')
         ? 'visible'
         : 'invisible';
-    const tapData = tapDatas.find(
+    const loadedData = loadedDatas.find(
       v =>
         v.user === user &&
         v.keyboard === keyboardType &&
         v.space === spaceVisual
     );
 
-    if (tapData) {
-      wp.createSpacialModel(tapData.data);
+    if (loadedData) {
+      wp.createSpacialModel(loadedData.data);
     } else {
       if (user === '') {
         console.log('user is not defined');
@@ -51,7 +51,7 @@ function addButtonEvent() {
         wp.createSpacialModel(data);
         data = wp.removeSMOutlier(data);
         wp.createSpacialModel(data);
-        tapDatas.push({
+        loadedDatas.push({
           user: user,
           keyboard: keyboardType,
           space: spaceVisual,
