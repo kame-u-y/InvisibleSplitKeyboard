@@ -136,7 +136,9 @@ export function predictWordBS() {
   let inputLetter = document.getElementById("predicted-letter");
   if (inputLetter.innerText === "") return;
   // console.log(inputLetter.innerText.substring(typedLetters));
-
+  const bsLetter = inputLetter.innerText.charAt(
+    inputLetter.innerText.length - 1
+  );
   inputLetter.innerText = inputLetter.innerText.slice(0, -1);
   console.log(
     `typedLetters=${typedLetters},inputLetters=${inputLetter.innerText};`
@@ -156,8 +158,10 @@ export function predictWordBS() {
   } else if (typedLetters.slice(0, -1) === inputLetter.innerText) {
     // "hoge " > "hoge": pop typedLetters
     console.log(0);
-
-    if (typedLetters.lastIndexOf(" ") === typedLetters.length - 1) {
+    const lastLetter = inputLetter.innerText.charAt(
+      inputLetter.innerText.length - 1
+    );
+    if (lastLetter === " ") {
       console.log("space space");
       typedLetters = typedLetters.slice(0, -1);
       typedLetters = typedLetters.substring(
