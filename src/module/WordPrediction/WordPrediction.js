@@ -132,10 +132,69 @@ function getLMProbability() {
   console.log(true);
 }
 
+function bsFirstLetter() {
+  // "h" > "": pop typedLetters
+  console.log(-1);
+  inputData.pop();
+  Array.from(document.getElementsByClassName("predicted-button")).filter(v => {
+    v.innerText = "";
+  });
+  console.log(inputData);
+}
+
+function bsSpaceSpace() {
+  // "hoge  " > "hoge ": pop typedLetters
+  console.log("space space");
+  typedLetters = typedLetters.slice(0, -1);
+  typedLetters = typedLetters.substring(0, typedLetters.lastIndexOf(" ") + 1);
+  initialId = inputData[inputData.length - 1].initialId;
+  Array.from(document.getElementsByClassName("predicted-button")).filter(v => {
+    v.innerText = "";
+  });
+  console.log(inputData);
+}
+
+function bsSpace() {
+  // "hoge " > "hoge": pop typedLetters
+  typedLetters = typedLetters.slice(0, -1);
+  typedLetters = typedLetters.substring(0, typedLetters.lastIndexOf(" ") + 1);
+
+  initialId = inputData[inputData.length - 1].initialId;
+  inputData
+    .filter(v => v.initialId === initialId)
+    .filter(v => {
+      smProbability(v.position.x, v.position.y);
+    });
+  console.log(inputData);
+  getLMProbability();
+}
+
+function bsInitialLetter() {
+  // "hoge h" > "hoge ": don't pop typedLetters
+  console.log(1);
+  inputData.pop();
+  Array.from(document.getElementsByClassName("predicted-button")).filter(v => {
+    v.innerText = "";
+  });
+  console.log(inputData);
+}
+
+function bsLetter() {
+  // "hoge ho" > "hoge h":
+  console.log(2);
+  inputData.pop();
+  inputData
+    .filter(v => v.initialId === initialId)
+    .filter(v => {
+      smProbability(v.position.x, v.position.y);
+    });
+  console.log(inputData);
+  getLMProbability();
+}
+
 export function predictWordBS() {
   let inputLetter = document.getElementById("predicted-letter");
   if (inputLetter.innerText === "") return;
-  // console.log(inputLetter.innerText.substring(typedLetters));
   const bsLetter = inputLetter.innerText.charAt(
     inputLetter.innerText.length - 1
   );
@@ -145,80 +204,25 @@ export function predictWordBS() {
   );
   letterPs = [];
   if (typedLetters === "" && inputLetter.innerText === "") {
-    console.log(-1);
-    inputData.pop();
-    Array.from(document.getElementsByClassName("predicted-button")).filter(
-      v => {
-        v.innerText = "";
-      }
-    );
-    console.log(inputData);
-
+    bsFirstLetter();
     return;
   } else if (typedLetters.slice(0, -1) === inputLetter.innerText) {
-    // "hoge " > "hoge": pop typedLetters
     console.log(0);
     const lastLetter = inputLetter.innerText.charAt(
       inputLetter.innerText.length - 1
     );
     if (lastLetter === " ") {
-      console.log("space space");
-      typedLetters = typedLetters.slice(0, -1);
-      typedLetters = typedLetters.substring(
-        0,
-        typedLetters.lastIndexOf(" ") + 1
-      );
-      initialId = inputData[inputData.length - 1].initialId;
-      Array.from(document.getElementsByClassName("predicted-button")).filter(
-        v => {
-          v.innerText = "";
-        }
-      );
-      console.log(inputData);
-
+      bsSpaceSpace();
       return;
     } else {
-      typedLetters = typedLetters.slice(0, -1);
-      typedLetters = typedLetters.substring(
-        0,
-        typedLetters.lastIndexOf(" ") + 1
-      );
-
-      initialId = inputData[inputData.length - 1].initialId;
-      inputData
-        .filter(v => v.initialId === initialId)
-        .filter(v => {
-          smProbability(v.position.x, v.position.y);
-        });
-      console.log(inputData);
-
-      getLMProbability();
+      bsSpace();
       return;
     }
   } else if (typedLetters === inputLetter.innerText) {
-    // "hoge h" > "hoge ": don't pop typedLetters
-    console.log(1);
-    inputData.pop();
-    Array.from(document.getElementsByClassName("predicted-button")).filter(
-      v => {
-        v.innerText = "";
-      }
-    );
-    console.log(inputData);
-
+    bsInitialLetter();
     return;
   } else {
-    // "hoge ho" > "hoge h":
-    console.log(2);
-    inputData.pop();
-    inputData
-      .filter(v => v.initialId === initialId)
-      .filter(v => {
-        smProbability(v.position.x, v.position.y);
-      });
-    console.log(inputData);
-
-    getLMProbability();
+    bsLetter();
     return;
   }
 }
