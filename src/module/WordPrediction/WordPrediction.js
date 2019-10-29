@@ -1,9 +1,26 @@
-import * as sm from './SpacialModel.js';
-import * as lm from './LanguageModel.js';
+import * as sm from "./SpacialModel.js";
+import * as lm from "./LanguageModel.js";
+
+/*
+after
+inputData = [
+  {
+    position: {
+      x: number,
+      y: number,
+    },
+    timestamp: timestamp,
+    initialId: number,
+  }
+]
+*/
+
+let inputData = [];
+let initialId = 0;
 
 let letterPs = [];
 let initFlag = false;
-let typedLetters = '';
+let typedLetters = "";
 
 // function getLetterPs() {
 //   return letterPs;
@@ -11,34 +28,40 @@ let typedLetters = '';
 
 export function initProbability() {
   letterPs = [];
-  document.getElementById('predicted-letter').innerText = '';
-  Array.from(document.getElementsByClassName('predicted-button')).filter(v => {
-    v.innerText = '';
+  document.getElementById("predicted-letter").innerText = "";
+  Array.from(document.getElementsByClassName("predicted-button")).filter(v => {
+    v.innerText = "";
   });
-  typedLetters = '';
+  typedLetters = "";
   initFlag = true;
+
+  // initする前にタップ列が保存される？
+  inputData = [];
+  initialId = 0;
 }
 
 export function nextProbability() {
   letterPs = [];
-  Array.from(document.getElementsByClassName('predicted-button')).filter(v => {
-    v.innerText = '';
+  Array.from(document.getElementsByClassName("predicted-button")).filter(v => {
+    v.innerText = "";
   });
-  document.getElementById('predicted-letter').innerText += ' ';
-  typedLetters = document.getElementById('predicted-letter').innerText;
+  document.getElementById("predicted-letter").innerText += " ";
+  typedLetters = document.getElementById("predicted-letter").innerText;
+
+  initialId = inputData.length;
 }
 
-export function createSpacialModel(tapData) {
-  sm.createSpacialModel(tapData);
+export function createSpacialModel(loadedData) {
+  sm.createSpacialModel(loadedData);
 }
 
-export function removeSMOutlier(tapData) {
-  Object.keys(tapData).filter(letter => {
-    tapData[letter] = tapData[letter].filter(v => {
+export function removeSMOutlier(loadedData) {
+  Object.keys(loadedData).filter(letter => {
+    loadedData[letter] = loadedData[letter].filter(v => {
       return !sm.isOutlier(letter, v.position.x, v.position.y);
     });
   });
-  return tapData;
+  return loadedData;
 }
 
 export function drawCircle() {
@@ -50,9 +73,9 @@ function smProbability(x, y) {
   let probabilities = sm.getSMProbability(x, y);
 
   if (letterPs.length === 0) {
-    document.getElementById('predicted-letter').innerText =
+    document.getElementById("predicted-letter").innerText =
       typedLetters + probabilities[0].letter;
-    let predictedButton = document.getElementsByClassName('predicted-button');
+    let predictedButton = document.getElementsByClassName("predicted-button");
     for (let i = 0; i < 5; i++) {
       predictedButton[i].innerText = probabilities[i].letter;
     }
@@ -75,7 +98,7 @@ function smProbability(x, y) {
     .sort((a, b) => b.probability - a.probability)
     .slice(0, 1000);
 
-  document.getElementById('predicted-letter').innerText =
+  document.getElementById("predicted-letter").innerText =
     typedLetters + letterPs[0].letter;
   return false;
 }
@@ -102,33 +125,102 @@ function getLMProbability() {
   unknownPLM.sort((a, b) => b.probability - a.probability);
   pLM = pLM.concat(unknownPLM);
 
-  let predictedButton = document.getElementsByClassName('predicted-button');
+  let predictedButton = document.getElementsByClassName("predicted-button");
   for (let i = 0; i < 5; i++) {
     predictedButton[i].innerText = pLM[i].letter;
   }
+  console.log(true);
+}
+
+function bsFirstLetter() {
+  // "h" > "": pop typedLetters
+  console.log(-1);
+  inputData.pop();
+  Array.from(document.getElementsByClassName("predicted-button")).filter(v => {
+    v.innerText = "";
+  });
+  console.log(inputData);
+}
+
+function bsSpaceSpace() {
+  // "hoge  " > "hoge ": pop typedLetters
+  console.log("space space");
+  typedLetters = typedLetters.slice(0, -1);
+  typedLetters = typedLetters.substring(0, typedLetters.lastIndexOf(" ") + 1);
+  initialId = inputData[inputData.length - 1].initialId;
+  Array.from(document.getElementsByClassName("predicted-button")).filter(v => {
+    v.innerText = "";
+  });
+  console.log(inputData);
+}
+
+function bsSpace() {
+  // "hoge " > "hoge": pop typedLetters
+  typedLetters = typedLetters.slice(0, -1);
+  typedLetters = typedLetters.substring(0, typedLetters.lastIndexOf(" ") + 1);
+
+  initialId = inputData[inputData.length - 1].initialId;
+  inputData
+    .filter(v => v.initialId === initialId)
+    .filter(v => {
+      smProbability(v.position.x, v.position.y);
+    });
+  console.log(inputData);
+  getLMProbability();
+}
+
+function bsInitialLetter() {
+  // "hoge h" > "hoge ": don't pop typedLetters
+  console.log(1);
+  inputData.pop();
+  Array.from(document.getElementsByClassName("predicted-button")).filter(v => {
+    v.innerText = "";
+  });
+  console.log(inputData);
+}
+
+function bsLetter() {
+  // "hoge ho" > "hoge h":
+  console.log(2);
+  inputData.pop();
+  inputData
+    .filter(v => v.initialId === initialId)
+    .filter(v => {
+      smProbability(v.position.x, v.position.y);
+    });
+  console.log(inputData);
+  getLMProbability();
 }
 
 export function predictWordBS() {
-  let inputLetter = document.getElementById('predicted-letter');
-  if (inputLetter.innerText === '') return;
-  console.log(inputLetter.innerText.substring(typedLetters));
-
+  let inputLetter = document.getElementById("predicted-letter");
+  if (inputLetter.innerText === "") return;
   inputLetter.innerText = inputLetter.innerText.slice(0, -1);
-
-  if (typedLetters.slice(0, -1) === inputLetter.innerText) {
-    // "hoge " > "hoge": pop typedLetters
-    console.log(0);
-    typedLetters = typedLetters.slice(0, -1);
+  console.log(
+    `typedLetters=${typedLetters},inputLetters=${inputLetter.innerText};`
+  );
+  letterPs = [];
+  if (typedLetters === "" && inputLetter.innerText === "") {
+    bsFirstLetter();
     return;
+  } else if (typedLetters.slice(0, -1) === inputLetter.innerText) {
+    console.log(0);
+    const lastLetter = inputLetter.innerText.charAt(
+      inputLetter.innerText.length - 1
+    );
+    if (lastLetter === " ") {
+      bsSpaceSpace();
+      return;
+    } else {
+      bsSpace();
+      return;
+    }
   } else if (typedLetters === inputLetter.innerText) {
-    // "hoge h" > "hoge ": don't pop typedLetters
-    console.log(1);
+    bsInitialLetter();
     return;
   } else {
-    // "hoge ho" > "hoge h":
-    console.log(2);
-    letterPs.pop();
-    getLMProbability();
+    bsLetter();
+    return;
   }
 }
 
@@ -138,10 +230,19 @@ export function predictWord(x, y) {
     return;
   }
   let isFirstLetter = smProbability(x, y);
+  inputData.push({
+    position: {
+      x: x,
+      y: y
+    },
+    initialId: initialId,
+    timestamp: Date.now()
+  });
+  console.log(inputData);
   if (isFirstLetter) return;
   getLMProbability();
 }
 
 export function pushedPredictedButton(value) {
-  document.getElementById('predicted-letter').innerText = typedLetters + value;
+  document.getElementById("predicted-letter").innerText = typedLetters + value;
 }
