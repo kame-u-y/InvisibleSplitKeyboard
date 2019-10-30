@@ -60,7 +60,6 @@ function addTargetTapEvent() {
     } else {
       [spaceFlag, bsFlag] = [false, false];
     }
-    console.log(spaceFlag, bsFlag);
   };
 
   const endEvent = x => {
@@ -97,9 +96,8 @@ function addTargetTapEvent() {
       console.log("task ended");
       return;
     }
-    if (spaceFlag || isBS || bsFlag) {
+    if (spaceFlag || bsFlag) {
       spaceFlag = false;
-      isBS = false;
       bsFlag = false;
       return;
     }
@@ -110,10 +108,6 @@ function addTargetTapEvent() {
     input.inputPosition(x, y);
     addTapInfo(givenText.charAt(nextLetterNum), x, y);
     nextLetterNum++;
-    // if (nextLetterNum === givenText.length) {
-    //   input.displayTapData(tapData);
-    //   // hr.postTapData(tapData);
-    // }
   };
 
   // touchstart, mousedown
@@ -160,38 +154,7 @@ function addTargetTapEvent() {
   });
 }
 
-// function addEnterTapEvent() {
-//   const enter = document.getElementsByClassName("enter")[0];
-//   enter.addEventListener("touchend", ev => {
-//     ev.preventDefault();
-//     init();
-//     initFlag = true;
-//   });
-//   enter.addEventListener("click", ev => {
-//     init();
-//     initFlag = true;
-//   });
-// }
-
-// function addBSTapEvent() {
-//   const bs = document.getElementsByClassName("back")[0];
-//   const bsEvent = () => {
-//     [tapData, nextLetterNum] = input.deleteLetter(tapData, nextLetterNum);
-//     isBS = true;
-//     console.log(tapData);
-//   };
-//   bs.addEventListener("touchend", ev => {
-//     ev.preventDefault();
-//     bsEvent();
-//   });
-//   bs.addEventListener("click", ev => {
-//     bsEvent();
-//   });
-// }
-
 init();
 hr.initFirebase();
 re.addVisualEvent();
 addTargetTapEvent();
-// addEnterTapEvent();
-// addBSTapEvent();
