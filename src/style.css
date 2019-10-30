@@ -41,12 +41,23 @@ body {
   margin: 0;
 }
 
-#input-text {
-  border-right: solid 3px #ddd;
+#given-box {
+  margin: auto;
+  width: 50%;
 }
 
-#predicted-letter {
+#given-text {
+  font-size: 17px;
+}
+
+#input-box {
+  margin: auto;
+  width: 50%;
+}
+
+#input-text, #predicted-letter {
   border-right: solid 3px #ddd;
+  font-size: 17px;
 }
 
 #predicted-button-list {
