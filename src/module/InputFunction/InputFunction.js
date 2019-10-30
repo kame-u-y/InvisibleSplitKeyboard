@@ -1,4 +1,4 @@
-import * as kl from "../keyList/KeyList.js";
+import * as kl from "../KeyList/KeyList.js";
 
 export function inputLetter(letter) {
   document.getElementById("input-text").innerText += letter;
