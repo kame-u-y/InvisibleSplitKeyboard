@@ -1,3 +1,5 @@
+import * as kl from "../keyList/KeyList.js";
+
 export function inputLetter(letter) {
   document.getElementById("input-text").innerText += letter;
 }
@@ -18,17 +20,12 @@ export function inputPosition(x, y) {
 
 function addDot(letter, x, y) {
   const getH = letter => {
-    const initial = [
-      ["q", "w", "e", "r", "t", "y", "u", "i", "o", "p"],
-      ["a", "s", "d", "f", "g", "h", "j", "k", "l"],
-      ["z", "x", "c", "v", "b", "n", "m"]
-    ];
-    if (initial[0].indexOf(letter) !== -1)
-      return initial[0].indexOf(letter) * 30;
-    if (initial[1].indexOf(letter) !== -1)
-      return 180 + initial[1].indexOf(letter) * 30;
-    if (initial[2].indexOf(letter) !== -1)
-      return initial[2].indexOf(letter) * 30;
+    if (kl.rowKeyList[0].indexOf(letter) !== -1)
+      return kl.rowKeyList[0].indexOf(letter) * 30;
+    if (kl.rowKeyList[1].indexOf(letter) !== -1)
+      return 180 + kl.rowKeyList[1].indexOf(letter) * 30;
+    if (kl.rowKeyList[2].indexOf(letter) !== -1)
+      return kl.rowKeyList[2].indexOf(letter) * 30;
   };
   let dotContainer = document.getElementById("dot-container");
   let dot = document.createElement("p");

@@ -1,31 +1,5 @@
-const initial = [
-  'q',
-  'w',
-  'e',
-  'r',
-  't',
-  'y',
-  'u',
-  'i',
-  'o',
-  'p',
-  'a',
-  's',
-  'd',
-  'f',
-  'g',
-  'h',
-  'j',
-  'k',
-  'l',
-  'z',
-  'x',
-  'c',
-  'v',
-  'b',
-  'n',
-  'm'
-];
+import * as kl from "../KeyList/KeyList.js"
+
 // Your web app's Firebase configuration
 var firebaseConfig = {
   apiKey: 'AIzaSyBGPQ2pZFbRAMVDnMyC64jr1WGU-nFpt70',
@@ -88,7 +62,7 @@ export function getTapData(user, keyboardType, spaceVisual, callback) {
       if (doc.exists) {
         let data = Object.assign({}, doc.data());
         Object.keys(data)
-          .filter(k => !initial.find(v => v === k))
+          .filter(k => !kl.keyList.find(v => v === k))
           .filter(k => {
             delete data[k];
           });
