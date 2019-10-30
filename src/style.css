@@ -1,8 +1,8 @@
 :root {
   --footer-bottom: 0px;
-  
+
   --lt-padding-left: 2.5mm;
-  --lm-padding-left: 9.0mm;
+  --lm-padding-left: 9mm;
   --lb-padding-left: 2.5mm;
   --ls-padding-left: 2.5mm;
   --r-padding-right: 2.5mm;
@@ -14,7 +14,7 @@
   --letter-radius: 4px;
 
   --shift-width: 41.743px; /*1024*8.0/196.25*/
-  
+
   --l-symbol-width: 62.614px;
   --language-width: 34px;
   --mic-width: 34px;
@@ -118,14 +118,17 @@ body {
 
 .left-symbol {
   width: var(--l-symbol-width);
+  opacity: 0;
 }
 
 .language {
   width: var(--language-width);
+  opacity: 0;
 }
 
 .mic {
   width: var(--mic-width);
+  opacity: 0;
 }
 
 .left-space {
@@ -152,7 +155,6 @@ body {
   padding-right: var(--r-padding-right);
 }
 
- 
 /* #right-top {
 }
 
@@ -177,25 +179,38 @@ body {
   width: var(--letter-width);
 }
 
+.period {
+  opacity: 0;
+}
+
+.comma {
+  opacity: 0;
+}
+
 /********* right function **********/
 .back {
   width: var(--back-width);
+  opacity: 0;
 }
 
 .shift {
   width: var(--shift-width);
+  opacity: 0;
 }
 
 .enter {
   width: var(--enter-width);
+  opacity: 0;
 }
 
 .close {
   width: var(--close-width);
+  opacity: 0;
 }
 
 .right-symbol {
   width: var(--r-symbol-width);
+  opacity: 0;
 }
 
 .right-space {

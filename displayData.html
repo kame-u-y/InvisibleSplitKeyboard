@@ -10,13 +10,17 @@
   <body ontouchstart="">
     <div id="values">
       <div id="visual-mode">
-        <p><label>user name: </label><input id="user-name" type="text"/></p>
-        <input name="visual-mode" type="radio" value="visible" checked>visible
-        <input name="visual-mode" type="radio" value="key-invisible">key-invisible
-        <input name="visual-mode" type="radio" value="frame-only">frame-only
-        <input name="visual-mode" type="radio" value="invisible">invisible
-        <p><input type="checkbox" id="space-visible" checked>spaceVisible</p>
-        <p><input type="button" id="get-tap-data" value="get tap data"/></p>
+        <p><label>user name: </label><input id="user-name" type="text" /></p>
+        <input name="visual-mode" type="radio" value="visible" checked />visible
+        <input
+          name="visual-mode"
+          type="radio"
+          value="key-invisible"
+        />key-invisible
+        <input name="visual-mode" type="radio" value="frame-only" />frame-only
+        <input name="visual-mode" type="radio" value="invisible" />invisible
+        <p><input type="checkbox" id="space-visible" checked />spaceVisible</p>
+        <p><input type="button" id="get-tap-data" value="get tap data" /></p>
       </div>
       <pre id="input-box"><span id="predicted-letter"></span></pre>
       <!-- <p id="predicted-word"></p> -->
@@ -46,17 +50,17 @@
           <li class="key left-key left-letter" data-letter="g">g</li>
         </ul>
         <ul class="left-row" id="left-bottom">
-          <li class="key left-key shift"> </li>
+          <li class="key left-key shift"></li>
           <li class="key left-key left-letter" data-letter="z">z</li>
           <li class="key left-key left-letter" data-letter="x">x</li>
           <li class="key left-key left-letter" data-letter="c">c</li>
           <li class="key left-key left-letter" data-letter="v">v</li>
         </ul>
         <ul class="left-row" id="left-special">
-            <li class="key left-key left-symbol"> </li>
-            <li class="key left-key language"> </li>
-            <li class="key left-key mic"> </li>
-            <li class="key left-key left-space" data-letter=" "> </li>
+          <li class="key left-key left-symbol"></li>
+          <li class="key left-key language"></li>
+          <li class="key left-key mic"></li>
+          <li class="key left-key left-space" data-letter=" "></li>
         </ul>
       </div>
       <div id="right-keyboard">
@@ -69,24 +73,24 @@
           <li class="key right-key right-letter" data-letter="y">y</li>
         </ul>
         <ul class="right-row" id="right-middle">
-          <li class="key right-key enter"> </li>
+          <li class="key right-key enter"></li>
           <li class="key right-key right-letter" data-letter="l">l</li>
           <li class="key right-key right-letter" data-letter="k">k</li>
           <li class="key right-key right-letter" data-letter="j">j</li>
           <li class="key right-key right-letter" data-letter="h">h</li>
         </ul>
         <ul class="right-row" id="right-bottom">
-          <li class="key right-key shift"> </li>
-          <li class="key right-key right-letter" data-letter=".">.</li>
-          <li class="key right-key right-letter" data-letter=",">,</li>
+          <li class="key right-key shift"></li>
+          <li class="key right-key right-letter period" data-letter=".">.</li>
+          <li class="key right-key right-letter comma" data-letter=",">,</li>
           <li class="key right-key right-letter" data-letter="m">m</li>
           <li class="key right-key right-letter" data-letter="n">n</li>
           <li class="key right-key right-letter" data-letter="b">b</li>
         </ul>
         <ul class="right-row" id="right-special">
-            <li class="key right-key close"> </li>
-            <li class="key right-key right-symbol"> </li>
-            <li class="key right-key right-space" data-letter=" "> </li>
+          <li class="key right-key close"></li>
+          <li class="key right-key right-symbol"></li>
+          <li class="key right-key right-space" data-letter=" "></li>
         </ul>
       </div>
     </div>
@@ -97,7 +101,8 @@
     <script
       src="https://code.jquery.com/jquery-3.4.1.min.js"
       integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
-      crossorigin="anonymous"></script>
+      crossorigin="anonymous"
+    ></script>
     <script src="https://www.gstatic.com/firebasejs/7.2.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/6.3.4/firebase-firestore.js"></script>
     <script src="https://www.gstatic.com/firebasejs/7.2.0/firebase-analytics.js"></script>
