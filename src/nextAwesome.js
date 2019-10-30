@@ -94,10 +94,11 @@ function addPredictedButtonEvent() {
 }
 
 function addTargetTapEvent() {
+  const target = document.getElementById("target");
   let selectFlag = false;
   let selectStartX = -1;
   let selectStartY = -1;
-  const target = document.getElementById("target");
+  
   const initStartXY = () => {
     selectStartX = -1;
     selectStartY = -1;
