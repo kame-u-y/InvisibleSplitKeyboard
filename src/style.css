@@ -41,9 +41,13 @@ body {
   margin: 0;
 }
 
-#given-box {
+#task-container {
   margin: auto;
   width: 50%;
+}
+
+#given-box {
+  height: 30px;
 }
 
 #given-text {
@@ -51,8 +55,7 @@ body {
 }
 
 #input-box {
-  margin: auto;
-  width: 50%;
+  height: 30px;
 }
 
 #input-text, #predicted-letter {
