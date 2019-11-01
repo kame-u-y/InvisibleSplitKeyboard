@@ -1,25 +1,25 @@
-import * as input from "./module/InputFunction/InputFunction.js";
-import * as re from "./module/RadioEvent/RadioEvent.js";
-import * as rp from "./module/GetRandomWords/GetRandomWords.js";
-import * as hr from "./module/MyHttpRequest/MyHttpRequest.js";
+import * as input from './module/InputFunction/InputFunction.js';
+import * as re from './module/RadioEvent/RadioEvent.js';
+import * as rp from './module/GetRandomWords/GetRandomWords.js';
+import * as hr from './module/MyHttpRequest/MyHttpRequest.js';
 
 let tapData = {};
-let givenText = "";
+let givenText = '';
 let nextLetterNum = 0;
 let initFlag = false;
 let isBS = false;
 
 function init() {
-  document.getElementById("given-text").innerText = rp.getRandomPhrase();
-  givenText = document.getElementById("given-text").innerText;
+  document.getElementById('given-text').innerText = rp.getRandomPhrase();
+  givenText = document.getElementById('given-text').innerText;
   tapData = {};
   nextLetterNum = 0;
-  document.getElementById("input-text").innerText = "";
-  document.getElementById("dot-container").innerHTML = "";
+  document.getElementById('input-text').innerText = '';
+  document.getElementById('dot-container').innerHTML = '';
 }
 
 function addTapInfo(letter, x, y) {
-  if (letter === " " || letter === "-" || letter === "?" || letter === "�")
+  if (letter === ' ' || letter === '-' || letter === '?' || letter === '�')
     return;
   letter = letter.toLowerCase();
   if (!tapData[letter]) {
@@ -36,7 +36,7 @@ function addTapInfo(letter, x, y) {
 // target
 // inputPositionを実行
 function addTargetTapEvent() {
-  const target = document.getElementById("target");
+  const target = document.getElementById('target');
   let spaceFlag = false;
   let bsFlag = false;
   let spaceStartX = -1;
@@ -75,7 +75,7 @@ function addTargetTapEvent() {
         initFlag = true;
         spaceFlag = false;
       } else {
-        input.inputLetter(" ");
+        input.inputLetter(' ');
         nextLetterNum++;
       }
       return;
@@ -93,7 +93,7 @@ function addTargetTapEvent() {
       return;
     }
     if (nextLetterNum === givenText.length) {
-      console.log("task ended");
+      console.log('task ended');
       return;
     }
     if (spaceFlag || bsFlag) {
@@ -101,44 +101,44 @@ function addTargetTapEvent() {
       bsFlag = false;
       return;
     }
-    if (givenText.charAt(nextLetterNum) === " ") {
+    if (givenText.charAt(nextLetterNum) === ' ') {
       return;
     }
     input.inputLetter(givenText.charAt(nextLetterNum));
-    input.inputPosition(x, y);
+    // input.inputPosition(x, y);
     addTapInfo(givenText.charAt(nextLetterNum), x, y);
     nextLetterNum++;
   };
 
   // touchstart, mousedown
   target.addEventListener(
-    "touchstart",
+    'touchstart',
     ev => {
       ev.preventDefault();
       startEvent(ev.changedTouches[0].pageX, ev.changedTouches[0].pageY);
     },
     { passive: false }
   );
-  target.addEventListener("mousedown", ev => {
+  target.addEventListener('mousedown', ev => {
     startEvent(ev.pageX, ev.pageY);
   });
 
   // touchmove, mousemove
   target.addEventListener(
-    "touchmove",
+    'touchmove',
     ev => {
       ev.preventDefault();
       moveEvent(ev.changedTouches[0].pageX, ev.changedTouches[0].pageY);
     },
     { passive: false }
   );
-  target.addEventListener("mousemove", ev => {
+  target.addEventListener('mousemove', ev => {
     moveEvent(ev.pageX, ev.pageY);
   });
 
   //touchend, mouseup, click
   target.addEventListener(
-    "touchend",
+    'touchend',
     ev => {
       ev.preventDefault();
       endEvent(ev.changedTouches[0].pageX, ev.changedTouches[0].pageY);
@@ -146,10 +146,10 @@ function addTargetTapEvent() {
     },
     { passive: false }
   );
-  target.addEventListener("mouseup", ev => {
+  target.addEventListener('mouseup', ev => {
     endEvent(ev.pageX, ev.pageY);
   });
-  target.addEventListener("click", ev => {
+  target.addEventListener('click', ev => {
     targetEvent(ev.pageX, ev.pageY);
   });
 }

@@ -1,21 +1,21 @@
-import * as input from "./module/InputFunction/InputFunction.js";
-import * as re from "./module/RadioEvent/RadioEvent.js";
-import * as rp from "./module/GetRandomWords/GetRandomWords.js";
+import * as input from './module/InputFunction/InputFunction.js';
+import * as re from './module/RadioEvent/RadioEvent.js';
+import * as rp from './module/GetRandomWords/GetRandomWords.js';
 
 let tapData = {};
-let givenText = "";
+let givenText = '';
 let goNextFlag = false;
 let nextLetterNum = 0;
 let initFlag = false;
 let isBS = false;
 
 function init() {
-  document.getElementById("given-text").innerText = rp.getRandomPhrase();
-  givenText = document.getElementById("given-text").innerText;
+  document.getElementById('given-text').innerText = rp.getRandomPhrase();
+  givenText = document.getElementById('given-text').innerText;
   tapData = {};
   nextLetterNum = 0;
-  document.getElementById("input-text").innerText = "";
-  document.getElementById("dot-container").innerHTML = "";
+  document.getElementById('input-text').innerText = '';
+  document.getElementById('dot-container').innerHTML = '';
 }
 
 function addTapInfo(letter, x, y) {
@@ -33,14 +33,14 @@ function addTapInfo(letter, x, y) {
 // target
 // input.inputPositionを実行
 function addTargetTapEvent() {
-  const target = document.getElementById("target");
+  const target = document.getElementById('target');
   const targetEvent = (x, y) => {
     if (initFlag) {
       initFlag = false;
       return;
     }
     if (nextLetterNum >= givenText.length) {
-      console.log("task ended");
+      console.log('task ended');
       return;
     }
     if (isBS) {
@@ -59,14 +59,14 @@ function addTargetTapEvent() {
   };
 
   target.addEventListener(
-    "touchend",
+    'touchend',
     ev => {
       targetEvent(ev.changedTouches[0].pageX, ev.changedTouches[0].pageY);
     },
     { passive: false }
   );
 
-  target.addEventListener("click", ev => {
+  target.addEventListener('click', ev => {
     targetEvent(ev.pageX, ev.pageY);
   });
 }
@@ -74,14 +74,14 @@ function addTargetTapEvent() {
 // keys
 // input.inputLetterを実行
 function addKeyTapEvent() {
-  const keys = document.getElementsByClassName("key");
+  const keys = document.getElementsByClassName('key');
   const keyEvent = (elem, x, y) => {
-    if (elem.dataset.letter === "enter") {
+    if (elem.dataset.letter === 'enter') {
       init();
       initFlag = true;
       return;
     }
-    if (elem.dataset.letter === "BS") {
+    if (elem.dataset.letter === 'BS') {
       [tapData, nextLetterNum] = input.deleteLetter(tapData, nextLetterNum);
       isBS = true;
       return;
@@ -94,11 +94,11 @@ function addKeyTapEvent() {
   };
 
   Array.from(keys).forEach(elem => {
-    elem.addEventListener("touchend", ev => {
+    elem.addEventListener('touchend', ev => {
       ev.preventDefault();
       keyEvent(elem, ev.changedTouches[0].pageX, ev.changedTouches[0].pageY);
     });
-    elem.addEventListener("click", ev => {
+    elem.addEventListener('click', ev => {
       keyEvent(elem, ev.pageX, ev.pageY);
     });
   });

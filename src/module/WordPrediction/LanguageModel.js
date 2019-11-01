@@ -5,13 +5,13 @@ export function getLMProbability(str) {
   if (res) {
     res = {
       value: 0.9999999999999999999999999999 * Number(res.ratio),
-      isKnown: true,
-    }
+      isKnown: true
+    };
   } else {
     res = {
       value: 0.0000000000000000000000000001 * (1 / Number(freqJson.total)),
-      isKnown: false,
-    }
+      isKnown: false
+    };
   }
   return res;
 }

@@ -1,4 +1,4 @@
-import * as kl from "../KeyList/KeyList.js"
+import * as kl from '../KeyList/KeyList.js';
 
 // Your web app's Firebase configuration
 var firebaseConfig = {
