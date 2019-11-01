@@ -5,7 +5,7 @@ import * as rp from "./module/GetRandomWords/GetRandomWords.js";
 
 let loadedDatas = [];
 let isSpace = false;
-let isBS = false;
+// let isBS = false;
 
 function init() {
   document.getElementById("given-text").innerText = rp.getRandomPhrase();
@@ -96,9 +96,10 @@ function addPredictedButtonEvent() {
 function addTargetTapEvent() {
   const target = document.getElementById("target");
   let selectFlag = false;
+  let bsFlag = false;
   let selectStartX = -1;
   let selectStartY = -1;
-  
+
   const initStartXY = () => {
     selectStartX = -1;
     selectStartY = -1;
@@ -128,16 +129,26 @@ function addTargetTapEvent() {
           v.style.backgroundColor = "#eee";
         }
       );
-      selectFlag = false;
+      [selectFlag, bsFlag] = [false, false];
     } else {
-      if (x - selectStartX < 10) return;
-      selectFlag = true;
-      let [dx, w] = dxwProcess(x, selectStartX);
       const buttons = document.getElementsByClassName("predicted-button");
-      for (let i = 0; i < buttons.length; i++) {
-        if (i === Math.floor(dx / w) - 1)
-          buttons[i].style.backgroundColor = "#ccc";
-        else buttons[i].style.backgroundColor = "#ddd";
+      if (x - selectStartX < -100) {
+        [selectFlag, bsFlag] = [false, true];
+        for (let i = 0; i < buttons.length; i++) {
+          buttons[i].style.backgroundColor = "#ddd";
+        }
+        return;
+      } else if (x - selectStartX >= 10) {
+        [selectFlag, bsFlag] = [true, false];
+        let [dx, w] = dxwProcess(x, selectStartX);
+        for (let i = 0; i < buttons.length; i++) {
+          if (i === Math.floor(dx / w) - 1)
+            buttons[i].style.backgroundColor = "#ccc";
+          else buttons[i].style.backgroundColor = "#ddd";
+        }
+        return;
+      } else {
+        [selectFlag, bsFlag] = [false, false];
       }
     }
   };
@@ -150,31 +161,44 @@ function addTargetTapEvent() {
           v.style.backgroundColor = "#ddd";
         }
       );
+      let givenText = document.getElementById("given-text").innerText;
+      let inputText = document.getElementById("predicted-letter").innerText;
+      if (givenText + " " === inputText) {
+        wp.initProbability();
+        init();
+        initStartXY();
+      } else {
+        wp.nextProbability();
+        isSpace = true;
+        initStartXY();
+      }
     } else {
-      if (!selectFlag) {
+      if (!selectFlag && !bsFlag) {
         initStartXY();
         return;
       }
-      let [dx, w] = dxwProcess(x, selectStartX);
-      const selected = document.getElementsByClassName("predicted-button")[
-        Math.floor(dx / w) - 1
-      ];
-      wp.pushedPredictedButton(selected.innerText);
-      selected.style.backgroundColor = "#ddd";
+      if (bsFlag) {
+        wp.predictWordBS();
+        initStartXY();
+      } else if (selectFlag) {
+        let [dx, w] = dxwProcess(x, selectStartX);
+        const selected = document.getElementsByClassName("predicted-button")[
+          Math.floor(dx / w) - 1
+        ];
+        wp.pushedPredictedButton(selected.innerText);
+        selected.style.backgroundColor = "#ddd";
+        wp.nextProbability();
+        isSpace = true;
+        initStartXY();
+      }
     }
-    wp.nextProbability();
-    isSpace = true;
-    initStartXY();
   };
 
   const targetEvent = (x, y) => {
-    if (isSpace || selectFlag) {
+    if (isSpace || selectFlag || bsFlag) {
       isSpace = false;
       selectFlag = false;
-      return;
-    }
-    if (isBS) {
-      isBS = false;
+      bsFlag = false;
       return;
     }
     wp.predictWord(x, y);
@@ -224,43 +248,6 @@ function addTargetTapEvent() {
   });
 }
 
-function addSpaceTapEvent() {
-  const space = [
-    document.getElementsByClassName("right-space")[0],
-    document.getElementsByClassName("left-space")[0]
-  ];
-  const spaceEvent = () => {
-    wp.nextProbability();
-    isSpace = true;
-  };
-  Array.from(space).filter(v => {
-    v.addEventListener("touchend", ev => {
-      ev.preventDefault();
-      spaceEvent();
-    });
-  });
-  Array.from(space).filter(v => {
-    v.addEventListener("click", ev => {
-      spaceEvent();
-    });
-  });
-}
-
-function addBSTapEvent() {
-  const bs = document.getElementsByClassName("back")[0];
-  const bsEvent = () => {
-    wp.predictWordBS();
-    isBS = true;
-  };
-  bs.addEventListener("touchend", ev => {
-    ev.preventDefault();
-    bsEvent();
-  });
-  bs.addEventListener("click", ev => {
-    bsEvent();
-  });
-}
-
 function addEnterTapEvent() {
   const enter = document.getElementsByClassName("enter")[0];
   const enterEvent = () => {
@@ -283,6 +270,4 @@ re.addVisualEvent();
 addButtonEvent();
 addTargetTapEvent();
 addPredictedButtonEvent();
-addSpaceTapEvent();
-addBSTapEvent();
 addEnterTapEvent();
