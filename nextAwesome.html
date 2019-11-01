@@ -9,9 +9,10 @@
   </head>
   <body ontouchstart="">
     <div id="values">
+      <label>user name: </label><input id="user-name" type="text" />
       <div id="visual-mode">
-        <label>user name: </label><input id="user-name" type="text" />
-        <input name="visual-mode" type="radio" value="visible" checked />visible
+        <input name="visual-mode" type="radio" value="eyes-on" checked />eyes-on
+        <input name="visual-mode" type="radio" value="peripheral" />peripheral
         <input
           name="visual-mode"
           type="radio"
@@ -20,9 +21,9 @@
         <input name="visual-mode" type="radio" value="frame-only" />frame-only
         <input name="visual-mode" type="radio" value="invisible" />invisible
         <input type="checkbox" id="space-visible" checked />spaceVisible
-        <input type="button" id="get-tap-data" value="get tap data" />
-        <label id="is-ok"></label>
       </div>
+      <input type="button" id="get-tap-data" value="get tap data" />
+      <label id="is-ok"></label>
       <div id="task-container">
         <pre id="given-text">give when until</pre>
         <pre id="input-box"><span id="predicted-letter"></span></pre>
