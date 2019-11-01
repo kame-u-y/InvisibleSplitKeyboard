@@ -248,21 +248,6 @@ function addTargetTapEvent() {
   });
 }
 
-function addEnterTapEvent() {
-  const enter = document.getElementsByClassName("enter")[0];
-  const enterEvent = () => {
-    wp.initProbability();
-    init();
-  };
-  enter.addEventListener("touchend", ev => {
-    ev.preventDefault();
-    enterEvent();
-  });
-  enter.addEventListener("click", ev => {
-    enterEvent();
-  });
-}
-
 init();
 restrictScroll();
 hr.initFirebase();
@@ -270,4 +255,3 @@ re.addVisualEvent();
 addButtonEvent();
 addTargetTapEvent();
 addPredictedButtonEvent();
-addEnterTapEvent();
