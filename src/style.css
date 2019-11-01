@@ -5,7 +5,11 @@
   --lm-padding-left: 9mm;
   --lb-padding-left: 2.5mm;
   --ls-padding-left: 2.5mm;
-  --r-padding-right: 2.5mm;
+  /* --r-padding-right: 2.5mm; */
+  --rt-padding-right: 2.5mm;
+  --rm-padding-right: 9mm;
+  --rb-padding-right: 2.5mm;
+  --rs-padding-right: 2.5mm;
 
   --letter-width: 34px; /*1024*6.25/196.25*/
   --letter-margin-horizontal: 9.131px; /*1024*1.75/196.25*/
@@ -149,6 +153,7 @@ body {
   width: var(--l-space-width);
   border: 1px solid #303030;
   box-sizing: border-box;
+  opacity: 0;
 }
 
 /********* right keyboard *********/
@@ -166,17 +171,24 @@ body {
   height: var(--letter-height);
   margin: 0 0 var(--letter-margin-vertical) 0;
   padding-left: 0;
-  padding-right: var(--r-padding-right);
+  /* padding-right: var(--r-padding-right); */
 }
 
-/* #right-top {
+#right-top {
+  padding-right: var(--rt-padding-right);
 }
 
 #right-middle {
+  padding-right: var(--rm-padding-right);
 }
 
 #right-bottom {
-} */
+  padding-right: var(--rb-padding-right);
+}
+
+#right-special {
+  padding-right: var(--rs-padding-right);
+}
 
 .right-key {
   background-color: white;
@@ -231,6 +243,7 @@ body {
   width: var(--r-space-width);
   border: solid 1px rgb(48, 48, 48);
   box-sizing: border-box;
+  opacity: 0;
 }
 
 /********* dot *********/
