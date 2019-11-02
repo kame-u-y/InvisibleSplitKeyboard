@@ -42,7 +42,8 @@ function setSpaceOpacity(isVisible) {
 function setKeyOpacity(isVisible) {
   if (isVisible) {
     keys.css('opacity', '1');
-    setSpaceOpacity(true);
+    // setSpaceOpacity(true);
+    setSpaceOpacity(false);
   } else {
     keys.css('opacity', '0');
     if (spaceVisible.prop('checked')) {
