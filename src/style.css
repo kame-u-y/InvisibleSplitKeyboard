@@ -5,11 +5,11 @@
   --lm-padding-left: 9mm;
   --lb-padding-left: 2.5mm;
   --ls-padding-left: 2.5mm;
-  /* --r-padding-right: 2.5mm; */
-  --rt-padding-right: 2.5mm;
+  --r-padding-right: 2.5mm;
+  /* --rt-padding-right: 2.5mm;
   --rm-padding-right: 9mm;
   --rb-padding-right: 2.5mm;
-  --rs-padding-right: 2.5mm;
+  --rs-padding-right: 2.5mm; */
 
   --letter-width: 34px; /*1024*6.25/196.25*/
   --letter-margin-horizontal: 9.131px; /*1024*1.75/196.25*/
@@ -62,7 +62,8 @@ body {
   height: 30px;
 }
 
-#input-text, #predicted-letter {
+#input-text,
+#predicted-letter {
   border-right: solid 3px #ddd;
   font-size: 17px;
 }
@@ -171,9 +172,9 @@ body {
   height: var(--letter-height);
   margin: 0 0 var(--letter-margin-vertical) 0;
   padding-left: 0;
-  /* padding-right: var(--r-padding-right); */
+  padding-right: var(--r-padding-right);
 }
-
+/* 
 #right-top {
   padding-right: var(--rt-padding-right);
 }
@@ -184,7 +185,7 @@ body {
 
 #right-bottom {
   padding-right: var(--rb-padding-right);
-}
+} */
 
 #right-special {
   padding-right: var(--rs-padding-right);

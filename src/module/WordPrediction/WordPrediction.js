@@ -2,7 +2,7 @@ import * as sm from './SpacialModel.js';
 import * as lm from './LanguageModel.js';
 
 /*
-after
+構造
 inputData = [
   {
     position: {
