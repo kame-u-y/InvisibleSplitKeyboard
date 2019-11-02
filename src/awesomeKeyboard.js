@@ -8,7 +8,9 @@ let isSpace = false;
 let isBS = false;
 
 function init() {
-  document.getElementById('given-text').innerText = rp.getRandomPhrase();
+  document.getElementById(
+    'given-text'
+  ).innerText = rp.getRandomPhrase().toLowerCase();
 }
 
 function restrictScroll() {
