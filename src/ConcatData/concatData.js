@@ -43,43 +43,43 @@ function getTapData(user, keyboardType, spaceVisual, callback) {
 let nFlag = false;
 let kFlag = false;
 
-let nouchi;
-getTapData('nouchi-alienware', 'frame-only', 'invisible', data => {
+let data1;
+getTapData('kame-peripheral', 'visible', 'visible', data => {
   // console.log(data);
-  nouchi = data;
+  data1 = data;
   nFlag = true;
   joinData();
 });
 
-let kame;
-getTapData('kame-alienware', 'frame-only', 'invisible', data => {
+let data2;
+getTapData('dsk', 'peripheral', 'invisible', data => {
   // console.log(data);
-  kame = data;
+  data2 = data;
   kFlag = true;
   joinData();
 });
 
 function joinData() {
   if (!(nFlag && kFlag)) return;
-  Object.keys(kame).filter(k => {
-    Object.keys(nouchi).filter(n => {
+  Object.keys(data2).filter(k => {
+    Object.keys(data1).filter(n => {
       if (k === n) {
-        kame[k] = kame[k].concat(nouchi[n]);
+        data2[k] = data2[k].concat(data1[n]);
       }
     });
   });
-  console.log(kame);
+  console.log(data2);
 
   let db = firebase.firestore();
   db.collection('users')
-    .doc('kame-nouchi-alienware')
+    .doc('dsk-kame')
     .collection('devices')
     .doc('ipad9.7')
     .collection('keyboardTypes')
-    .doc('frame-only')
+    .doc('peripheral')
     .collection('spaceVisual')
     .doc('invisible')
-    .set(kame, { merge: true })
+    .set(data2, { merge: true })
     .then(docRef => {
       console.log(docRef);
     })
