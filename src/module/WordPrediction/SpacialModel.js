@@ -108,8 +108,11 @@ export function drawCircle() {
     };
     const width = gaussianData[letter].x.sigma * 3 * 2;
     const height = gaussianData[letter].y.sigma * 3 * 2;
-    const left = gaussianData[letter].x.average;
-    const top = gaussianData[letter].y.average;
+    const targetRect = document
+      .getElementById('target')
+      .getBoundingClientRect();
+    const left = targetRect.left + gaussianData[letter].x.average;
+    const top = targetRect.top + gaussianData[letter].y.average;
     let circleContainer = document.getElementById('circle-container');
     let circle = document.createElement('div');
     circle.setAttribute('class', 'circle');

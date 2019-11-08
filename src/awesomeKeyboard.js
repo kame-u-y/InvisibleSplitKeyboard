@@ -112,13 +112,22 @@ function addTargetTapEvent() {
     'touchend',
     ev => {
       ev.preventDefault();
-      targetEvent(ev.changedTouches[0].pageX, ev.changedTouches[0].pageY);
+      const touch = ev.changedTouches[0];
+      const targetRect = target.getBoundingClientRect();
+      const x = touch.clientX - targetRect.left;
+      const y = touch.clientY - targetRect.top;
+      console.log(x, y);
+      targetEvent(x, y);
     },
     { passive: false }
   );
 
   target.addEventListener('click', ev => {
-    targetEvent(ev.pageX, ev.pageY);
+    const targetRect = target.getBoundingClientRect();
+    const x = ev.clientX - targetRect.left;
+    const y = ev.clientY - targetRect.top;
+    console.log(x, y);
+    targetEvent(x, y);
   });
 }
 
