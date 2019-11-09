@@ -96,7 +96,8 @@ export function getSMProbability(x, y) {
 }
 
 export function drawCircle() {
-  console.log(gaussianData);
+  const targetRect = document.getElementById('target').getBoundingClientRect();
+  const circleContainer = document.getElementById('circle-container');
   Object.keys(gaussianData).filter(letter => {
     const getH = letter => {
       if (kl.rowKeyList[0].indexOf(letter) !== -1)
@@ -108,12 +109,9 @@ export function drawCircle() {
     };
     const width = gaussianData[letter].x.sigma * 3 * 2;
     const height = gaussianData[letter].y.sigma * 3 * 2;
-    const targetRect = document
-      .getElementById('target')
-      .getBoundingClientRect();
+
     const left = targetRect.left + gaussianData[letter].x.average;
     const top = targetRect.top + gaussianData[letter].y.average;
-    let circleContainer = document.getElementById('circle-container');
     let circle = document.createElement('div');
     circle.setAttribute('class', 'circle');
     circle.style.cssText = `background-color: hsla(${getH(

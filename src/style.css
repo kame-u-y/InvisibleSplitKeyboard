@@ -11,9 +11,11 @@
   --rb-padding-right: 2.5mm;
   --rs-padding-right: 2.5mm; */
 
-  --letter-width: 34px; /*1024*6.25/196.25*/
+  /* --letter-width: 34px; 1024*6.25/196.25 */
+  --letter-width: 48.265px;
   --letter-margin-horizontal: 9.131px; /*1024*1.75/196.25*/
-  --letter-height: 41.725px; /*768*8.0/147.25*/
+  /* --letter-height: 41.725px; 768*8.0/147.25 */
+  --letter-height: 59.98px;
   --letter-margin-vertical: 9.127px; /*768*1.75/147.25*/
   --letter-radius: 4px;
 
@@ -92,10 +94,12 @@ body {
 /********* left keyboard *********/
 #left-keyboard {
   float: left;
-  background-color: #303030;
-  padding-top: 9.12px;
+  background-color: rgb(0, 0, 0);
+  padding: 4px;
+  padding-top: calc(9.12px + 4px);
   border-radius: 4px;
-  border: solid 5px rgb(48, 48, 48);
+  border: solid 1px rgba(0, 0, 0, 0);
+  opacity: 0.5;
 }
 
 .left-row {
@@ -121,7 +125,9 @@ body {
 }
 
 .left-key {
-  background-color: white;
+  background-color: rgb(64, 64, 64);
+  color: white;
+  font-family: Segoe UI, SegoeUI, 'Helvetica Neue', Helvetica, Arial, sans-serif;
   float: left;
   display: flex;
   align-items: center;
@@ -160,11 +166,12 @@ body {
 /********* right keyboard *********/
 #right-keyboard {
   float: right;
-  background-color: #303030;
-  padding-top: 9.12px;
-  padding-right: 0;
+  background-color: rgb(0, 0, 0);
+  padding: 4px;
+  padding-top: calc(9.12px + 4px);
   border-radius: 4px;
-  border: solid 5px rgb(48, 48, 48);
+  border: solid 1px rgba(0, 0, 0, 0);
+  opacity: 0.5;
 }
 
 .right-row {
@@ -192,7 +199,9 @@ body {
 }
 
 .right-key {
-  background-color: white;
+  background-color: rgb(64, 64, 64);
+  color: white;
+  font-family: Segoe UI, SegoeUI, 'Helvetica Neue', Helvetica, Arial, sans-serif;
   display: flex;
   align-items: center;
   justify-content: center;

@@ -11,21 +11,25 @@ let spaceVisible = $('#space-visible');
 
 function setKeyboardBGColor(isVisible) {
   if (isVisible) {
-    leftKeyboard.css('background-color', 'rgb(48, 48, 48)');
-    rightKeyboard.css('background-color', 'rgb(48, 48, 48)');
+    leftKeyboard.css('background-color', 'rgba(0, 0, 0)');
+    rightKeyboard.css('background-color', 'rgba(0, 0, 0)');
+    leftKeyboard.css('opacity', '0.5');
+    rightKeyboard.css('opacity', '0.5');
   } else {
-    leftKeyboard.css('background-color', 'rgba(48, 48, 48, 0)');
-    rightKeyboard.css('background-color', 'rgba(48, 48, 48, 0)');
+    leftKeyboard.css('background-color', 'rgba(0, 0, 0, 0)');
+    rightKeyboard.css('background-color', 'rgba(0, 0, 0, 0)');
+    leftKeyboard.css('opacity', '1');
+    rightKeyboard.css('opacity', '1');
   }
 }
 
 function setKeyboardBorderColor(isVisible) {
   if (isVisible) {
-    leftKeyboard.css('border-color', 'rgb(48, 48, 48)');
-    rightKeyboard.css('border-color', 'rgb(48, 48, 48)');
+    leftKeyboard.css('border-color', 'rgba(64, 64, 64)');
+    rightKeyboard.css('border-color', 'rgba(64, 64, 64)');
   } else {
-    leftKeyboard.css('border-color', 'rgba(48, 48, 48, 0)');
-    rightKeyboard.css('border-color', 'rgba(48, 48, 48, 0)');
+    leftKeyboard.css('border-color', 'rgba(64, 64, 64, 0)');
+    rightKeyboard.css('border-color', 'rgba(64, 64, 64, 0)');
   }
 }
 
@@ -63,12 +67,12 @@ function addRadioEvent() {
       case 'eyes-on':
       case 'peripheral':
         setKeyboardBGColor(true);
-        setKeyboardBorderColor(true);
+        setKeyboardBorderColor(false);
         setKeyOpacity(true);
         break;
       case 'key-invisible':
         setKeyboardBGColor(true);
-        setKeyboardBorderColor(true);
+        setKeyboardBorderColor(false);
         setKeyOpacity(false);
         break;
       case 'frame-only':

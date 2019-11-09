@@ -4,6 +4,7 @@ import * as input from './module/InputFunction/InputFunction.js';
 import * as wp from './module/WordPrediction/WordPrediction.js';
 
 let tapDatas = [];
+let debug = document.getElementById('debug');
 
 function init() {
   document.getElementById('dot-container').innerHTML = '';
@@ -72,24 +73,27 @@ function addTargetTapEvent() {
   target.addEventListener(
     'touchend',
     ev => {
+      debug.innerText = ev.touches.length;
+      l;
       ev.preventDefault();
       const touch = ev.changedTouches[0];
       const targetRect = target.getBoundingClientRect();
       const x = touch.clientX - targetRect.left;
       const y = touch.clientY - targetRect.top;
-      console.log(x, y);
+
+      // const x = ev.changedTouches[0].clientX;
+      // const y = ev.changedTouches[0].clientY;
       targetEvent(x, y);
     },
     { passive: false }
   );
 
-  target.addEventListener('click', ev => {
-    const targetRect = target.getBoundingClientRect();
-    const x = ev.clientX - targetRect.left;
-    const y = ev.clientY - targetRect.top;
-    console.log(x, y);
-    targetEvent(x, y);
-  });
+  // target.addEventListener('click', ev => {
+  //   const targetRect = target.getBoundingClientRect();
+  //   const x = ev.clientX - targetRect.left;
+  //   const y = ev.clientY - targetRect.top;
+  //   targetEvent(x, y);
+  // });
 }
 
 function addEnterTapEvent() {
