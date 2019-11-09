@@ -4,12 +4,12 @@ export function getLMProbability(str) {
   let res = freqJson[str[0]].find(v => v.word === str);
   if (res) {
     res = {
-      value: 0.9999999999999999999999999999 * Number(res.ratio),
+      value: 0.99 * Number(res.ratio),
       isKnown: true
     };
   } else {
     res = {
-      value: 0.0000000000000000000000000001 * (1 / Number(freqJson.total)),
+      value: 0.01 * (1 / Number(freqJson.total)),
       isKnown: false
     };
   }
