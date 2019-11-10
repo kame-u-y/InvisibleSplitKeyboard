@@ -71,7 +71,7 @@ export function isOutlier(letter, x, y) {
   );
 }
 
-export function getSMProbability(x, y) {
+export function getSMProbability5(x, y) {
   let probabilities = [];
   Object.keys(gaussianData).filter(letter => {
     let data = gaussianData[letter];

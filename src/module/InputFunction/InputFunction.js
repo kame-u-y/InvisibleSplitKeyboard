@@ -38,11 +38,9 @@ function addDot(letter, x, y) {
 
 export function displayTapData(tapData) {
   if (!tapData) return;
+  const targetRect = document.getElementById('target').getBoundingClientRect();
   Object.keys(tapData).filter(v => {
     tapData[v].filter(data => {
-      const targetRect = document
-        .getElementById('target')
-        .getBoundingClientRect();
       const x = targetRect.left + data.position.x;
       const y = targetRect.top + data.position.y;
       addDot(v, x, y);

@@ -70,33 +70,34 @@ export function drawCircle() {
 
 function smProbability(x, y) {
   // タップ位置をもとにSMからキー確率取得
-  let probabilities = sm.getSMProbability(x, y);
+  let smTop5 = sm.getSMProbability5(x, y);
 
   if (letterPs.length === 0) {
     document.getElementById('predicted-letter').innerText =
-      typedLetters + probabilities[0].letter;
+      typedLetters + smTop5[0].letter;
     let predictedButton = document.getElementsByClassName('predicted-button');
     for (let i = 0; i < 5; i++) {
-      predictedButton[i].innerText = probabilities[i].letter;
+      predictedButton[i].innerText = smTop5[i].letter;
     }
-    letterPs = probabilities.slice(0, 5);
+    letterPs = smTop5;
     return true;
   }
 
   // 文字列の結合・確率を掛け合わせ
   let newLetterPs = [];
-  letterPs.map(v0 => {
-    let arr = probabilities.slice(0, 5).map(v1 => {
-      return {
+
+  letterPs.forEach(v0 => {
+    smTop5.forEach(v1 => {
+      newLetterPs.push({
         letter: v0.letter + v1.letter,
         probability: v0.probability * v1.probability
-      };
+      });
     });
-    newLetterPs = newLetterPs.concat(arr);
   });
+
   letterPs = newLetterPs
     .sort((a, b) => b.probability - a.probability)
-    .slice(0, 1000);
+    .slice(0, 100);
 
   document.getElementById('predicted-letter').innerText =
     typedLetters + letterPs[0].letter;
@@ -107,7 +108,7 @@ function getLMProbability() {
   // 予測された文字列のfreqをLMから取得・SM*LM
   let pLM = [];
   let unknownPLM = [];
-  letterPs.map(v => {
+  letterPs.forEach(v => {
     const prob = lm.getLMProbability(v.letter);
     if (prob.isKnown) {
       pLM.push({
@@ -129,7 +130,7 @@ function getLMProbability() {
   for (let i = 0; i < 5; i++) {
     predictedButton[i].innerText = pLM[i].letter;
   }
-  console.log(true);
+  // console.log(true);
 }
 
 function bsFirstLetter() {
@@ -139,7 +140,7 @@ function bsFirstLetter() {
   Array.from(document.getElementsByClassName('predicted-button')).filter(v => {
     v.innerText = '';
   });
-  console.log(inputData);
+  // console.log(inputData);
 }
 
 function bsSpaceSpace() {
@@ -151,7 +152,7 @@ function bsSpaceSpace() {
   Array.from(document.getElementsByClassName('predicted-button')).filter(v => {
     v.innerText = '';
   });
-  console.log(inputData);
+  // console.log(inputData);
 }
 
 function bsSpace() {
@@ -165,7 +166,7 @@ function bsSpace() {
     .filter(v => {
       smProbability(v.position.x, v.position.y);
     });
-  console.log(inputData);
+  // console.log(inputData);
   getLMProbability();
 }
 
@@ -176,7 +177,7 @@ function bsInitialLetter() {
   Array.from(document.getElementsByClassName('predicted-button')).filter(v => {
     v.innerText = '';
   });
-  console.log(inputData);
+  // console.log(inputData);
 }
 
 function bsLetter() {
@@ -188,7 +189,7 @@ function bsLetter() {
     .filter(v => {
       smProbability(v.position.x, v.position.y);
     });
-  console.log(inputData);
+  // console.log(inputData);
   getLMProbability();
 }
 
@@ -196,9 +197,9 @@ export function predictWordBS() {
   let inputLetter = document.getElementById('predicted-letter');
   if (inputLetter.innerText === '') return;
   inputLetter.innerText = inputLetter.innerText.slice(0, -1);
-  console.log(
-    `typedLetters=${typedLetters},inputLetters=${inputLetter.innerText};`
-  );
+  // console.log(
+  //   `typedLetters=${typedLetters},inputLetters=${inputLetter.innerText};`
+  // );
   letterPs = [];
   if (typedLetters === '' && inputLetter.innerText === '') {
     bsFirstLetter();
@@ -238,7 +239,7 @@ export function predictWord(x, y) {
     initialId: initialId,
     timestamp: Date.now()
   });
-  console.log(inputData);
+  // console.log(inputData);
   if (isFirstLetter) return;
   getLMProbability();
 }

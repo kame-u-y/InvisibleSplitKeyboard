@@ -73,27 +73,23 @@ function addTargetTapEvent() {
   target.addEventListener(
     'touchend',
     ev => {
-      debug.innerText = ev.touches.length;
-      l;
       ev.preventDefault();
       const touch = ev.changedTouches[0];
       const targetRect = target.getBoundingClientRect();
       const x = touch.clientX - targetRect.left;
       const y = touch.clientY - targetRect.top;
-
-      // const x = ev.changedTouches[0].clientX;
-      // const y = ev.changedTouches[0].clientY;
       targetEvent(x, y);
+      return false;
     },
     { passive: false }
   );
 
-  // target.addEventListener('click', ev => {
-  //   const targetRect = target.getBoundingClientRect();
-  //   const x = ev.clientX - targetRect.left;
-  //   const y = ev.clientY - targetRect.top;
-  //   targetEvent(x, y);
-  // });
+  target.addEventListener('click', ev => {
+    const targetRect = target.getBoundingClientRect();
+    const x = ev.clientX - targetRect.left;
+    const y = ev.clientY - targetRect.top;
+    targetEvent(x, y);
+  });
 }
 
 function addEnterTapEvent() {
