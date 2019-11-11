@@ -28,7 +28,7 @@
 
   --back-width: 41.743px; /*1024*8.0/196.25*/
   --enter-width: 62.614px; /*1024*12/196.25*/
-  --close-width: 41.743px; /*1024*8.0/196.25*/
+  --move-keyboard-width: 41.743px; /*1024*8.0/196.25*/
   --r-symbol-width: 98.6965px;
   --r-space-width: 98.6965px;
 }
@@ -239,8 +239,8 @@ body {
   opacity: 0;
 }
 
-.close {
-  width: var(--close-width);
+.move-keyboard {
+  width: var(--move-keyboard-width);
   opacity: 0;
 }
 
