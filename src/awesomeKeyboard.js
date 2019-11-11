@@ -183,6 +183,69 @@ function addEnterTapEvent() {
   });
 }
 
+const addMoveKeyboardEvent = () => {
+  const close = document.getElementsByClassName('close')[0];
+  const target = document.getElementById('target');
+  let startY = -1;
+  let paddingBottom = -1;
+  let isMoveKeyboard = false;
+
+  const startEvent = y => {
+    isMoveKeyboard = true;
+    startY = y;
+    paddingBottom =
+      target.style.paddingBottom === ''
+        ? 0
+        : parseInt(target.style.paddingBottom);
+  };
+
+  const moveEvent = y => {
+    if (!isMoveKeyboard || startY === -1) return;
+    const movedY = paddingBottom + (startY - y);
+    target.style.paddingBottom = `${movedY}px`;
+  };
+
+  const endEvent = () => {
+    if (!isMoveKeyboard) return;
+    isMoveKeyboard = false;
+    startY = -1;
+  };
+
+  close.addEventListener(
+    'touchstart',
+    ev => {
+      ev.preventDefault();
+      ev.stopPropagation();
+      startEvent(ev.changedTouches[0].pageY);
+    },
+    {
+      passive: false
+    }
+  );
+  close.addEventListener(
+    'touchmove',
+    ev => {
+      ev.preventDefault();
+      ev.stopPropagation();
+      moveEvent(ev.changedTouches[0].pageY);
+    },
+    {
+      passive: false
+    }
+  );
+  close.addEventListener(
+    'touchend',
+    ev => {
+      ev.preventDefault();
+      ev.stopPropagation();
+      endEvent();
+    },
+    {
+      passive: false
+    }
+  );
+};
+
 init();
 restrictScroll();
 hr.initFirebase();
@@ -193,3 +256,4 @@ addPredictedButtonEvent();
 addSpaceTapEvent();
 addBSTapEvent();
 addEnterTapEvent();
+addMoveKeyboardEvent();
