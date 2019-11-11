@@ -241,7 +241,7 @@ body {
 
 .close {
   width: var(--close-width);
-  /* opacity: 0; */
+  opacity: 0;
 }
 
 .right-symbol {
