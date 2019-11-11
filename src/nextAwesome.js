@@ -5,7 +5,6 @@ import * as rp from './module/GetRandomWords/GetRandomWords.js';
 
 let loadedDatas = [];
 let isSpace = false;
-// let isBS = false;
 
 function init() {
   document.getElementById(
@@ -97,8 +96,8 @@ function addPredictedButtonEvent() {
 
 function addTargetTapEvent() {
   const target = document.getElementById('target');
-  let selectFlag = false;
-  let bsFlag = false;
+  let isSelect = false;
+  let isBS = false;
   let selectStartX = -1;
   let selectStartY = -1;
 
@@ -131,17 +130,17 @@ function addTargetTapEvent() {
           v.style.backgroundColor = '#eee';
         }
       );
-      [selectFlag, bsFlag] = [false, false];
+      [isSelect, isBS] = [false, false];
     } else {
       const buttons = document.getElementsByClassName('predicted-button');
       if (x - selectStartX < -100) {
-        [selectFlag, bsFlag] = [false, true];
+        [isSelect, isBS] = [false, true];
         for (let i = 0; i < buttons.length; i++) {
           buttons[i].style.backgroundColor = '#ddd';
         }
         return;
       } else if (x - selectStartX >= 10) {
-        [selectFlag, bsFlag] = [true, false];
+        [isSelect, isBS] = [true, false];
         let [dx, w] = dxwProcess(x, selectStartX);
         for (let i = 0; i < buttons.length; i++) {
           if (i === Math.floor(dx / w) - 1)
@@ -150,7 +149,7 @@ function addTargetTapEvent() {
         }
         return;
       } else {
-        [selectFlag, bsFlag] = [false, false];
+        [isSelect, isBS] = [false, false];
       }
     }
   };
@@ -175,14 +174,14 @@ function addTargetTapEvent() {
         initStartXY();
       }
     } else {
-      if (!selectFlag && !bsFlag) {
+      if (!isSelect && !isBS) {
         initStartXY();
         return;
       }
-      if (bsFlag) {
+      if (isBS) {
         wp.predictWordBS();
         initStartXY();
-      } else if (selectFlag) {
+      } else if (isSelect) {
         let [dx, w] = dxwProcess(x, selectStartX);
         const selected = document.getElementsByClassName('predicted-button')[
           Math.floor(dx / w) - 1
@@ -197,10 +196,10 @@ function addTargetTapEvent() {
   };
 
   const targetEvent = (x, y) => {
-    if (isSpace || selectFlag || bsFlag) {
+    if (isSpace || isSelect || isBS) {
       isSpace = false;
-      selectFlag = false;
-      bsFlag = false;
+      isSelect = false;
+      isBS = false;
       return;
     }
     wp.predictWord(x, y);
@@ -259,6 +258,69 @@ function addTargetTapEvent() {
   });
 }
 
+const addMoveKeyboardEvent = () => {
+  const close = document.getElementsByClassName('close')[0];
+  const target = document.getElementById('target');
+  let startY = -1;
+  let paddingBottom = -1;
+  let isMoveKeyboard = false;
+
+  const startEvent = y => {
+    isMoveKeyboard = true;
+    startY = y;
+    paddingBottom =
+      target.style.paddingBottom === ''
+        ? 0
+        : parseInt(target.style.paddingBottom);
+  };
+
+  const moveEvent = y => {
+    if (!isMoveKeyboard || startY === -1) return;
+    const movedY = paddingBottom + (startY - y);
+    target.style.paddingBottom = `${movedY}px`;
+  };
+
+  const endEvent = () => {
+    if (!isMoveKeyboard) return;
+    isMoveKeyboard = false;
+    startY = -1;
+  };
+
+  close.addEventListener(
+    'touchstart',
+    ev => {
+      ev.preventDefault();
+      ev.stopPropagation();
+      startEvent(ev.changedTouches[0].pageY);
+    },
+    {
+      passive: false
+    }
+  );
+  close.addEventListener(
+    'touchmove',
+    ev => {
+      ev.preventDefault();
+      ev.stopPropagation();
+      moveEvent(ev.changedTouches[0].pageY);
+    },
+    {
+      passive: false
+    }
+  );
+  close.addEventListener(
+    'touchend',
+    ev => {
+      ev.preventDefault();
+      ev.stopPropagation();
+      endEvent();
+    },
+    {
+      passive: false
+    }
+  );
+};
+
 init();
 restrictScroll();
 hr.initFirebase();
@@ -266,3 +328,4 @@ re.addVisualEvent();
 addButtonEvent();
 addTargetTapEvent();
 addPredictedButtonEvent();
+addMoveKeyboardEvent();

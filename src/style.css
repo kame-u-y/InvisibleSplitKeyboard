@@ -11,11 +11,11 @@
   --rb-padding-right: 2.5mm;
   --rs-padding-right: 2.5mm; */
 
-  /* --letter-width: 34px; 1024*6.25/196.25 */
-  --letter-width: 48.265px;
+  --letter-width: 34px; /* 1024*6.25/196.25 */
+  /* --letter-width: 48.265px; */
   --letter-margin-horizontal: 9.131px; /*1024*1.75/196.25*/
-  /* --letter-height: 41.725px; 768*8.0/147.25 */
-  --letter-height: 59.98px;
+  --letter-height: 41.725px; /* 768*8.0/147.25 */
+  /* --letter-height: 59.98px; */
   --letter-margin-vertical: 9.127px; /*768*1.75/147.25*/
   --letter-radius: 4px;
 
@@ -87,7 +87,7 @@ body {
   width: 100%;
   bottom: var(--footer-bottom);
   background-color: rgba(255, 255, 255, 0);
-  padding-bottom: 0;
+  padding-bottom: 0px;
   padding-top: 150px;
 }
 
@@ -241,7 +241,7 @@ body {
 
 .close {
   width: var(--close-width);
-  opacity: 0;
+  /* opacity: 0; */
 }
 
 .right-symbol {
