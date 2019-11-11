@@ -259,7 +259,7 @@ function addTargetTapEvent() {
 }
 
 const addMoveKeyboardEvent = () => {
-  const close = document.getElementsByClassName('close')[0];
+  const moveKeyboard = document.getElementsByClassName('move-keyboard')[0];
   const target = document.getElementById('target');
   let startY = -1;
   let paddingBottom = -1;
@@ -286,7 +286,7 @@ const addMoveKeyboardEvent = () => {
     startY = -1;
   };
 
-  close.addEventListener(
+  moveKeyboard.addEventListener(
     'touchstart',
     ev => {
       ev.preventDefault();
@@ -297,7 +297,7 @@ const addMoveKeyboardEvent = () => {
       passive: false
     }
   );
-  close.addEventListener(
+  moveKeyboard.addEventListener(
     'touchmove',
     ev => {
       ev.preventDefault();
@@ -308,7 +308,7 @@ const addMoveKeyboardEvent = () => {
       passive: false
     }
   );
-  close.addEventListener(
+  moveKeyboard.addEventListener(
     'touchend',
     ev => {
       ev.preventDefault();
