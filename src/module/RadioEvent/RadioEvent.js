@@ -8,6 +8,7 @@ let unusedKeys = $(
 let leftSpace = $('.left-space');
 let rightSpace = $('.right-space');
 let spaceVisible = $('#space-visible');
+let moveKeyboard = $('.move-keyboard');
 
 function setKeyboardBGColor(isVisible) {
   if (isVisible) {
@@ -48,6 +49,7 @@ function setKeyOpacity(isVisible) {
     keys.css('opacity', '1');
     // setSpaceOpacity(true);
     setSpaceOpacity(false);
+    moveKeyboard.css('opacity', '0');
   } else {
     keys.css('opacity', '0');
     if (spaceVisible.prop('checked')) {

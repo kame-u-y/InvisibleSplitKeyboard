@@ -8,6 +8,7 @@ let givenText = '';
 let nextLetterNum = 0;
 let initFlag = false;
 let isBS = false;
+let sentenceCount = 1;
 
 function init() {
   document.getElementById(
@@ -18,6 +19,8 @@ function init() {
   nextLetterNum = 0;
   document.getElementById('input-text').innerText = '';
   document.getElementById('dot-container').innerHTML = '';
+  document.getElementById('sentence-count').innerText = sentenceCount;
+  sentenceCount++;
 }
 
 function addTapInfo(letter, x, y) {
