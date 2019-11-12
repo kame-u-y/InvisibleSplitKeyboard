@@ -6,29 +6,27 @@
   --lb-padding-left: 2.5mm;
   --ls-padding-left: 2.5mm;
   --r-padding-right: 2.5mm;
-  /* --rt-padding-right: 2.5mm;
-  --rm-padding-right: 9mm;
-  --rb-padding-right: 2.5mm;
-  --rs-padding-right: 2.5mm; */
-
-  /* --letter-width: 34px; 1024*6.25/196.25 */
+  /* for ipad */
+  /*
   --letter-width: 48.265px;
-  --letter-margin-horizontal: 9.131px; /*1024*1.75/196.25*/
-  /* --letter-height: 41.725px; 768*8.0/147.25 */
-  --letter-height: 59.98px;
-  --letter-margin-vertical: 9.127px; /*768*1.75/147.25*/
+  --letter-height: 59.98px; */
+
+  /* for surface */
+  --letter-width: 53.28px;
+  --letter-height: 69.271px;
+
   --letter-radius: 12px;
 
-  --shift-width: 41.743px; /*1024*8.0/196.25*/
+  --shift-width: 41.743px;
 
   --l-symbol-width: 62.614px;
   --language-width: 34px;
   --mic-width: 34px;
   --l-space-width: 73px;
 
-  --back-width: 41.743px; /*1024*8.0/196.25*/
-  --enter-width: 62.614px; /*1024*12/196.25*/
-  --move-keyboard-width: 41.743px; /*1024*8.0/196.25*/
+  --back-width: 41.743px;
+  --enter-width: 62.614px;
+  --move-keyboard-width: 41.743px;
   --r-symbol-width: 98.6965px;
   --r-space-width: 98.6965px;
 }
