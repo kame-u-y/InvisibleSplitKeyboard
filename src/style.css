@@ -7,26 +7,32 @@
   --ls-padding-left: 2.5mm;
   --r-padding-right: 2.5mm;
   /* for ipad */
-  /*
+  /* 
   --letter-width: 48.265px;
   --letter-height: 59.98px; */
 
   /* for surface */
+  /*   
   --letter-width: 53.28px;
-  --letter-height: 69.271px;
+  --letter-height: 69.271px;  */
 
-  --letter-radius: 12px;
+  --letter-width: 35px;
+  --letter-height: 41.62px;
 
-  --shift-width: 41.743px;
+  /* surface */
+  /* --letter-radius: 12px; */
+  --letter-radius: 10px;
+
+  --shift-width: 41.743px; /* */
 
   --l-symbol-width: 62.614px;
   --language-width: 34px;
   --mic-width: 34px;
   --l-space-width: 73px;
 
-  --back-width: 41.743px;
-  --enter-width: 62.614px;
-  --move-keyboard-width: 41.743px;
+  --back-width: 41.743px; /* */
+  --enter-width: 62.614px; /* */
+  --move-keyboard-width: 41.743px; /* */
   --r-symbol-width: 98.6965px;
   --r-space-width: 98.6965px;
 }
@@ -85,7 +91,7 @@ body {
   width: 100%;
   bottom: var(--footer-bottom);
   background-color: rgba(255, 255, 255, 0);
-  padding-bottom: 0px;
+  padding-bottom: 30px;
   padding-top: 150px;
 }
 
@@ -97,7 +103,7 @@ body {
   /* padding-top: calc(9.12px + 4px); */
   border-radius: 4px;
   border: solid 1px rgba(0, 0, 0, 0);
-  opacity: 0.5;
+  /* opacity: 0.5; */
 }
 
 .left-row {
@@ -109,42 +115,61 @@ body {
 
 #left-top {
   padding-left: var(--lt-padding-left);
-  border-bottom: 1px solid black;
+  /* border-bottom: 1px solid black; */
 }
 
 #left-middle {
   padding-left: var(--lm-padding-left);
-  border-bottom: 1px solid black;
+  /* border-bottom: 1px solid black; */
 }
 
 #left-bottom {
   padding-left: var(--lb-padding-left);
-  border-bottom: 1px solid black;
+  /* border-bottom: 1px solid black; */
 }
 
 #left-special {
   padding-left: var(--ls-padding-left);
 }
 
-.left-key {
+.key {
   background-clip: content-box;
   background-color: rgb(64, 64, 64);
   color: white;
   font-family: Segoe UI, SegoeUI, 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  font-size: 20px;
-  float: left;
+  font-size: 15px;
   display: flex;
   align-items: center;
   justify-content: center;
   height: var(--letter-height);
   /* margin-right: var(--letter-margin-horizontal); */
   border-radius: var(--letter-radius);
+  box-sizing: border-box;
+  border: solid 0px;
+  padding: 3px 2px;
+}
+
+.left-key {
+  /* background-clip: content-box;
+  background-color: rgb(64, 64, 64);
+  color: white;
+  font-family: Segoe UI, SegoeUI, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 20px; */
+  float: left;
+  /* display: flex;
+  align-items: center;
+  justify-content: center;
+  height: var(--letter-height); */
+  /* margin-right: var(--letter-margin-horizontal); */
+  /* border-radius: var(--letter-radius);
+  box-sizing: border-box;
+  border: solid 0px; */
 }
 
 .left-letter {
   width: var(--letter-width);
-  box-sizing: border-box;
-  padding: 7px 3px;
+  /* box-sizing: border-box; */
+  border-collapse: collapse;
 }
 
 .left-symbol {
@@ -177,7 +202,7 @@ body {
   /* padding-top: calc(9.12px + 4px); */
   border-radius: 4px;
   border: solid 1px rgba(0, 0, 0, 0);
-  opacity: 0.5;
+  /* opacity: 0.5; */
 }
 
 .right-row {
@@ -191,17 +216,17 @@ body {
 
 #right-top {
   /* padding-right: var(--rt-padding-right); */
-  border-bottom: 1px solid black;
+  /* border-bottom: 1px solid black; */
 }
 
 #right-middle {
   /* padding-right: var(--rm-padding-right); */
-  border-bottom: 1px solid black;
+  /* border-bottom: 1px solid black; */
 }
 
 #right-bottom {
   /* padding-right: var(--rb-padding-right); */
-  border-bottom: 1px solid black;
+  /* border-bottom: 1px solid black; */
 }
 
 #right-special {
@@ -209,24 +234,26 @@ body {
 }
 
 .right-key {
-  background-clip: content-box;
+  /* background-clip: content-box;
   background-color: rgb(64, 64, 64);
   color: white;
   font-family: Segoe UI, SegoeUI, 'Helvetica Neue', Helvetica, Arial, sans-serif;
   font-size: 20px;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: center; */
   float: right;
-  height: var(--letter-height);
+  /* height: var(--letter-height); */
   /* margin-left: var(--letter-margin-horizontal); */
-  border-radius: var(--letter-radius);
+  /* border-radius: var(--letter-radius);
+  box-sizing: border-box;
+  border: solid 0px; */
 }
 
 .right-letter {
   width: var(--letter-width);
-  box-sizing: border-box;
-  padding: 7px 3px;
+  /* box-sizing: border-box; */
+  /* padding: 7px 3px; */
 }
 
 .period {

@@ -58,9 +58,9 @@ function addTargetTapEvent() {
 
   const moveEvent = x => {
     if (!isStarted(spaceStartX)) return;
-    if (x - spaceStartX > 100) {
+    if (x > 300 && x - spaceStartX > 100) {
       [spaceFlag, bsFlag] = [true, false];
-    } else if (x - spaceStartX < -100) {
+    } else if (x > 300 && x - spaceStartX < -100) {
       [spaceFlag, bsFlag] = [false, true];
     } else {
       [spaceFlag, bsFlag] = [false, false];
@@ -80,6 +80,17 @@ function addTargetTapEvent() {
         initFlag = true;
         spaceFlag = false;
       } else {
+        //アスタリスクのくだりを書く
+        // const givenWords = givenText.split(' ');
+        // const inputWords = document
+        //   .getElementById('input-text')
+        //   .innerText.split(' ');
+        // for(let i=0; i<inputWords.length; i++) {
+        //   if (inputWords[i].length === givenWords[i].length) {
+
+        //   }
+        // }
+
         input.inputLetter(' ');
         nextLetterNum++;
       }

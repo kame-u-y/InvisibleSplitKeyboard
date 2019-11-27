@@ -209,6 +209,8 @@ function addTargetTapEvent() {
   target.addEventListener(
     'touchstart',
     ev => {
+      console.log('touchstart');
+      console.log(ev);
       ev.preventDefault();
       startEvent(ev.changedTouches[0].pageX, ev.changedTouches[0].pageY);
     },
@@ -222,6 +224,8 @@ function addTargetTapEvent() {
   target.addEventListener(
     'touchmove',
     ev => {
+      console.log('touchmove');
+      console.log(ev);
       ev.preventDefault();
       moveEvent(ev.changedTouches[0].pageX, ev.changedTouches[0].pageY);
     },
@@ -235,6 +239,8 @@ function addTargetTapEvent() {
   target.addEventListener(
     'touchend',
     ev => {
+      console.log('touchend');
+      console.log(ev);
       ev.preventDefault();
       const touch = ev.changedTouches[0];
       endEvent(touch.pageX, touch.pageY);
