@@ -42,43 +42,60 @@ function addTapInfo(letter, x, y) {
 // inputPositionを実行
 function addTargetTapEvent() {
   const target = document.getElementById('target');
-  let spaceFlag = false;
-  let bsFlag = false;
-  let spaceStartX = -1;
-
-  const initStartX = () => {
-    spaceStartX = -1;
-  };
-  const isStarted = x => x !== -1;
-
-  const startEvent = x => {
-    if (isStarted(spaceStartX)) return;
-    spaceStartX = x;
-  };
-
-  const moveEvent = x => {
-    if (!isStarted(spaceStartX)) return;
-    if (x > 300 && x - spaceStartX > 100) {
-      [spaceFlag, bsFlag] = [true, false];
-    } else if (x > 300 && x - spaceStartX < -100) {
-      [spaceFlag, bsFlag] = [false, true];
-    } else {
-      [spaceFlag, bsFlag] = [false, false];
+  let flags = {
+    left: {
+      isSpace: false,
+      isBs: false,
+      touchStartX: -1
+    },
+    right: {
+      isSpace: false,
+      isBs: false,
+      touchStartX: -1
     }
   };
 
-  const endEvent = x => {
-    if (!isStarted(x)) return;
-    if (!spaceFlag && !bsFlag) {
-      initStartX();
+  const initStartX = isLeft => {
+    flags[isLeft ? 'left' : 'right'].touchStartX = -1;
+  };
+  const isStarted = isLeft => {
+    return flags[isLeft ? 'left' : 'right'].touchStartX !== -1;
+  };
+
+  const startEvent = (x, isLeft) => {
+    if (isStarted(isLeft)) return;
+    flags[isLeft ? 'left' : 'right'].touchStartX = x;
+  };
+
+  const moveEvent = (x, isLeft) => {
+    if (!isStarted(isLeft)) return;
+    if (x && x - flags[isLeft ? 'left' : 'right'].touchStartX > 100) {
+      flags[isLeft ? 'left' : 'right'].isSpace = true;
+      flags[isLeft ? 'left' : 'right'].isBs = false;
+    } else if (x && x - flags[isLeft ? 'left' : 'right'].touchStartX < -100) {
+      flags[isLeft ? 'left' : 'right'].isSpace = false;
+      flags[isLeft ? 'left' : 'right'].isBs = true;
+    } else {
+      flags[isLeft ? 'left' : 'right'].isSpace = false;
+      flags[isLeft ? 'left' : 'right'].isBs = false;
+    }
+  };
+
+  const endEvent = (x, isLeft) => {
+    if (!isStarted(isLeft)) return;
+    if (
+      !flags[isLeft ? 'left' : 'right'].isSpace &&
+      !flags[isLeft ? 'left' : 'right'].isBs
+    ) {
+      initStartX(isLeft);
       return;
     }
-    if (spaceFlag) {
+    if (flags[isLeft ? 'left' : 'right'].isSpace) {
       if (nextLetterNum === givenText.length) {
         hr.postTapData(tapData);
         init();
         initFlag = true;
-        spaceFlag = false;
+        flags[isLeft ? 'left' : 'right'].isSpace = false;
       } else {
         //アスタリスクのくだりを書く
         // const givenWords = givenText.split(' ');
@@ -95,15 +112,14 @@ function addTargetTapEvent() {
         nextLetterNum++;
       }
       return;
-    } else if (bsFlag) {
+    } else if (flags[isLeft ? 'left' : 'right'].isBs) {
       [tapData, nextLetterNum] = input.deleteLetter(tapData, nextLetterNum);
-      bsFlag = true;
-      console.log(tapData);
+      flags[isLeft ? 'left' : 'right'].isBs = true;
       return;
     }
   };
 
-  const targetEvent = (x, y) => {
+  const targetEvent = (x, y, isLeft) => {
     if (initFlag) {
       initFlag = false;
       return;
@@ -112,74 +128,86 @@ function addTargetTapEvent() {
       console.log('task ended');
       return;
     }
-    if (spaceFlag || bsFlag) {
-      spaceFlag = false;
-      bsFlag = false;
+    if (
+      flags[isLeft ? 'left' : 'right'].isSpace ||
+      flags[isLeft ? 'left' : 'right'].isBs
+    ) {
+      flags[isLeft ? 'left' : 'right'].isSpace = false;
+      flags[isLeft ? 'left' : 'right'].isBs = false;
       return;
     }
     if (givenText.charAt(nextLetterNum) === ' ') {
       return;
     }
     input.inputLetter(givenText.charAt(nextLetterNum));
-    // input.inputPosition(x, y);
     addTapInfo(givenText.charAt(nextLetterNum), x, y);
     nextLetterNum++;
   };
 
-  // touchstart, mousedown
-  target.addEventListener(
-    'touchstart',
-    ev => {
-      ev.preventDefault();
-      startEvent(ev.changedTouches[0].pageX, ev.changedTouches[0].pageY);
-    },
-    { passive: false }
-  );
-  target.addEventListener('mousedown', ev => {
-    startEvent(ev.pageX, ev.pageY);
-  });
+  const addTargetEventListener = () => {
+    // touchstart, mousedown
+    target.addEventListener(
+      'touchstart',
+      ev => {
+        ev.preventDefault();
+        startEvent(
+          ev.changedTouches[0].pageX,
+          ev.changedTouches[0].pageX < window.outerWidth / 2.0 ? true : false
+        );
+      },
+      { passive: false }
+    );
+    target.addEventListener('mousedown', ev => {
+      startEvent(ev.pageX, ev.pageX < window.outerWidth / 2.0 ? true : false);
+    });
 
-  // touchmove, mousemove
-  target.addEventListener(
-    'touchmove',
-    ev => {
-      ev.preventDefault();
-      moveEvent(ev.changedTouches[0].pageX, ev.changedTouches[0].pageY);
-    },
-    { passive: false }
-  );
-  target.addEventListener('mousemove', ev => {
-    moveEvent(ev.pageX, ev.pageY);
-  });
+    // touchmove, mousemove
+    target.addEventListener(
+      'touchmove',
+      ev => {
+        ev.preventDefault();
+        moveEvent(
+          ev.changedTouches[0].pageX,
+          ev.changedTouches[0].pageX < window.outerWidth / 2.0 ? true : false
+        );
+      },
+      { passive: false }
+    );
+    target.addEventListener('mousemove', ev => {
+      moveEvent(ev.pageX, ev.pageX < window.outerWidth / 2.0 ? true : false);
+    });
 
-  //touchend, mouseup, click
-  target.addEventListener(
-    'touchend',
-    ev => {
-      ev.preventDefault();
-      const touch = ev.changedTouches[0];
-      endEvent(touch.pageX, touch.pageY);
+    //touchend, mouseup, click
+    target.addEventListener(
+      'touchend',
+      ev => {
+        ev.preventDefault();
+        const touch = ev.changedTouches[0];
+        endEvent(
+          touch.pageX,
+          touch.pageX < window.outerWidth / 2.0 ? true : false
+        );
+        const targetRect = target.getBoundingClientRect();
+        const x = touch.clientX - targetRect.left;
+        const y = touch.clientY - targetRect.top;
+        targetEvent(x, y, x < window.outerWidth / 2.0 ? true : false);
+      },
+      { passive: false }
+    );
+    target.addEventListener('mouseup', ev => {
+      endEvent(ev.pageX, ev.pageX < window.outerWidth / 2.0 ? true : false);
+    });
+    target.addEventListener('click', ev => {
       const targetRect = target.getBoundingClientRect();
-      const x = touch.clientX - targetRect.left;
-      const y = touch.clientY - targetRect.top;
-      console.log(x, y);
-      targetEvent(x, y);
-    },
-    { passive: false }
-  );
-  target.addEventListener('mouseup', ev => {
-    endEvent(ev.pageX, ev.pageY);
-  });
-  target.addEventListener('click', ev => {
-    const targetRect = target.getBoundingClientRect();
-    const x = ev.clientX - targetRect.left;
-    const y = ev.clientY - targetRect.top;
-    console.log(x, y);
-    targetEvent(x, y);
-  });
+      const x = ev.clientX - targetRect.left;
+      const y = ev.clientY - targetRect.top;
+      targetEvent(x, y, x < window.outerWidth / 2.0 ? true : false);
+    });
+  };
+  addTargetEventListener();
 }
 
-const addMoveKeyboardEvent = () => {
+function addMoveKeyboardEvent() {
   const moveKeyboard = document.getElementsByClassName('move-keyboard')[0];
   const target = document.getElementById('target');
   let startY = -1;
@@ -240,7 +268,7 @@ const addMoveKeyboardEvent = () => {
       passive: false
     }
   );
-};
+}
 
 init();
 hr.initFirebase();
