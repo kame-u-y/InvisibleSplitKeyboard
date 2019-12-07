@@ -70,16 +70,16 @@ export function drawCircle() {
 
 function smProbability(x, y) {
   // タップ位置をもとにSMからキー確率取得
-  let smTop5 = sm.getSMProbability5(x, y);
+  let smTopOrder = sm.getSMProbability(x, y);
 
   if (letterPs.length === 0) {
     document.getElementById('predicted-letter').innerText =
-      typedLetters + smTop5[0].letter;
+      typedLetters + smTopOrder[0].letter;
     let predictedButton = document.getElementsByClassName('predicted-button');
     for (let i = 0; i < 5; i++) {
-      predictedButton[i].innerText = smTop5[i].letter;
+      predictedButton[i].innerText = smTopOrder[i].letter;
     }
-    letterPs = smTop5;
+    letterPs = smTopOrder;
     return true;
   }
 
@@ -87,7 +87,7 @@ function smProbability(x, y) {
   let newLetterPs = [];
 
   letterPs.forEach(v0 => {
-    smTop5.forEach(v1 => {
+    smTopOrder.forEach(v1 => {
       newLetterPs.push({
         letter: v0.letter + v1.letter,
         probability: v0.probability * v1.probability
@@ -97,8 +97,8 @@ function smProbability(x, y) {
 
   letterPs = newLetterPs
     .sort((a, b) => b.probability - a.probability)
-    .slice(0, 100);
-
+    .slice(0, 500);
+  // console.log(letterPs);
   document.getElementById('predicted-letter').innerText =
     typedLetters + letterPs[0].letter;
   return false;
@@ -113,19 +113,19 @@ function getLMProbability() {
     if (prob.isKnown) {
       pLM.push({
         letter: v.letter,
-        probability: prob.value
+        probability: v.probability * prob.value
       });
     } else {
       unknownPLM.push({
         letter: v.letter,
-        probability: prob.value
+        probability: v.probability * prob.value
       });
     }
   });
   pLM.sort((a, b) => b.probability - a.probability);
   unknownPLM.sort((a, b) => b.probability - a.probability);
   pLM = pLM.concat(unknownPLM);
-
+  // console.log(pLM);
   let predictedButton = document.getElementsByClassName('predicted-button');
   for (let i = 0; i < 5; i++) {
     predictedButton[i].innerText = pLM[i].letter;

@@ -7,13 +7,16 @@ let tapData = {};
 let givenText = '';
 let nextLetterNum = 0;
 let initFlag = false;
-let isBS = false;
+// let isBS = false;
 let sentenceCount = 1;
 
 function init() {
+  // document.getElementById(
+  //   'given-text'
+  // ).innerText = rp.getRandomPhrase().toLowerCase();
   document.getElementById(
     'given-text'
-  ).innerText = rp.getRandomPhrase().toLowerCase();
+  ).innerText = rp.getRandomSelectedPhrase().toLowerCase();
   givenText = document.getElementById('given-text').innerText;
   tapData = {};
   nextLetterNum = 0;
@@ -38,8 +41,7 @@ function addTapInfo(letter, x, y) {
     timestamp: Date.now()
   });
 }
-// target
-// inputPositionを実行
+
 function addTargetTapEvent() {
   const target = document.getElementById('target');
   let flags = {
@@ -69,15 +71,17 @@ function addTargetTapEvent() {
 
   const moveEvent = (x, isLeft) => {
     if (!isStarted(isLeft)) return;
+    const setFlags = (isLeft, isSpace, isBs) => {
+      flags[isLeft ? 'left' : 'right'].isSpace = isSpace;
+      flags[isLeft ? 'left' : 'right'].isBs = isBs;
+    };
     if (x && x - flags[isLeft ? 'left' : 'right'].touchStartX > 100) {
-      flags[isLeft ? 'left' : 'right'].isSpace = true;
-      flags[isLeft ? 'left' : 'right'].isBs = false;
-    } else if (x && x - flags[isLeft ? 'left' : 'right'].touchStartX < -100) {
-      flags[isLeft ? 'left' : 'right'].isSpace = false;
-      flags[isLeft ? 'left' : 'right'].isBs = true;
+      console.log(flags[isLeft ? 'left' : 'right'].touchStartX, x);
+      setFlags(isLeft, true, false);
+    } else if (x && x - flags[isLeft ? 'left' : 'right'].touchStartX < -70) {
+      setFlags(isLeft, false, true);
     } else {
-      flags[isLeft ? 'left' : 'right'].isSpace = false;
-      flags[isLeft ? 'left' : 'right'].isBs = false;
+      setFlags(isLeft, false, false);
     }
   };
 
@@ -97,24 +101,30 @@ function addTargetTapEvent() {
         initFlag = true;
         flags[isLeft ? 'left' : 'right'].isSpace = false;
       } else {
-        //アスタリスクのくだりを書く
-        // const givenWords = givenText.split(' ');
-        // const inputWords = document
-        //   .getElementById('input-text')
-        //   .innerText.split(' ');
-        // for(let i=0; i<inputWords.length; i++) {
-        //   if (inputWords[i].length === givenWords[i].length) {
-
-        //   }
-        // }
-
-        input.inputLetter(' ');
+        let isAst = false;
+        const givenWords = givenText.split(' ');
+        const inputWords = document
+          .getElementById('input-text')
+          .innerText.split(' ');
+        for (let i = 0; i < inputWords.length; i++) {
+          if (inputWords[i].length !== givenWords[i].length) {
+            isAst = true;
+            break;
+          }
+        }
+        if (isAst) {
+          input.inputLetter('*');
+        } else {
+          input.inputLetter(' ');
+        }
         nextLetterNum++;
       }
+      initStartX(isLeft);
       return;
     } else if (flags[isLeft ? 'left' : 'right'].isBs) {
       [tapData, nextLetterNum] = input.deleteLetter(tapData, nextLetterNum);
       flags[isLeft ? 'left' : 'right'].isBs = true;
+      initStartX(isLeft);
       return;
     }
   };
@@ -219,7 +229,7 @@ function addMoveKeyboardEvent() {
     startY = y;
     paddingBottom =
       target.style.paddingBottom === ''
-        ? 0
+        ? 30
         : parseInt(target.style.paddingBottom);
   };
 
@@ -235,39 +245,56 @@ function addMoveKeyboardEvent() {
     startY = -1;
   };
 
-  moveKeyboard.addEventListener(
-    'touchstart',
-    ev => {
-      ev.preventDefault();
+  const moveKeyboardEventListener = () => {
+    moveKeyboard.addEventListener(
+      'touchstart',
+      ev => {
+        ev.preventDefault();
+        ev.stopPropagation();
+        startEvent(ev.changedTouches[0].pageY);
+      },
+      {
+        passive: false
+      }
+    );
+    moveKeyboard.addEventListener('mousedown', ev => {
       ev.stopPropagation();
-      startEvent(ev.changedTouches[0].pageY);
-    },
-    {
-      passive: false
-    }
-  );
-  moveKeyboard.addEventListener(
-    'touchmove',
-    ev => {
-      ev.preventDefault();
+      startEvent(ev.pageY);
+    });
+
+    moveKeyboard.addEventListener(
+      'touchmove',
+      ev => {
+        ev.preventDefault();
+        ev.stopPropagation();
+        moveEvent(ev.changedTouches[0].pageY);
+      },
+      {
+        passive: false
+      }
+    );
+    moveKeyboard.addEventListener('mousemove', ev => {
       ev.stopPropagation();
-      moveEvent(ev.changedTouches[0].pageY);
-    },
-    {
-      passive: false
-    }
-  );
-  moveKeyboard.addEventListener(
-    'touchend',
-    ev => {
-      ev.preventDefault();
+      moveEvent(ev.pageY);
+    });
+
+    moveKeyboard.addEventListener(
+      'touchend',
+      ev => {
+        ev.preventDefault();
+        ev.stopPropagation();
+        endEvent();
+      },
+      {
+        passive: false
+      }
+    );
+    moveKeyboard.addEventListener('mouseup', ev => {
       ev.stopPropagation();
       endEvent();
-    },
-    {
-      passive: false
-    }
-  );
+    });
+  };
+  moveKeyboardEventListener();
 }
 
 init();

@@ -14,6 +14,7 @@ function createLayoutParams(
   kbdBgVisible,
   kbdOpacity,
   kbdBorderVisible,
+  kbdIsBorderless,
   keyBgVisible,
   keyOpacity,
   keyBorderVisible
@@ -22,7 +23,8 @@ function createLayoutParams(
     keyboard: {
       bgVisible: kbdBgVisible,
       opacity: kbdOpacity,
-      borderVisible: kbdBorderVisible
+      borderVisible: kbdBorderVisible,
+      isBorderless: kbdIsBorderless
     },
     key: {
       bgVisible: keyBgVisible,
@@ -33,26 +35,20 @@ function createLayoutParams(
 }
 
 function setLayout(layoutParams) {
-  leftKeyboard.css(
-    'background-color',
-    `rgba(0, 0, 0, ${layoutParams.keyboard.bgVisible ? '1' : '0'}`
-  );
-  rightKeyboard.css(
-    'background-color',
-    `rgba(0, 0, 0, ${layoutParams.keyboard.bgVisible ? '1' : '0'}`
-  );
+  const kbdBgColor = layoutParams.keyboard.isBorderless
+    ? `rgba(64, 64, 64, ${layoutParams.keyboard.bgVisible ? '1' : '0'})`
+    : `rgba(0, 0, 0, ${layoutParams.keyboard.bgVisible ? '1' : '0'}`;
+  leftKeyboard.css('background-color', kbdBgColor);
+  rightKeyboard.css('background-color', kbdBgColor);
 
   leftKeyboard.css('opacity', `${layoutParams.keyboard.opacity}`);
   rightKeyboard.css('opacity', `${layoutParams.keyboard.opacity}`);
 
-  leftKeyboard.css(
-    'border-color',
-    `rgba(64, 64, 64, ${layoutParams.keyboard.borderVisible ? '1' : '0'})`
-  );
-  rightKeyboard.css(
-    'border-color',
-    `rgba(64, 64, 64, ${layoutParams.keyboard.borderVisible ? '1' : '0'})`
-  );
+  const kbdBorderColor = `rgba(64, 64, 64, ${
+    layoutParams.keyboard.borderVisible ? '1' : '0'
+  })`;
+  leftKeyboard.css('border-color', kbdBorderColor);
+  rightKeyboard.css('border-color', kbdBorderColor);
 
   keys.css(
     'background-color',
@@ -65,19 +61,28 @@ function setLayout(layoutParams) {
   unusedKeys.css('opacity', '0');
   moveKeyboard.css('opacity', '0');
 
-  // keys.css('border-top-width', '1px');
-  // keys.css('border-bottom-width', '1px');
-  // keys.css('border-right-width', '1px');
-  // $(
-  //   `[data-letter="q"],[data-letter="a"],[data-letter="z"],
-  //   [data-letter="y"],[data-letter="h"],[data-letter="b"]`
-  // ).css('border-left-width', '1px');
-  // keys.css('border-width', '1px');
-  // keys.css('border-color', 'rgb(64, 64, 64)');
-  // keys.css(
-  //   'border-radius',
-  //   `${layoutParams.key.borderVisible ? '0px' : 'var(--letter-radius)'}`
-  // );
+  if (!layoutParams.key.bgVisible && layoutParams.key.opacity === 1) {
+    // keys.css('border-top-width', '1px');
+    // keys.css('border-bottom-width', '1px');
+    // keys.css('border-right-width', '1px');
+    // $(
+    //   `[data-letter="q"],[data-letter="a"],[data-letter="z"],
+    // [data-letter="y"],[data-letter="h"],[data-letter="b"]`
+    // ).css('border-left-width', '1px');
+    keys.css('border-width', '3px');
+    keys.css('border-color', 'rgb(64, 64, 64)');
+    keys.css(
+      'border-radius',
+      `${layoutParams.key.borderVisible ? '0px' : '7px'}`
+    );
+  } else {
+    keys.css('border-width', '0px');
+    //   // keys.css('border-color', '')
+    //   keys.css(
+    //     'border-radius',
+    //     ''
+    //   )
+  }
 }
 
 function addRadioEvent() {
@@ -86,25 +91,122 @@ function addRadioEvent() {
     switch (ev.target.value) {
       case 'eyes-on':
       case 'peripheral':
-        layoutParams = createLayoutParams(true, 1, false, true, 1, false);
+        layoutParams = createLayoutParams(
+          true,
+          1,
+          false,
+          false,
+          true,
+          1,
+          false
+        );
         break;
       case 'stk-peripheral':
-        layoutParams = createLayoutParams(true, 0.5, false, true, 1, false);
+        layoutParams = createLayoutParams(
+          true,
+          0.5,
+          false,
+          false,
+          true,
+          1,
+          false
+        );
+        break;
+      case 'borderless':
+        // bordreless border visible false
+        // key backround === bg background
+        layoutParams = createLayoutParams(true, 1, false, true, true, 1, false);
+        break;
+      case 'stk-borderless':
+        // semitransparent
+        // border visible false
+        // key background === bg background
+        layoutParams = createLayoutParams(
+          true,
+          0.5,
+          false,
+          true,
+          true,
+          1,
+          false
+        );
         break;
       case 'key-wired':
-        layoutParams = createLayoutParams(false, 1, true, false, 1, true);
+        layoutParams = createLayoutParams(
+          false,
+          1,
+          true,
+          false,
+          false,
+          1,
+          false
+        );
+        break;
+      case 'stk-key-wired':
+        layoutParams = createLayoutParams(
+          false,
+          0.5,
+          true,
+          false,
+          false,
+          1,
+          false
+        );
         break;
       case 'key-invisible':
-        layoutParams = createLayoutParams(true, 1, false, false, 0, false);
+        layoutParams = createLayoutParams(
+          true,
+          1,
+          false,
+          false,
+          false,
+          0,
+          false
+        );
+        break;
+      case 'stk-key-invisible':
+        layoutParams = createLayoutParams(
+          true,
+          0.5,
+          false,
+          false,
+          false,
+          0,
+          false
+        );
         break;
       case 'frame-only':
-        layoutParams = createLayoutParams(false, 1, true, false, 0, false);
+        layoutParams = createLayoutParams(
+          false,
+          1,
+          true,
+          false,
+          false,
+          0,
+          false
+        );
         break;
       case 'stk-frame-only':
-        layoutParams = createLayoutParams(false, 0.5, true, false, 1, false);
+        layoutParams = createLayoutParams(
+          false,
+          0.5,
+          true,
+          false,
+          false,
+          0,
+          false
+        );
         break;
       case 'invisible':
-        layoutParams = createLayoutParams(false, 0, false, false, 1, false);
+        layoutParams = createLayoutParams(
+          false,
+          0,
+          false,
+          false,
+          false,
+          1,
+          false
+        );
         break;
     }
     setLayout(layoutParams);

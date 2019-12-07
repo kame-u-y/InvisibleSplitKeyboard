@@ -4,7 +4,7 @@ import * as input from './module/InputFunction/InputFunction.js';
 import * as wp from './module/WordPrediction/WordPrediction.js';
 
 let tapDatas = [];
-let debug = document.getElementById('debug');
+// let debug = document.getElementById('debug');
 
 function init() {
   document.getElementById('dot-container').innerHTML = '';

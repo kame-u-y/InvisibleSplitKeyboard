@@ -3,30 +3,24 @@ import * as kl from '../KeyList/KeyList.js';
 let gaussianData = {};
 
 function calcAverage(arr) {
-  return (
-    arr.reduce((sum, v) => {
-      return sum + v;
-    }) / arr.length
-  );
+  return arr.reduce((sum, v) => sum + v) / arr.length;
 }
 
 function calcSigma(arr, ave) {
   return Math.sqrt(
-    arr.reduce((sum, v) => {
-      return sum + (v - ave) ** 2;
-    }) / arr.length
+    arr
+      .map(v => (v - ave) ** 2)
+      .reduce((sum, v) => {
+        return sum + v;
+      }) / arr.length
   );
 }
 
 function calcRelation(letterData, aveX, aveY, sigmaX, sigmaY) {
   return (
     letterData
-      .map(v => {
-        return (v.position.x - aveX) * (v.position.y - aveY);
-      })
-      .reduce((sum, v) => {
-        return sum + v;
-      }) /
+      .map(v => (v.position.x - aveX) * (v.position.y - aveY))
+      .reduce((sum, v) => sum + v) /
     (letterData.length * sigmaX * sigmaY)
   );
 }
@@ -40,6 +34,7 @@ function calcGaussian(letterData) {
 
   const sigmaX = calcSigma(posXArr, aveX);
   const sigmaY = calcSigma(posYArr, aveY);
+  // console.log(sigmaX, sigmaY);
 
   const relation = calcRelation(letterData, aveX, aveY, sigmaX, sigmaY);
 
@@ -71,7 +66,7 @@ export function isOutlier(letter, x, y) {
   );
 }
 
-export function getSMProbability5(x, y) {
+export function getSMProbability(x, y) {
   let probabilities = [];
   Object.keys(gaussianData).filter(letter => {
     let data = gaussianData[letter];
@@ -116,8 +111,12 @@ export function drawCircle() {
     circle.setAttribute('class', 'circle');
     circle.style.cssText = `background-color: hsla(${getH(
       letter
-    )}, 100%, 80%, 0.1); border: solid 1px hsla(${getH(letter)}, 50%, 50%);
-               width: ${width}px; height: ${height}px; left: ${left}px; top: ${top}px;`;
+    )}, 100%, 80%, 0.1);
+      border: solid 1px hsla(${getH(letter)}, 50%, 50%);
+      width: ${width}px; height: ${height}px; left: ${left}px; top: ${top}px;`;
+    console.log(
+      `${letter}: {x: ${gaussianData[letter].x.average}, y: ${gaussianData[letter].y.average}, w: ${width}, h: ${height}},`
+    );
     circleContainer.appendChild(circle);
   });
 }
