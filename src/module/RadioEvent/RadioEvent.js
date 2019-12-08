@@ -50,6 +50,8 @@ function setLayout(layoutParams) {
   leftKeyboard.css('border-color', kbdBorderColor);
   rightKeyboard.css('border-color', kbdBorderColor);
 
+  keys.css('font-size', layoutParams.keyboard.isBorderless ? '30px' : '20px');
+
   keys.css(
     'background-color',
     `rgba(64, 64, 64, ${layoutParams.key.bgVisible ? '1' : '0'})`
