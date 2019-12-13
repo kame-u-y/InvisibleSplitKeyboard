@@ -4,8 +4,9 @@ import * as wp from './module/WordPrediction/WordPrediction.js';
 import * as rp from './module/GetRandomWords/GetRandomWords.js';
 
 let loadedDatas = [];
-let isSpace = false;
-
+// let isSpace = false;
+// TODO: isSpaceはグローバルである必要ないよね
+// TODO: いい加減WordPredictionのリファクタしろ
 function init() {
   document.getElementById(
     'given-text'
@@ -96,21 +97,47 @@ function addPredictedButtonEvent() {
 
 function addTargetTapEvent() {
   const target = document.getElementById('target');
-  let isSelect = false;
-  let isBS = false;
-  let selectStartX = -1;
-  let selectStartY = -1;
+  // let isSelect = false;
+  // let isBS = false;
+  // let selectStartX = -1;
+  // let selectStartY = -1;
 
-  const initStartXY = () => {
-    selectStartX = -1;
-    selectStartY = -1;
+  let flags = {
+    left: {
+      isSpace: false,
+      isSelect: false,
+      isBs: false,
+      selectStartX: -1,
+      selectStartY: -1
+    },
+    right: {
+      isSpace: false,
+      isSelect: false,
+      isBs: false,
+      selectStartX: -1,
+      selectStartY: -1
+    }
   };
-  const isStarted = (x, y) => x !== -1 && y !== -1;
 
-  const startEvent = (x, y) => {
-    if (isStarted(selectStartX, selectStartY)) return;
-    selectStartX = x;
-    selectStartY = y;
+  const initStartXY = isLeft => {
+    // selectStartX = -1;
+    // selectStartY = -1;
+    flags[isLeft ? 'left' : 'right'].selectStartX = -1;
+    flags[isLeft ? 'left' : 'right'].selectStartY = -1;
+  };
+  // const isStarted = (x, y) => x !== -1 && y !== -1;
+  const isStarted = isLeft => {
+    return (
+      flags[isLeft ? 'left' : 'right'].selectStartX !== -1 &&
+      flags[isLeft ? 'left' : 'right'].selectStartY
+    );
+  };
+
+  const startEvent = (x, y, isLeft) => {
+    // if (isStarted(selectStartX, selectStartY)) return;
+    if (isStarted(isLeft)) return;
+    flags[isLeft ? 'left' : 'right'].selectStartX = x;
+    flags[isLeft ? 'left' : 'right'].selectStartY = y;
   };
 
   const dxwProcess = (x, selectStartX) => {
@@ -121,27 +148,37 @@ function addTargetTapEvent() {
     return [dx, w];
   };
 
-  const moveEvent = (x, y) => {
-    if (!isStarted(selectStartX, selectStartY)) return;
+  const moveEvent = (x, y, isLeft) => {
+    // if (!isStarted(selectStartX, selectStartY)) return;
+    if (!isStarted(isLeft)) return;
 
-    if (y - selectStartY < -100) {
+    if (y - flags[isLeft ? 'left' : 'right'].selectStartY < -100) {
       Array.from(document.getElementsByClassName('predicted-button')).filter(
         v => {
           v.style.backgroundColor = '#eee';
         }
       );
-      [isSelect, isBS] = [false, false];
+      // [isSelect, isBS] = [false, false];
+      flags[isLeft ? 'left' : 'right'].isSelect = false;
+      flags[isLeft ? 'left' : 'right'].isBs = false;
     } else {
       const buttons = document.getElementsByClassName('predicted-button');
-      if (x - selectStartX < -100) {
-        [isSelect, isBS] = [false, true];
+      if (x - flags[isLeft ? 'left' : 'right'].selectStartX < -100) {
+        // [isSelect, isBS] = [false, true];
+        flags[isLeft ? 'left' : 'right'].isSelect = false;
+        flags[isLeft ? 'left' : 'right'].isBs = true;
         for (let i = 0; i < buttons.length; i++) {
           buttons[i].style.backgroundColor = '#ddd';
         }
         return;
-      } else if (x - selectStartX >= 10) {
-        [isSelect, isBS] = [true, false];
-        let [dx, w] = dxwProcess(x, selectStartX);
+      } else if (x - flags[isLeft ? 'left' : 'right'].selectStartX >= 10) {
+        // [isSelect, isBS] = [true, false];
+        flags[isLeft ? 'left' : 'right'].isSelect = true;
+        flags[isLeft ? 'left' : 'right'].isBs = false;
+        let [dx, w] = dxwProcess(
+          x,
+          flags[isLeft ? 'left' : 'right'].selectStartX
+        );
         for (let i = 0; i < buttons.length; i++) {
           if (i === Math.floor(dx / w) - 1)
             buttons[i].style.backgroundColor = '#ccc';
@@ -149,14 +186,17 @@ function addTargetTapEvent() {
         }
         return;
       } else {
-        [isSelect, isBS] = [false, false];
+        // [isSelect, isBS] = [false, false];
+        flags[isLeft ? 'left' : 'right'].isSelect = false;
+        flags[isLeft ? 'left' : 'right'].isBs = false;
       }
     }
   };
-  const endEvent = (x, y) => {
-    if (!isStarted(selectStartX, selectStartY)) return;
+  const endEvent = (x, y, isLeft) => {
+    // if (!isStarted(selectStartX, selectStartY)) return;
+    if (!isStarted(isLeft)) return;
 
-    if (y - selectStartY < -100) {
+    if (y - flags[isLeft ? 'left' : 'right'].selectStartY < -100) {
       Array.from(document.getElementsByClassName('predicted-button')).filter(
         v => {
           v.style.backgroundColor = '#ddd';
@@ -167,101 +207,123 @@ function addTargetTapEvent() {
       if (givenText + ' ' === inputText) {
         wp.initProbability();
         init();
-        initStartXY();
+        initStartXY(isLeft);
       } else {
         wp.nextProbability();
-        isSpace = true;
-        initStartXY();
+        flags[isLeft ? 'left' : 'right'].isSpace = true;
+        initStartXY(isLeft);
       }
     } else {
-      if (!isSelect && !isBS) {
-        initStartXY();
+      if (
+        !flags[isLeft ? 'left' : 'right'].isSelect &&
+        !flags[isLeft ? 'left' : 'right'].isBs
+      ) {
+        initStartXY(isLeft);
         return;
       }
-      if (isBS) {
+      if (flags[isLeft ? 'left' : 'right'].isBs) {
         wp.predictWordBS();
-        initStartXY();
-      } else if (isSelect) {
-        let [dx, w] = dxwProcess(x, selectStartX);
+        initStartXY(isLeft);
+      } else if (flags[isLeft ? 'left' : 'right'].isSelect) {
+        let [dx, w] = dxwProcess(
+          x,
+          flags[isLeft ? 'left' : 'right'].selectStartX
+        );
         const selected = document.getElementsByClassName('predicted-button')[
           Math.floor(dx / w) - 1
         ];
         wp.pushedPredictedButton(selected.innerText);
         selected.style.backgroundColor = '#ddd';
         wp.nextProbability();
-        isSpace = true;
-        initStartXY();
+        flags[isLeft ? 'left' : 'right'].isSpace = true;
+        initStartXY(isLeft);
       }
     }
   };
 
-  const targetEvent = (x, y) => {
-    if (isSpace || isSelect || isBS) {
-      isSpace = false;
-      isSelect = false;
-      isBS = false;
+  const targetEvent = (x, y, isLeft) => {
+    if (
+      flags[isLeft ? 'left' : 'right'].isSpace ||
+      flags[isLeft ? 'left' : 'right'].isSelect ||
+      flags[isLeft ? 'left' : 'right'].isBs
+    ) {
+      flags[isLeft ? 'left' : 'right'].isSpace = false;
+      flags[isLeft ? 'left' : 'right'].isSelect = false;
+      flags[isLeft ? 'left' : 'right'].isBs = false;
       return;
     }
     wp.predictWord(x, y);
   };
 
-  // touchstart, mousedown
-  target.addEventListener(
-    'touchstart',
-    ev => {
-      console.log('touchstart');
-      console.log(ev);
-      ev.preventDefault();
-      startEvent(ev.changedTouches[0].pageX, ev.changedTouches[0].pageY);
-    },
-    { passive: false }
-  );
-  target.addEventListener('mousedown', ev => {
-    startEvent(ev.pageX, ev.pageY);
-  });
+  const addTargetEventListener = () => {
+    const isLeft = x => (x < window.outerWidth / 2.0 ? true : false);
+    // touchstart, mousedown
+    target.addEventListener(
+      'touchstart',
+      ev => {
+        console.log('touchstart');
+        console.log(ev);
+        ev.preventDefault();
+        startEvent(
+          ev.changedTouches[0].pageX,
+          ev.changedTouches[0].pageY,
+          isLeft(ev.changedTouches[0].pageX)
+        );
+      },
+      { passive: false }
+    );
+    target.addEventListener('mousedown', ev => {
+      startEvent(ev.pageX, ev.pageY, isLeft(ev.pageX));
+    });
 
-  // touchmove, mousemove
-  target.addEventListener(
-    'touchmove',
-    ev => {
-      console.log('touchmove');
-      console.log(ev);
-      ev.preventDefault();
-      moveEvent(ev.changedTouches[0].pageX, ev.changedTouches[0].pageY);
-    },
-    { passive: false }
-  );
-  target.addEventListener('mousemove', ev => {
-    moveEvent(ev.pageX, ev.pageY);
-  });
+    // touchmove, mousemove
+    target.addEventListener(
+      'touchmove',
+      ev => {
+        console.log('touchmove');
+        console.log(ev);
+        ev.preventDefault();
+        moveEvent(
+          ev.changedTouches[0].pageX,
+          ev.changedTouches[0].pageY,
+          isLeft(ev.changedTouches[0].pageX)
+        );
+      },
+      { passive: false }
+    );
+    target.addEventListener('mousemove', ev => {
+      moveEvent(ev.pageX, ev.pageY, isLeft(ev.pageX));
+    });
 
-  //touchend, mouseup, click
-  target.addEventListener(
-    'touchend',
-    ev => {
-      console.log('touchend');
-      console.log(ev);
-      ev.preventDefault();
-      const touch = ev.changedTouches[0];
-      endEvent(touch.pageX, touch.pageY);
+    //touchend, mouseup, click
+    target.addEventListener(
+      'touchend',
+      ev => {
+        console.log('touchend');
+        console.log(ev);
+        ev.preventDefault();
+        const touch = ev.changedTouches[0];
+        endEvent(touch.pageX, touch.pageY, isLeft(touch.pageX));
+        const targetRect = target.getBoundingClientRect();
+        const x = touch.clientX - targetRect.left;
+        const y = touch.clientY - targetRect.top;
+        // console.log(x, y);
+        targetEvent(x, y, isLeft(x));
+      },
+      { passive: false }
+    );
+    target.addEventListener('mouseup', ev => {
+      endEvent(ev.pageX, ev.pageY);
+    });
+    target.addEventListener('click', ev => {
       const targetRect = target.getBoundingClientRect();
-      const x = touch.clientX - targetRect.left;
-      const y = touch.clientY - targetRect.top;
+      const x = ev.clientX - targetRect.left;
+      const y = ev.clientY - targetRect.top;
       // console.log(x, y);
-      targetEvent(x, y);
-    },
-    { passive: false }
-  );
-  target.addEventListener('mouseup', ev => {
-    endEvent(ev.pageX, ev.pageY);
-  });
-  target.addEventListener('click', ev => {
-    const targetRect = target.getBoundingClientRect();
-    const x = ev.clientX - targetRect.left;
-    const y = ev.clientY - targetRect.top;
-    // console.log(x, y);
-    targetEvent(x, y);
-  });
+      targetEvent(x, y, isLeft(x));
+    });
+  };
+  addTargetEventListener();
 }
 
 const addMoveKeyboardEvent = () => {

@@ -98,6 +98,15 @@ export function getTapData(user, keyboardType, spaceVisual, callback) {
         isSetData.default = true;
         if (isSetData.default && isSetData.user) {
           Object.keys(userData).filter(k => {
+            // それぞれのキーに対してx座標が反対側のキーボードにあるやつを排除
+            let leftKey = 'qwertasdfgzxcv';
+            userData[k] = userData[k].filter(v => {
+              return (
+                (v.position.x - window.outerWidth / 2.0) *
+                  (leftKey.match(k) ? -1 : 1) >
+                0
+              );
+            });
             userData[k] = userData[k].concat(defaultData[k]);
           });
           callback(userData);
@@ -132,6 +141,15 @@ export function getTapData(user, keyboardType, spaceVisual, callback) {
         isSetData.user = true;
         if (isSetData.default && isSetData.user) {
           Object.keys(userData).filter(k => {
+            // それぞれのキーに対してx座標が反対側のキーボードにあるやつを排除
+            let leftKey = 'qwertasdfgzxcv';
+            userData[k] = userData[k].filter(v => {
+              return (
+                (v.position.x - window.outerWidth / 2.0) *
+                  (leftKey.match(k) ? -1 : 1) >
+                0
+              );
+            });
             userData[k] = userData[k].concat(defaultData[k]);
           });
           callback(userData);

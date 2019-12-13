@@ -155,6 +155,7 @@ function addTargetTapEvent() {
   };
 
   const addTargetEventListener = () => {
+    const isLeft = x => (x < window.outerWidth / 2.0 ? true : false);
     // touchstart, mousedown
     target.addEventListener(
       'touchstart',
@@ -162,13 +163,13 @@ function addTargetTapEvent() {
         ev.preventDefault();
         startEvent(
           ev.changedTouches[0].pageX,
-          ev.changedTouches[0].pageX < window.outerWidth / 2.0 ? true : false
+          isLeft(ev.changedTouches[0].pageX)
         );
       },
       { passive: false }
     );
     target.addEventListener('mousedown', ev => {
-      startEvent(ev.pageX, ev.pageX < window.outerWidth / 2.0 ? true : false);
+      startEvent(ev.pageX, isLeft(ev.pageX));
     });
 
     // touchmove, mousemove
@@ -178,13 +179,13 @@ function addTargetTapEvent() {
         ev.preventDefault();
         moveEvent(
           ev.changedTouches[0].pageX,
-          ev.changedTouches[0].pageX < window.outerWidth / 2.0 ? true : false
+          isLeft(ev.changedTouches[0].pageX)
         );
       },
       { passive: false }
     );
     target.addEventListener('mousemove', ev => {
-      moveEvent(ev.pageX, ev.pageX < window.outerWidth / 2.0 ? true : false);
+      moveEvent(ev.pageX, isLeft(ev.pageX));
     });
 
     //touchend, mouseup, click
@@ -193,25 +194,22 @@ function addTargetTapEvent() {
       ev => {
         ev.preventDefault();
         const touch = ev.changedTouches[0];
-        endEvent(
-          touch.pageX,
-          touch.pageX < window.outerWidth / 2.0 ? true : false
-        );
+        endEvent(touch.pageX, isLeft(touch.pageX));
         const targetRect = target.getBoundingClientRect();
         const x = touch.clientX - targetRect.left;
         const y = touch.clientY - targetRect.top;
-        targetEvent(x, y, x < window.outerWidth / 2.0 ? true : false);
+        targetEvent(x, y, isLeft(x));
       },
       { passive: false }
     );
     target.addEventListener('mouseup', ev => {
-      endEvent(ev.pageX, ev.pageX < window.outerWidth / 2.0 ? true : false);
+      endEvent(ev.pageX, isLeft(ev.pageX));
     });
     target.addEventListener('click', ev => {
       const targetRect = target.getBoundingClientRect();
       const x = ev.clientX - targetRect.left;
       const y = ev.clientY - targetRect.top;
-      targetEvent(x, y, x < window.outerWidth / 2.0 ? true : false);
+      targetEvent(x, y, isLeft(x));
     });
   };
   addTargetEventListener();
