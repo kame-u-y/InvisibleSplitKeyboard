@@ -8,7 +8,7 @@ export function getRandomPhrase() {
 let sph = selectedPhrases.slice(0);
 export function getRandomSelectedPhrase() {
   if (sph.length === 0) {
-    sph = selectedPhrases;
+    sph = selectedPhrases.slice(0);
   }
   const id = Math.floor(Math.random() * sph.length);
   const res = sph[id];
