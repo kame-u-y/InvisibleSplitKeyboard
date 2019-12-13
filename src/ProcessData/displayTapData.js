@@ -16,6 +16,55 @@ app = firebase.initializeApp(firebaseConfig);
 
 function getTapData(user, keyboardType, callback) {
   let db = firebase.firestore();
+  let defaultData = {};
+  let userData = {};
+  let isSetData = {
+    default: false,
+    user: false
+  };
+
+  // default data (each center of a key)
+  db.collection('users')
+    .doc('awdef')
+    .collection('devices')
+    .doc('ipad9.7')
+    .collection('keyboardTypes')
+    .doc('eyes-on')
+    .collection('spaceVisual')
+    .doc('invisible')
+    .get()
+    .then(doc => {
+      if (doc.exists) {
+        let data = Object.assign({}, doc.data());
+        Object.keys(data)
+          .filter(k => !keyList.find(v => v === k))
+          .filter(k => {
+            delete data[k];
+          });
+        // callback(data);
+        defaultData = data;
+        isSetData.default = true;
+        if (isSetData.default && isSetData.user) {
+          Object.keys(userData).filter(k => {
+            // それぞれのキーに対してx座標が反対側のキーボードにあるやつを排除
+            let leftKey = 'qwertasdfgzxcv';
+            userData[k] = userData[k].filter(v => {
+              return (
+                (v.position.x - 1590 / 2.0) * (leftKey.match(k) ? -1 : 1) > 0
+              );
+            });
+            userData[k] = userData[k].concat(defaultData[k]);
+          });
+          callback(userData);
+        }
+      } else {
+        console.log('no such document');
+      }
+    })
+    .catch(error => {
+      console.log('error getting document:', error);
+    });
+
   db.collection('users')
     .doc(user)
     .collection('devices')
@@ -27,8 +76,28 @@ function getTapData(user, keyboardType, callback) {
     .get()
     .then(doc => {
       if (doc.exists) {
-        // console.log(doc.data());
-        return callback(doc.data());
+        let data = Object.assign({}, doc.data());
+        Object.keys(data)
+          .filter(k => !keyList.find(v => v === k))
+          .filter(k => {
+            delete data[k];
+          });
+        // callback(data);
+        userData = data;
+        isSetData.user = true;
+        if (isSetData.default && isSetData.user) {
+          Object.keys(userData).filter(k => {
+            // それぞれのキーに対してx座標が反対側のキーボードにあるやつを排除
+            let leftKey = 'qwertasdfgzxcv';
+            userData[k] = userData[k].filter(v => {
+              return (
+                (v.position.x - 1590 / 2.0) * (leftKey.match(k) ? -1 : 1) > 0
+              );
+            });
+            userData[k] = userData[k].concat(defaultData[k]);
+          });
+          callback(userData);
+        }
       } else {
         console.log('no such document');
         return;
@@ -69,8 +138,8 @@ const keyList = [
   'm'
 ];
 
-const mode = 'KEYBOARD_TYPE_OF_EXTRACTING_DATA';
-getTapData('USER_NAME_OF_EXTRACTING_DATA', mode, data => {
+const mode = 'stk-borderless';
+getTapData('kmaw2', mode, data => {
   let json = '';
   //   console.log('{');
   json += '{\n';
@@ -91,7 +160,7 @@ getTapData('USER_NAME_OF_EXTRACTING_DATA', mode, data => {
   });
   //   console.log('}');
   json += '}';
-  fs.writeFile(`./data/tapData/${mode}.json`, json, err => {
+  fs.writeFile(`./data/tapData/upd-${mode}.json`, json, err => {
     if (err) console.log(`error!::${err}`);
   });
   console.log('end');
