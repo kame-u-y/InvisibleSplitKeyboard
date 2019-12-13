@@ -1,4 +1,5 @@
 import { freqJson } from './wordFreqJson.js';
+import { checkExistanceJson } from './wordFreqData/checkExistance2.js';
 
 export function getLMProbability(str) {
   let res = freqJson[str[0]].find(v => v.word === str);
@@ -14,4 +15,8 @@ export function getLMProbability(str) {
     };
   }
   return res;
+}
+
+export function isExistSpell(str) {
+  return checkExistanceJson[str] === 'isExist';
 }

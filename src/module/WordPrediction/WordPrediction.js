@@ -88,16 +88,18 @@ function smProbability(x, y) {
 
   letterPs.forEach(v0 => {
     smTopOrder.forEach(v1 => {
-      newLetterPs.push({
-        letter: v0.letter + v1.letter,
-        probability: v0.probability * v1.probability
-      });
+      if (lm.isExistSpell(v0.letter + v1.letter)) {
+        newLetterPs.push({
+          letter: v0.letter + v1.letter,
+          probability: v0.probability * v1.probability
+        });
+      }
     });
   });
 
   letterPs = newLetterPs
     .sort((a, b) => b.probability - a.probability)
-    .slice(0, 500);
+    .slice(0, 100);
   // console.log(letterPs);
   document.getElementById('predicted-letter').innerText =
     typedLetters + letterPs[0].letter;
