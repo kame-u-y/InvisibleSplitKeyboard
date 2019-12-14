@@ -1,3 +1,6 @@
+// WordPredictionで入力文字列とか管理するの不便
+// 直した方がいいけど直す時間ない！！！！
+
 import * as re from './module/RadioEvent/RadioEvent.js';
 import * as hr from './module/MyHttpRequest/MyHttpRequest.js';
 import * as wp from './module/WordPrediction/WordPrediction.js';
@@ -5,6 +8,14 @@ import * as rp from './module/GetRandomWords/GetRandomWords.js';
 
 let loadedDatas = [];
 let taskCount = 1;
+let taskData = {
+  startTime: -1,
+  endTime: -1,
+  letterCount: 0
+};
+// let startTime = -1;
+// let endTime = -1;
+// let letterCount = 0;
 
 function init() {
   document.getElementById(
@@ -18,6 +29,13 @@ function addInitCountEvent() {
   const initCount = document.getElementById('init-count');
   initCount.addEventListener('click', ev => {
     taskCount = 1;
+    taskData = {
+      startTime: -1,
+      endTime: -1,
+      letterCount: 0
+    };
+    console.log(taskData);
+    wp.initProbability();
     init();
   });
 }
@@ -229,6 +247,9 @@ function addTargetTapEvent() {
 
       if (flags[isLeft ? 'left' : 'right'].isBs) {
         wp.predictWordBS();
+        if (taskCount === 1 && wp.isInputEmpty()) {
+          taskData.startTime = -1;
+        }
         initStartXY(isLeft);
         document.getElementById(
           'predicted-button-list'
@@ -250,7 +271,13 @@ function addTargetTapEvent() {
         let inputText = document.getElementById('predicted-letter').innerText;
         if (givenText === inputText) {
           // 次の行へ
+          if (taskCount === 8) {
+            taskData.endTime = Date.now();
+            console.log(taskData);
+            hr.postTaskData(taskData);
+          }
           taskCount++;
+          taskData.letterCount += givenText.length;
           wp.initProbability();
           init();
           initStartXY(isLeft);
@@ -268,12 +295,16 @@ function addTargetTapEvent() {
       flags[isLeft ? 'left' : 'right'].isSelect ||
       flags[isLeft ? 'left' : 'right'].isBs
     ) {
-      console.log('target init');
+      // console.log('target init');
       flags[isLeft ? 'left' : 'right'].isSelect = false;
       flags[isLeft ? 'left' : 'right'].isBs = false;
       return;
     }
-    console.log('target');
+    // console.log('target');
+    if (taskCount === 1 && wp.isInputEmpty()) {
+      taskData.startTime = Date.now();
+      console.log(taskData);
+    }
     wp.predictWord(x, y);
     document.getElementById(
       'predicted-button-list'
@@ -288,8 +319,8 @@ function addTargetTapEvent() {
     target.addEventListener(
       'touchstart',
       ev => {
-        console.log('touchstart');
-        console.log(ev);
+        // console.log('touchstart');
+        // console.log(ev);
         ev.preventDefault();
         startEvent(
           ev.changedTouches[0].pageX,
@@ -307,8 +338,8 @@ function addTargetTapEvent() {
     target.addEventListener(
       'touchmove',
       ev => {
-        console.log('touchmove');
-        console.log(ev);
+        // console.log('touchmove');
+        // console.log(ev);
         ev.preventDefault();
         moveEvent(
           ev.changedTouches[0].pageX,
@@ -326,8 +357,8 @@ function addTargetTapEvent() {
     target.addEventListener(
       'touchend',
       ev => {
-        console.log('touchend');
-        console.log(ev);
+        // console.log('touchend');
+        // console.log(ev);
         ev.preventDefault();
         const touch = ev.changedTouches[0];
         endEvent(touch.pageX, touch.pageY, isLeft(touch.pageX));
@@ -424,3 +455,4 @@ addButtonEvent();
 addTargetTapEvent();
 addPredictedButtonEvent();
 addMoveKeyboardEvent();
+addInitCountEvent();

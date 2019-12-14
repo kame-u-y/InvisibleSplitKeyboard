@@ -26,6 +26,10 @@ let rawInputs = '';
 //   return letterPs;
 // }
 
+export function isInputEmpty() {
+  return typedLetters + rawInputs === '';
+}
+
 export function initProbability() {
   letterPs = [];
   document.getElementById('predicted-letter').innerText = '';
@@ -33,6 +37,7 @@ export function initProbability() {
     v.innerText = '';
   });
   typedLetters = '';
+  rawInputs = '';
 
   // initする前にタップ列が保存される？
   inputData = [];
@@ -137,7 +142,7 @@ function getLMProbability() {
   // console.log(pLM);
   let predictedButton = document.getElementsByClassName('predicted-button');
   for (let i = 0; i < 5; i++) {
-    predictedButton[i].innerText = pLM[i].letter;
+    predictedButton[i].innerText = pLM[i] ? pLM[i].letter : '';
   }
   // console.log(true);
 }
