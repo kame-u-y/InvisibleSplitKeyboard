@@ -132,13 +132,15 @@ function addTargetTapEvent() {
       isSelect: false,
       isBs: false,
       selectStartX: -1,
-      selectStartY: -1
+      selectStartY: -1,
+      selectTime: -1
     },
     right: {
       isSelect: false,
       isBs: false,
       selectStartX: -1,
-      selectStartY: -1
+      selectStartY: -1,
+      selectTime: -1
     }
   };
 
@@ -147,6 +149,7 @@ function addTargetTapEvent() {
     // selectStartY = -1;
     flags[isLeft ? 'left' : 'right'].selectStartX = -1;
     flags[isLeft ? 'left' : 'right'].selectStartY = -1;
+    flags[isLeft ? 'left' : 'right'].selectTime = -1;
   };
   // const isStarted = (x, y) => x !== -1 && y !== -1;
   const isStarted = isLeft => {
@@ -175,119 +178,129 @@ function addTargetTapEvent() {
     // if (!isStarted(selectStartX, selectStartY)) return;
     if (!isStarted(isLeft)) return;
 
-    if (y - flags[isLeft ? 'left' : 'right'].selectStartY < -100) {
-      // Array.from(document.getElementsByClassName('predicted-button')).filter(
-      //   v => {
-      //     v.style.backgroundColor = '#eee';
-      //   }
-      // );
-      // // [isSelect, isBS] = [false, false];
-      // flags[isLeft ? 'left' : 'right'].isSelect = false;
-      // flags[isLeft ? 'left' : 'right'].isBs = false;
-    } else {
-      const buttons = document.getElementsByClassName('predicted-button');
-      if (x - flags[isLeft ? 'left' : 'right'].selectStartX < -100) {
-        // [isSelect, isBS] = [false, true];
-        flags[isLeft ? 'left' : 'right'].isSelect = false;
-        flags[isLeft ? 'left' : 'right'].isBs = true;
-        for (let i = 0; i < buttons.length; i++) {
-          buttons[i].style.backgroundColor = '#ddd';
-        }
-        return;
-      } else if (x - flags[isLeft ? 'left' : 'right'].selectStartX >= 10) {
-        // [isSelect, isBS] = [true, false];
-        flags[isLeft ? 'left' : 'right'].isSelect = true;
-        flags[isLeft ? 'left' : 'right'].isBs = false;
-        let [dx, w] = dxwProcess(
-          x,
-          flags[isLeft ? 'left' : 'right'].selectStartX
-        );
-        for (let i = 0; i < buttons.length; i++) {
-          if (i === Math.floor(dx / w) - 1)
-            buttons[i].style.backgroundColor = '#ccc';
-          else buttons[i].style.backgroundColor = '#ddd';
-        }
-        return;
-      } else {
-        // [isSelect, isBS] = [false, false];
-        flags[isLeft ? 'left' : 'right'].isSelect = false;
-        flags[isLeft ? 'left' : 'right'].isBs = false;
+    // if (y - flags[isLeft ? 'left' : 'right'].selectStartY < -100) {
+    // Array.from(document.getElementsByClassName('predicted-button')).filter(
+    //   v => {
+    //     v.style.backgroundColor = '#eee';
+    //   }
+    // );
+    // // [isSelect, isBS] = [false, false];
+    // flags[isLeft ? 'left' : 'right'].isSelect = false;
+    // flags[isLeft ? 'left' : 'right'].isBs = false;
+    // } else {
+    const buttons = document.getElementsByClassName('predicted-button');
+    if (x - flags[isLeft ? 'left' : 'right'].selectStartX < -70) {
+      // [isSelect, isBS] = [false, true];
+      flags[isLeft ? 'left' : 'right'].isSelect = false;
+      flags[isLeft ? 'left' : 'right'].isBs = true;
+      for (let i = 0; i < buttons.length; i++) {
+        buttons[i].style.backgroundColor = '#ddd';
       }
+      return;
+    } else if (x - flags[isLeft ? 'left' : 'right'].selectStartX >= 10) {
+      if (flags[isLeft ? 'left' : 'right'].selectTime === -1) {
+        flags[isLeft ? 'left' : 'right'].selectTime = Date.now();
+      }
+      // [isSelect, isBS] = [true, false];
+      flags[isLeft ? 'left' : 'right'].isSelect = true;
+      flags[isLeft ? 'left' : 'right'].isBs = false;
+      let [dx, w] = dxwProcess(
+        x,
+        flags[isLeft ? 'left' : 'right'].selectStartX
+      );
+      for (let i = 0; i < buttons.length; i++) {
+        if (i === Math.floor(dx / w) - 1)
+          buttons[i].style.backgroundColor = '#ccc';
+        else buttons[i].style.backgroundColor = '#ddd';
+      }
+      return;
+    } else {
+      // [isSelect, isBS] = [false, false];
+      flags[isLeft ? 'left' : 'right'].isSelect = false;
+      flags[isLeft ? 'left' : 'right'].isBs = false;
     }
+    // }
   };
 
   const endEvent = (x, y, isLeft) => {
     // if (!isStarted(selectStartX, selectStartY)) return;
     if (!isStarted(isLeft)) return;
 
-    if (y - flags[isLeft ? 'left' : 'right'].selectStartY < -100) {
-      // Array.from(document.getElementsByClassName('predicted-button')).filter(
-      //   v => {
-      //     v.style.backgroundColor = '#ddd';
-      //   }
-      // );
-      // let givenText = document.getElementById('given-text').innerText;
-      // let inputText = document.getElementById('predicted-letter').innerText;
-      // if (givenText + ' ' === inputText) {
-      //   wp.initProbability();
-      //   init();
-      //   initStartXY(isLeft);
-      // } else {
-      //   wp.nextProbability();
-      //   initStartXY(isLeft);
-      // }
-    } else {
-      if (
-        !flags[isLeft ? 'left' : 'right'].isSelect &&
-        !flags[isLeft ? 'left' : 'right'].isBs
-      ) {
-        initStartXY(isLeft);
-        return;
+    // if (y - flags[isLeft ? 'left' : 'right'].selectStartY < -100) {
+    // Array.from(document.getElementsByClassName('predicted-button')).filter(
+    //   v => {
+    //     v.style.backgroundColor = '#ddd';
+    //   }
+    // );
+    // let givenText = document.getElementById('given-text').innerText;
+    // let inputText = document.getElementById('predicted-letter').innerText;
+    // if (givenText + ' ' === inputText) {
+    //   wp.initProbability();
+    //   init();
+    //   initStartXY(isLeft);
+    // } else {
+    //   wp.nextProbability();
+    //   initStartXY(isLeft);
+    // }
+    // } else {
+    if (
+      !flags[isLeft ? 'left' : 'right'].isSelect &&
+      !flags[isLeft ? 'left' : 'right'].isBs
+    ) {
+      initStartXY(isLeft);
+      return;
+    }
+
+    if (flags[isLeft ? 'left' : 'right'].isBs) {
+      wp.predictWordBS();
+      if (taskCount === 1 && wp.isInputEmpty()) {
+        taskData.startTime = -1;
       }
-
-      if (flags[isLeft ? 'left' : 'right'].isBs) {
-        wp.predictWordBS();
-        if (taskCount === 1 && wp.isInputEmpty()) {
-          taskData.startTime = -1;
+      initStartXY(isLeft);
+      document.getElementById(
+        'predicted-button-list'
+      ).style.paddingLeft = `${document
+        .getElementById('predicted-letter')
+        .getBoundingClientRect().width - 10}px`;
+    } else if (flags[isLeft ? 'left' : 'right'].isSelect) {
+      let [dx, w] = dxwProcess(
+        x,
+        flags[isLeft ? 'left' : 'right'].selectStartX
+      );
+      const selected = document.getElementsByClassName('predicted-button')[
+        flags[isLeft ? 'left' : 'right'].selectTime !== -1 &&
+        Date.now() - flags[isLeft ? 'left' : 'right'].selectTime < 100
+          ? 0
+          : Math.floor(dx / w) - 1
+      ];
+      wp.pushedPredictedButton(selected.innerText);
+      Array.from(document.getElementsByClassName('predicted-button')).filter(
+        v => {
+          v.style.backgroundColor = '#ddd';
         }
+      );
+
+      let givenText = document.getElementById('given-text').innerText;
+      let inputText = document.getElementById('predicted-letter').innerText;
+      if (givenText === inputText) {
+        // 次の行へ
+        if (taskCount === 8) {
+          taskData.endTime = Date.now();
+          console.log(taskData);
+          hr.postTaskData(taskData);
+        }
+        taskCount++;
+        taskData.letterCount += givenText.length;
+        wp.initProbability();
+        init();
         initStartXY(isLeft);
-        document.getElementById(
-          'predicted-button-list'
-        ).style.paddingLeft = `${document
-          .getElementById('predicted-letter')
-          .getBoundingClientRect().width - 10}px`;
-      } else if (flags[isLeft ? 'left' : 'right'].isSelect) {
-        let [dx, w] = dxwProcess(
-          x,
-          flags[isLeft ? 'left' : 'right'].selectStartX
-        );
-        const selected = document.getElementsByClassName('predicted-button')[
-          Math.floor(dx / w) - 1
-        ];
-        wp.pushedPredictedButton(selected.innerText);
-        selected.style.backgroundColor = '#ddd';
-
-        let givenText = document.getElementById('given-text').innerText;
-        let inputText = document.getElementById('predicted-letter').innerText;
-        if (givenText === inputText) {
-          // 次の行へ
-          if (taskCount === 8) {
-            taskData.endTime = Date.now();
-            console.log(taskData);
-            hr.postTaskData(taskData);
-          }
-          taskCount++;
-          taskData.letterCount += givenText.length;
-          wp.initProbability();
-          init();
-          initStartXY(isLeft);
-        } else {
-          // 次のワードへ
-          wp.nextProbability();
-          initStartXY(isLeft);
-        }
+      } else {
+        // 次のワードへ
+        wp.nextProbability();
+        initStartXY(isLeft);
       }
     }
+    // }
   };
 
   const targetEvent = (x, y, isLeft) => {
