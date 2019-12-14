@@ -4,14 +4,22 @@ import * as wp from './module/WordPrediction/WordPrediction.js';
 import * as rp from './module/GetRandomWords/GetRandomWords.js';
 
 let loadedDatas = [];
-// let isSpace = false;
-// TODO: isSpaceはグローバルである必要ないよね
-// TODO: いい加減WordPredictionのリファクタしろ
+let taskCount = 1;
+
 function init() {
   document.getElementById(
     'given-text'
   ).innerText = rp.getRandomPhrase().toLowerCase();
   document.getElementById('predicted-button-list').style.paddingLeft = `0px`;
+  document.getElementById('task-count').innerText = taskCount;
+}
+
+function addInitCountEvent() {
+  const initCount = document.getElementById('init-count');
+  initCount.addEventListener('click', ev => {
+    taskCount = 1;
+    init();
+  });
 }
 
 function restrictScroll() {
@@ -52,8 +60,6 @@ function addButtonEvent() {
         return;
       }
       hr.getTapData(user, keyboardType, spaceVisual, data => {
-        wp.createSpacialModel(data);
-        data = wp.removeSMOutlier(data);
         wp.createSpacialModel(data);
         loadedDatas.push({
           user: user,
@@ -105,14 +111,12 @@ function addTargetTapEvent() {
 
   let flags = {
     left: {
-      isSpace: false,
       isSelect: false,
       isBs: false,
       selectStartX: -1,
       selectStartY: -1
     },
     right: {
-      isSpace: false,
       isSelect: false,
       isBs: false,
       selectStartX: -1,
@@ -154,14 +158,14 @@ function addTargetTapEvent() {
     if (!isStarted(isLeft)) return;
 
     if (y - flags[isLeft ? 'left' : 'right'].selectStartY < -100) {
-      Array.from(document.getElementsByClassName('predicted-button')).filter(
-        v => {
-          v.style.backgroundColor = '#eee';
-        }
-      );
-      // [isSelect, isBS] = [false, false];
-      flags[isLeft ? 'left' : 'right'].isSelect = false;
-      flags[isLeft ? 'left' : 'right'].isBs = false;
+      // Array.from(document.getElementsByClassName('predicted-button')).filter(
+      //   v => {
+      //     v.style.backgroundColor = '#eee';
+      //   }
+      // );
+      // // [isSelect, isBS] = [false, false];
+      // flags[isLeft ? 'left' : 'right'].isSelect = false;
+      // flags[isLeft ? 'left' : 'right'].isBs = false;
     } else {
       const buttons = document.getElementsByClassName('predicted-button');
       if (x - flags[isLeft ? 'left' : 'right'].selectStartX < -100) {
@@ -193,27 +197,27 @@ function addTargetTapEvent() {
       }
     }
   };
+
   const endEvent = (x, y, isLeft) => {
     // if (!isStarted(selectStartX, selectStartY)) return;
     if (!isStarted(isLeft)) return;
 
     if (y - flags[isLeft ? 'left' : 'right'].selectStartY < -100) {
-      Array.from(document.getElementsByClassName('predicted-button')).filter(
-        v => {
-          v.style.backgroundColor = '#ddd';
-        }
-      );
-      let givenText = document.getElementById('given-text').innerText;
-      let inputText = document.getElementById('predicted-letter').innerText;
-      if (givenText + ' ' === inputText) {
-        wp.initProbability();
-        init();
-        initStartXY(isLeft);
-      } else {
-        wp.nextProbability();
-        flags[isLeft ? 'left' : 'right'].isSpace = true;
-        initStartXY(isLeft);
-      }
+      // Array.from(document.getElementsByClassName('predicted-button')).filter(
+      //   v => {
+      //     v.style.backgroundColor = '#ddd';
+      //   }
+      // );
+      // let givenText = document.getElementById('given-text').innerText;
+      // let inputText = document.getElementById('predicted-letter').innerText;
+      // if (givenText + ' ' === inputText) {
+      //   wp.initProbability();
+      //   init();
+      //   initStartXY(isLeft);
+      // } else {
+      //   wp.nextProbability();
+      //   initStartXY(isLeft);
+      // }
     } else {
       if (
         !flags[isLeft ? 'left' : 'right'].isSelect &&
@@ -222,6 +226,7 @@ function addTargetTapEvent() {
         initStartXY(isLeft);
         return;
       }
+
       if (flags[isLeft ? 'left' : 'right'].isBs) {
         wp.predictWordBS();
         initStartXY(isLeft);
@@ -240,24 +245,35 @@ function addTargetTapEvent() {
         ];
         wp.pushedPredictedButton(selected.innerText);
         selected.style.backgroundColor = '#ddd';
-        wp.nextProbability();
-        flags[isLeft ? 'left' : 'right'].isSpace = true;
-        initStartXY(isLeft);
+
+        let givenText = document.getElementById('given-text').innerText;
+        let inputText = document.getElementById('predicted-letter').innerText;
+        if (givenText === inputText) {
+          // 次の行へ
+          taskCount++;
+          wp.initProbability();
+          init();
+          initStartXY(isLeft);
+        } else {
+          // 次のワードへ
+          wp.nextProbability();
+          initStartXY(isLeft);
+        }
       }
     }
   };
 
   const targetEvent = (x, y, isLeft) => {
     if (
-      flags[isLeft ? 'left' : 'right'].isSpace ||
       flags[isLeft ? 'left' : 'right'].isSelect ||
       flags[isLeft ? 'left' : 'right'].isBs
     ) {
-      flags[isLeft ? 'left' : 'right'].isSpace = false;
+      console.log('target init');
       flags[isLeft ? 'left' : 'right'].isSelect = false;
       flags[isLeft ? 'left' : 'right'].isBs = false;
       return;
     }
+    console.log('target');
     wp.predictWord(x, y);
     document.getElementById(
       'predicted-button-list'

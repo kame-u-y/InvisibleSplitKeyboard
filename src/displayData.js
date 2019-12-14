@@ -40,8 +40,6 @@ function addButtonEvent() {
       }
       hr.getTapData(user, keyboardType, spaceVisual, data => {
         wp.createSpacialModel(data);
-        data = wp.removeSMOutlier(data);
-        wp.createSpacialModel(data);
         input.displayTapData(data);
         wp.drawCircle();
         tapDatas.push({

@@ -19,7 +19,6 @@ let inputData = [];
 let initialId = 0;
 
 let letterPs = [];
-let initFlag = false;
 let typedLetters = '';
 let rawInputs = '';
 
@@ -34,7 +33,6 @@ export function initProbability() {
     v.innerText = '';
   });
   typedLetters = '';
-  initFlag = true;
 
   // initする前にタップ列が保存される？
   inputData = [];
@@ -52,10 +50,6 @@ export function nextProbability() {
   initialId = inputData.length;
 }
 
-export function createSpacialModel(loadedData) {
-  sm.createSpacialModel(loadedData);
-}
-
 export function removeSMOutlier(loadedData) {
   Object.keys(loadedData).filter(letter => {
     loadedData[letter] = loadedData[letter].filter(v => {
@@ -63,6 +57,12 @@ export function removeSMOutlier(loadedData) {
     });
   });
   return loadedData;
+}
+
+export function createSpacialModel(loadedData) {
+  sm.createSpacialModel(loadedData);
+  loadedData = removeSMOutlier(loadedData);
+  return sm.createSpacialModel(loadedData);
 }
 
 export function drawCircle() {
@@ -238,10 +238,6 @@ export function predictWordBS() {
 }
 
 export function predictWord(x, y) {
-  if (initFlag) {
-    initFlag = false;
-    return;
-  }
   let isFirstLetter = smProbability(x, y);
   inputData.push({
     position: {
