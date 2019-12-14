@@ -11,6 +11,7 @@ function init() {
   document.getElementById(
     'given-text'
   ).innerText = rp.getRandomPhrase().toLowerCase();
+  document.getElementById('predicted-button-list').style.paddingLeft = `0px`;
 }
 
 function restrictScroll() {
@@ -224,6 +225,11 @@ function addTargetTapEvent() {
       if (flags[isLeft ? 'left' : 'right'].isBs) {
         wp.predictWordBS();
         initStartXY(isLeft);
+        document.getElementById(
+          'predicted-button-list'
+        ).style.paddingLeft = `${document
+          .getElementById('predicted-letter')
+          .getBoundingClientRect().width - 10}px`;
       } else if (flags[isLeft ? 'left' : 'right'].isSelect) {
         let [dx, w] = dxwProcess(
           x,
@@ -253,6 +259,11 @@ function addTargetTapEvent() {
       return;
     }
     wp.predictWord(x, y);
+    document.getElementById(
+      'predicted-button-list'
+    ).style.paddingLeft = `${document
+      .getElementById('predicted-letter')
+      .getBoundingClientRect().width - 10}px`;
   };
 
   const addTargetEventListener = () => {

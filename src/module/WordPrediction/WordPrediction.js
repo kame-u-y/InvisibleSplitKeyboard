@@ -21,6 +21,7 @@ let initialId = 0;
 let letterPs = [];
 let initFlag = false;
 let typedLetters = '';
+let rawInputs = '';
 
 // function getLetterPs() {
 //   return letterPs;
@@ -73,8 +74,9 @@ function smProbability(x, y) {
   let smTopOrder = sm.getSMProbability(x, y);
 
   if (letterPs.length === 0) {
+    rawInputs += smTopOrder[0].letter;
     document.getElementById('predicted-letter').innerText =
-      typedLetters + smTopOrder[0].letter;
+      typedLetters + rawInputs;
     let predictedButton = document.getElementsByClassName('predicted-button');
     for (let i = 0; i < 5; i++) {
       predictedButton[i].innerText = smTopOrder[i].letter;
@@ -82,6 +84,10 @@ function smProbability(x, y) {
     letterPs = smTopOrder;
     return true;
   }
+
+  rawInputs += smTopOrder[0].letter;
+  document.getElementById('predicted-letter').innerText =
+    typedLetters + rawInputs;
 
   // 文字列の結合・確率を掛け合わせ
   let newLetterPs = [];
@@ -97,12 +103,13 @@ function smProbability(x, y) {
     });
   });
 
+  // document.getElementById('predicted-letter').innerText =
+  //   typedLetters + letterPs[0].letter;
+
   letterPs = newLetterPs
     .sort((a, b) => b.probability - a.probability)
     .slice(0, 100);
   // console.log(letterPs);
-  document.getElementById('predicted-letter').innerText =
-    typedLetters + letterPs[0].letter;
   return false;
 }
 
@@ -138,6 +145,7 @@ function getLMProbability() {
 function bsFirstLetter() {
   // "h" > "": pop typedLetters
   console.log(-1);
+  rawInputs = '';
   inputData.pop();
   Array.from(document.getElementsByClassName('predicted-button')).filter(v => {
     v.innerText = '';
@@ -173,8 +181,9 @@ function bsSpace() {
 }
 
 function bsInitialLetter() {
-  // "hoge h" > "hoge ": don't pop typedLetters
+  // "hoge h" > "hoge ": pop no typedLetters
   console.log(1);
+  rawInputs = '';
   inputData.pop();
   Array.from(document.getElementsByClassName('predicted-button')).filter(v => {
     v.innerText = '';
@@ -185,6 +194,7 @@ function bsInitialLetter() {
 function bsLetter() {
   // "hoge ho" > "hoge h":
   console.log(2);
+  rawInputs = '';
   inputData.pop();
   inputData
     .filter(v => v.initialId === initialId)
@@ -248,4 +258,5 @@ export function predictWord(x, y) {
 
 export function pushedPredictedButton(value) {
   document.getElementById('predicted-letter').innerText = typedLetters + value;
+  rawInputs = '';
 }

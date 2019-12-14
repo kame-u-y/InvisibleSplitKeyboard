@@ -1,5 +1,5 @@
-import { freqJson } from './wordFreqJson.js';
-import { checkExistanceJson } from './wordFreqData/checkExistance2.js';
+import { freqJson } from './wordFreqJson_removedStrangeWords.js';
+import { checkExistanceJson } from './checkExistanceJson_removedStrangeWords.js';
 
 export function getLMProbability(str) {
   let res = freqJson[str[0]].find(v => v.word === str);

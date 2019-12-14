@@ -8,7 +8,7 @@ let givenText = '';
 let nextLetterNum = 0;
 let initFlag = false;
 // let isBS = false;
-let sentenceCount = 1;
+let taskCount = 1;
 
 function init() {
   // document.getElementById(
@@ -22,8 +22,15 @@ function init() {
   nextLetterNum = 0;
   document.getElementById('input-text').innerText = '';
   document.getElementById('dot-container').innerHTML = '';
-  document.getElementById('sentence-count').innerText = sentenceCount;
-  sentenceCount++;
+  document.getElementById('task-count').innerText = taskCount;
+}
+
+function addInitCountEvent() {
+  const initCount = document.getElementById('init-count');
+  initCount.addEventListener('click', ev => {
+    taskCount = 1;
+    init();
+  });
 }
 
 function addTapInfo(letter, x, y) {
@@ -96,7 +103,10 @@ function addTargetTapEvent() {
     }
     if (flags[isLeft ? 'left' : 'right'].isSpace) {
       if (nextLetterNum === givenText.length) {
-        hr.postTapData(tapData);
+        if (document.getElementById('is-collecting').checked && taskCount > 3) {
+          hr.postTapData(tapData);
+        }
+        taskCount++;
         init();
         initFlag = true;
         flags[isLeft ? 'left' : 'right'].isSpace = false;
@@ -106,6 +116,7 @@ function addTargetTapEvent() {
         const inputWords = document
           .getElementById('input-text')
           .innerText.split(' ');
+        // 入力文字数が足りてないとき*
         for (let i = 0; i < inputWords.length; i++) {
           if (inputWords[i].length !== givenWords[i].length) {
             isAst = true;
@@ -149,7 +160,17 @@ function addTargetTapEvent() {
     if (givenText.charAt(nextLetterNum) === ' ') {
       return;
     }
-    input.inputLetter(givenText.charAt(nextLetterNum));
+    // 入力位置が明らかに誤ってるとき*
+
+    const isLeftLetter = 'qwertasdfgzxcv'.match(
+      givenText.charAt(nextLetterNum)
+    );
+    const collectTap = (isLeft && isLeftLetter) || (!isLeft && !isLeftLetter);
+    if (collectTap) {
+      input.inputLetter(givenText.charAt(nextLetterNum));
+    } else {
+      input.inputLetter('*');
+    }
     addTapInfo(givenText.charAt(nextLetterNum), x, y);
     nextLetterNum++;
   };
@@ -298,5 +319,6 @@ function addMoveKeyboardEvent() {
 init();
 hr.initFirebase();
 re.addVisualEvent();
+addInitCountEvent();
 addTargetTapEvent();
 addMoveKeyboardEvent();
