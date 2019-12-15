@@ -117,9 +117,12 @@ export const selectedPhrases = [
   'Jack fox bids ivy strewn phlegm quiz',
   'How quickly daft jumping zebras vex',
   'Two driven jocks help fax my big quiz',
-  'Fickle jinx bog dwarves spy math quiz',
-  'Big dwarves heckle my top quiz of jinx',
-  'Fickle bog dwarves jinx empathy quiz'
+  'Fickle bog dwarves jinx empathy quiz',
+
+  'The five boxing wizards jump quickly',
+  'Pack my box with five dozen liquor jugs',
+  'Cozy lummox gives smart squid who asks for job pen',
+  'My faxed joke won a pager in the cable TV quiz show'
 ];
 //   'Public junk dwarves hug my quartz fox',
 //   'Jumping hay dwarves flock quartz box',
