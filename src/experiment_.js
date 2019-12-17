@@ -204,11 +204,12 @@ function addTargetTapEvent() {
     if (nextLetterNum === givenText.length) {
       if (document.getElementById('is-collecting').checked) {
         hr.postTapData(tapData);
-      }
-      if (taskCount === 8) {
-        taskData.endTime = Date.now();
-        console.log(taskData);
-        hr.postTaskData(taskData);
+
+        if (taskCount === 8) {
+          taskData.endTime = Date.now();
+          console.log(taskData);
+          hr.postTaskData(taskData);
+        }
       }
       taskCount++;
       taskData.letterCount += givenText.length;
