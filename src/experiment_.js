@@ -32,7 +32,7 @@ function init() {
     document.getElementById(
       'given-text'
       // ).innerText = rp.getRandomSelectedPhrase().toLowerCase();
-    ).innerText = 'task  end';
+    ).innerText = 'task   end';
   }
 
   givenText = document.getElementById('given-text').innerText;
