@@ -30,7 +30,7 @@
   /* for iiyama (vaio) */
   /* --letter-radius: 10px; */
 
-  --letter-font-size: 20px;
+  --letter-font-size: 27px;
   --letter-padding: 5px 4px;
 
   --shift-width: 41.743px; /* */
@@ -112,7 +112,7 @@ body {
   width: 100vw;
   bottom: var(--footer-bottom);
   background-color: rgba(255, 255, 255, 0);
-  padding-bottom: 30px;
+  padding-bottom: 260px;
   padding-top: 150px;
 }
 

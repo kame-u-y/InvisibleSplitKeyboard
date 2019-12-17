@@ -16,7 +16,9 @@ function init() {
   // ).innerText = rp.getRandomPhrase().toLowerCase();
   document.getElementById(
     'given-text'
-  ).innerText = rp.getRandomSelectedPhrase().toLowerCase();
+    // ).innerText = rp.getRandomSelectedPhrase().toLowerCase();
+  ).innerText = rp.getRandomPhrase().toLowerCase();
+
   givenText = document.getElementById('given-text').innerText;
   tapData = {};
   nextLetterNum = 0;
@@ -28,7 +30,7 @@ function init() {
 function addInitCountEvent() {
   const initCount = document.getElementById('init-count');
   initCount.addEventListener('click', ev => {
-    taskCount = 1;
+    taskCount = 4;
     init();
   });
 }

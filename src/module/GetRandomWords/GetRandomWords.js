@@ -1,8 +1,16 @@
 import { phrases } from './phraseSet.js';
 import { selectedPhrases } from './selectedPhraseSet.js';
 
+let ph = phrases.slice(0);
 export function getRandomPhrase() {
-  return phrases[Math.floor(Math.random() * phrases.length)];
+  if (ph.length === 0) {
+    ph = phrases.slice(0);
+  }
+  const id = Math.floor(Math.random() * ph.length);
+  const res = ph[id];
+  ph.splice(id, 1);
+  // return phrases[Math.floor(Math.random() * phrases.length)];
+  return res;
 }
 
 let sph = selectedPhrases.slice(0);
