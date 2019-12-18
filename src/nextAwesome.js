@@ -22,7 +22,7 @@ function init() {
     'given-text'
   ).innerText = rp.getRandomPhrase().toLowerCase();
   document.getElementById('predicted-button-list').style.paddingLeft = `0px`;
-  document.getElementById('task-count').innerText = taskCount;
+  // document.getElementById('task-count').innerText = taskCount;
 }
 
 function addInitCountEvent() {
