@@ -85,9 +85,7 @@ function addButtonEvent() {
           space: spaceVisual,
           data: data,
         });
-        document.getElementById(
-          'is-ok'
-        ).innerText = `ok, ${keyboardType} ${spaceVisual}`;
+        document.getElementById('is-ok').innerText = `load success`;
       });
     }
   };
