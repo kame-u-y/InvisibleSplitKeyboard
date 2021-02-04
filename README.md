@@ -12,29 +12,45 @@
 
 ## アプリのページ
 
-[タップデータ収集用システム](https://kame-v-d.github.io/InvisibleSplitKeyboard/collectKeyboard)
+- [タップデータ収集用システム](https://kame-v-d.github.io/InvisibleSplitKeyboard/collectKeyboard)
 
-[本番用システム](https://kame-v-d.github.io/InvisibleSplitKeyboard/nextAwesome)
+  - 各キーのタップ座標データを収集するためのシステム
+
+  - キーボード周辺のどこをタップしても正しい入力がされる
+
+- [本番用システム](https://kame-v-d.github.io/InvisibleSplitKeyboard/nextAwesome)
+
+  - タップデータ収集用システムで収集したデータをもとに予測モデルを構築
+
+  - テキストボックス付近に5つの予測単語が表示され、スワイプジェスチャで選択可能
 
 ## デモ動画
 
 [InvisibleSplitKeyboard - YouTube](https://youtu.be/UDp-I4-Mcms) 
 
+## 使用技術等
+
+- pure JavaScript：Webアプリケーションの実装
+
+- Node.js：LOOCVによる予測精度の検証
+
+- Firebase
+
+- 予測アルゴリズム：空間モデルと言語モデルからなるベイズ
+
+  - 空間モデル...タップ座標データをもとにした各キーの二次元正規分布
+  
+  - 言語モデル...ANCコーパスをもとに作成した1-gram言語モデル
+
 ## 使用方法
 
 ### タップデータ収集用システム
-
-各キーのタップ座標データを収集するためのシステム
-
-キーボード周辺のどこをタップしても正しい入力がされる
 
 バックスペース：キーボード上で左方向へスワイプ
 
 入力するキーのあるキーボードと反対側をタップした場合は「*」が入力される
 
 ### 本番用システム
-
-タップデータ収集用システムで収集したデータをもとに予測モデルを構築
 
 枠のみ表示されたキーボード
 
