@@ -105,9 +105,9 @@ function addTargetTapEvent() {
     }
     if (flags[isLeft ? 'left' : 'right'].isSpace) {
       if (nextLetterNum === givenText.length) {
-        if (document.getElementById('is-collecting').checked && taskCount > 3) {
-          hr.postTapData(tapData);
-        }
+        // if (document.getElementById('is-collecting').checked && taskCount > 3) {
+        hr.postTapData(tapData);
+        // }
         taskCount++;
         init();
         initFlag = true;
