@@ -23,7 +23,7 @@ function addButtonEvent() {
         ? 'visible'
         : 'invisible';
     const tapData = tapDatas.find(
-      v =>
+      (v) =>
         v.user === user &&
         v.keyboard === keyboardType &&
         v.space === spaceVisual
@@ -38,7 +38,8 @@ function addButtonEvent() {
         console.log('user is not defined');
         return;
       }
-      hr.getTapData(user, keyboardType, spaceVisual, data => {
+      hr.getTapData(user, keyboardType, spaceVisual, (data) => {
+        // console.log(data);
         wp.createSpacialModel(data);
         input.displayTapData(data);
         wp.drawCircle();
@@ -46,18 +47,18 @@ function addButtonEvent() {
           user: user,
           keyboard: keyboardType,
           space: spaceVisual,
-          data: data
+          data: data,
         });
       });
     }
   };
   const getDataButton = document.getElementById('get-tap-data');
 
-  getDataButton.addEventListener('touchend', ev => {
+  getDataButton.addEventListener('touchend', (ev) => {
     ev.preventDefault();
     buttonEvent();
   });
-  getDataButton.addEventListener('click', ev => {
+  getDataButton.addEventListener('click', (ev) => {
     buttonEvent();
   });
 }
@@ -70,7 +71,7 @@ function addTargetTapEvent() {
 
   target.addEventListener(
     'touchend',
-    ev => {
+    (ev) => {
       ev.preventDefault();
       const touch = ev.changedTouches[0];
       const targetRect = target.getBoundingClientRect();
@@ -82,7 +83,7 @@ function addTargetTapEvent() {
     { passive: false }
   );
 
-  target.addEventListener('click', ev => {
+  target.addEventListener('click', (ev) => {
     const targetRect = target.getBoundingClientRect();
     const x = ev.clientX - targetRect.left;
     const y = ev.clientY - targetRect.top;
@@ -95,11 +96,11 @@ function addEnterTapEvent() {
   const enterEvent = () => {
     wp.initProbability();
   };
-  enter.addEventListener('touchend', ev => {
+  enter.addEventListener('touchend', (ev) => {
     ev.preventDefault();
     enterEvent();
   });
-  enter.addEventListener('click', ev => {
+  enter.addEventListener('click', (ev) => {
     enterEvent();
   });
 }
@@ -111,7 +112,7 @@ const addMoveKeyboardEvent = () => {
   let paddingBottom = -1;
   let isMoveKeyboard = false;
 
-  const startEvent = y => {
+  const startEvent = (y) => {
     isMoveKeyboard = true;
     startY = y;
     paddingBottom =
@@ -120,7 +121,7 @@ const addMoveKeyboardEvent = () => {
         : parseInt(target.style.paddingBottom);
   };
 
-  const moveEvent = y => {
+  const moveEvent = (y) => {
     if (!isMoveKeyboard || startY === -1) return;
     const movedY = paddingBottom + (startY - y);
     target.style.paddingBottom = `${movedY}px`;
@@ -134,35 +135,35 @@ const addMoveKeyboardEvent = () => {
 
   moveKeyboard.addEventListener(
     'touchstart',
-    ev => {
+    (ev) => {
       ev.preventDefault();
       ev.stopPropagation();
       startEvent(ev.changedTouches[0].pageY);
     },
     {
-      passive: false
+      passive: false,
     }
   );
   moveKeyboard.addEventListener(
     'touchmove',
-    ev => {
+    (ev) => {
       ev.preventDefault();
       ev.stopPropagation();
       moveEvent(ev.changedTouches[0].pageY);
     },
     {
-      passive: false
+      passive: false,
     }
   );
   moveKeyboard.addEventListener(
     'touchend',
-    ev => {
+    (ev) => {
       ev.preventDefault();
       ev.stopPropagation();
       endEvent();
     },
     {
-      passive: false
+      passive: false,
     }
   );
 };

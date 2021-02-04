@@ -11,7 +11,7 @@ let taskCount = 1;
 let taskData = {
   startTime: -1,
   endTime: -1,
-  letterCount: 0
+  letterCount: 0,
 };
 // let startTime = -1;
 // let endTime = -1;
@@ -27,12 +27,12 @@ function init() {
 
 function addInitCountEvent() {
   const initCount = document.getElementById('init-count');
-  initCount.addEventListener('click', ev => {
+  initCount.addEventListener('click', (ev) => {
     taskCount = 1;
     taskData = {
       startTime: -1,
       endTime: -1,
-      letterCount: 0
+      letterCount: 0,
     };
     console.log(taskData);
     wp.initProbability();
@@ -44,11 +44,11 @@ function restrictScroll() {
   $('body').css('overflow', 'hidden');
   document.addEventListener(
     'touchmove',
-    ev => {
+    (ev) => {
       ev.preventDefault();
     },
     {
-      passive: false
+      passive: false,
     }
   );
 }
@@ -64,7 +64,7 @@ function addButtonEvent() {
         ? 'visible'
         : 'invisible';
     const loadedData = loadedDatas.find(
-      v =>
+      (v) =>
         v.user === user &&
         v.keyboard === keyboardType &&
         v.space === spaceVisual
@@ -77,13 +77,13 @@ function addButtonEvent() {
         console.log('user is not defined');
         return;
       }
-      hr.getTapData(user, keyboardType, spaceVisual, data => {
+      hr.getTapData(user, keyboardType, spaceVisual, (data) => {
         wp.createSpacialModel(data);
         loadedDatas.push({
           user: user,
           keyboard: keyboardType,
           space: spaceVisual,
-          data: data
+          data: data,
         });
         document.getElementById(
           'is-ok'
@@ -93,30 +93,45 @@ function addButtonEvent() {
   };
   const getDataButton = document.getElementById('get-tap-data');
 
-  getDataButton.addEventListener('touchend', ev => {
+  getDataButton.addEventListener('touchend', (ev) => {
     ev.preventDefault();
     buttonEvent();
   });
-  getDataButton.addEventListener('click', ev => {
+  getDataButton.addEventListener('click', (ev) => {
     buttonEvent();
   });
 }
 
 function addPredictedButtonEvent() {
   const buttons = document.getElementsByClassName('predicted-button');
-  const predictEvent = value => {
+  const predictEvent = (value) => {
     wp.pushedPredictedButton(value);
     wp.nextProbability();
   };
 
-  Array.from(buttons).filter(v => {
-    v.addEventListener('touchend', ev => {
+  Array.from(buttons).filter((v) => {
+    v.addEventListener('touchend', (ev) => {
       ev.preventDefault();
       predictEvent(v.innerText);
     });
-    v.addEventListener('click', ev => {
+    v.addEventListener('click', (ev) => {
       predictEvent(v.innerText);
     });
+  });
+}
+
+function addUpdateButtonEvent() {
+  const updateEvent = () => {
+    wp.initProbability();
+    init();
+  };
+  const updateBtn = document.getElementById('update-sentence');
+  updateBtn.addEventListener('touchend', (ev) => {
+    ev.preventDefault();
+    updateEvent();
+  });
+  updateBtn.addEventListener('click', (ev) => {
+    updateEvent();
   });
 }
 
@@ -133,18 +148,18 @@ function addTargetTapEvent() {
       isBs: false,
       selectStartX: -1,
       selectStartY: -1,
-      selectTime: -1
+      selectTime: -1,
     },
     right: {
       isSelect: false,
       isBs: false,
       selectStartX: -1,
       selectStartY: -1,
-      selectTime: -1
-    }
+      selectTime: -1,
+    },
   };
 
-  const initStartXY = isLeft => {
+  const initStartXY = (isLeft) => {
     // selectStartX = -1;
     // selectStartY = -1;
     flags[isLeft ? 'left' : 'right'].selectStartX = -1;
@@ -152,7 +167,7 @@ function addTargetTapEvent() {
     flags[isLeft ? 'left' : 'right'].selectTime = -1;
   };
   // const isStarted = (x, y) => x !== -1 && y !== -1;
-  const isStarted = isLeft => {
+  const isStarted = (isLeft) => {
     return (
       flags[isLeft ? 'left' : 'right'].selectStartX !== -1 &&
       flags[isLeft ? 'left' : 'right'].selectStartY
@@ -275,7 +290,7 @@ function addTargetTapEvent() {
       ];
       wp.pushedPredictedButton(selected.innerText);
       Array.from(document.getElementsByClassName('predicted-button')).filter(
-        v => {
+        (v) => {
           v.style.backgroundColor = '#ddd';
         }
       );
@@ -284,11 +299,11 @@ function addTargetTapEvent() {
       let inputText = document.getElementById('predicted-letter').innerText;
       if (givenText === inputText) {
         // 次の行へ
-        if (taskCount === 8) {
-          taskData.endTime = Date.now();
-          console.log(taskData);
-          hr.postTaskData(taskData);
-        }
+        // if (taskCount === 8) {
+        //   taskData.endTime = Date.now();
+        //   console.log(taskData);
+        //   hr.postTaskData(taskData);
+        // }
         taskCount++;
         taskData.letterCount += givenText.length;
         wp.initProbability();
@@ -327,11 +342,11 @@ function addTargetTapEvent() {
   };
 
   const addTargetEventListener = () => {
-    const isLeft = x => (x < window.outerWidth / 2.0 ? true : false);
+    const isLeft = (x) => (x < window.outerWidth / 2.0 ? true : false);
     // touchstart, mousedown
     target.addEventListener(
       'touchstart',
-      ev => {
+      (ev) => {
         // console.log('touchstart');
         // console.log(ev);
         ev.preventDefault();
@@ -343,14 +358,14 @@ function addTargetTapEvent() {
       },
       { passive: false }
     );
-    target.addEventListener('mousedown', ev => {
+    target.addEventListener('mousedown', (ev) => {
       startEvent(ev.pageX, ev.pageY, isLeft(ev.pageX));
     });
 
     // touchmove, mousemove
     target.addEventListener(
       'touchmove',
-      ev => {
+      (ev) => {
         // console.log('touchmove');
         // console.log(ev);
         ev.preventDefault();
@@ -362,14 +377,14 @@ function addTargetTapEvent() {
       },
       { passive: false }
     );
-    target.addEventListener('mousemove', ev => {
+    target.addEventListener('mousemove', (ev) => {
       moveEvent(ev.pageX, ev.pageY, isLeft(ev.pageX));
     });
 
     //touchend, mouseup, click
     target.addEventListener(
       'touchend',
-      ev => {
+      (ev) => {
         // console.log('touchend');
         // console.log(ev);
         ev.preventDefault();
@@ -383,10 +398,10 @@ function addTargetTapEvent() {
       },
       { passive: false }
     );
-    target.addEventListener('mouseup', ev => {
+    target.addEventListener('mouseup', (ev) => {
       endEvent(ev.pageX, ev.pageY);
     });
-    target.addEventListener('click', ev => {
+    target.addEventListener('click', (ev) => {
       const targetRect = target.getBoundingClientRect();
       const x = ev.clientX - targetRect.left;
       const y = ev.clientY - targetRect.top;
@@ -404,7 +419,7 @@ const addMoveKeyboardEvent = () => {
   let paddingBottom = -1;
   let isMoveKeyboard = false;
 
-  const startEvent = y => {
+  const startEvent = (y) => {
     isMoveKeyboard = true;
     startY = y;
     paddingBottom =
@@ -413,7 +428,7 @@ const addMoveKeyboardEvent = () => {
         : parseInt(target.style.paddingBottom);
   };
 
-  const moveEvent = y => {
+  const moveEvent = (y) => {
     if (!isMoveKeyboard || startY === -1) return;
     const movedY = paddingBottom + (startY - y);
     target.style.paddingBottom = `${movedY}px`;
@@ -427,35 +442,35 @@ const addMoveKeyboardEvent = () => {
 
   moveKeyboard.addEventListener(
     'touchstart',
-    ev => {
+    (ev) => {
       ev.preventDefault();
       ev.stopPropagation();
       startEvent(ev.changedTouches[0].pageY);
     },
     {
-      passive: false
+      passive: false,
     }
   );
   moveKeyboard.addEventListener(
     'touchmove',
-    ev => {
+    (ev) => {
       ev.preventDefault();
       ev.stopPropagation();
       moveEvent(ev.changedTouches[0].pageY);
     },
     {
-      passive: false
+      passive: false,
     }
   );
   moveKeyboard.addEventListener(
     'touchend',
-    ev => {
+    (ev) => {
       ev.preventDefault();
       ev.stopPropagation();
       endEvent();
     },
     {
-      passive: false
+      passive: false,
     }
   );
 };
@@ -468,4 +483,5 @@ addButtonEvent();
 addTargetTapEvent();
 addPredictedButtonEvent();
 addMoveKeyboardEvent();
-addInitCountEvent();
+// addInitCountEvent();
+addUpdateButtonEvent();

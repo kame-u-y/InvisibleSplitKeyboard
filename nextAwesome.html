@@ -38,12 +38,16 @@
         />stk-frame-only
         <input name="visual-mode" type="radio" value="invisible" />invisible
         <!-- <p><input type="checkbox" id="space-visible" checked />spaceVisible</p> -->
-        <input type="checkbox" id="bg-text-visible" checked />bgTextVisible
+        <input type="checkbox" id="bg-text-visible" />bgTextVisible
       </div>
-      <input type="button" id="get-tap-data" value="get tap data" />
-      <label id="is-ok"></label>
+      <div>
+        <input type="button" id="get-tap-data" value="get tap data" />
+        <label id="is-ok"></label>
+        <input type="button" id="update-sentence" value="update sentence" />
+      </div>
+
       <div id="task-container">
-        <pre id="given-text">give when until</pre>
+        <pre id="given-text">\\しばしお待ちを//</pre>
         <pre id="input-box"><span id="predicted-letter"></span></pre>
         <!-- <p id="predicted-word"></p> -->
         <ul id="predicted-button-list">
