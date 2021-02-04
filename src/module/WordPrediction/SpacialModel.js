@@ -9,7 +9,7 @@ function calcAverage(arr) {
 function calcSigma(arr, ave) {
   return Math.sqrt(
     arr
-      .map(v => (v - ave) ** 2)
+      .map((v) => (v - ave) ** 2)
       .reduce((sum, v) => {
         return sum + v;
       }) / arr.length
@@ -19,15 +19,15 @@ function calcSigma(arr, ave) {
 function calcRelation(letterData, aveX, aveY, sigmaX, sigmaY) {
   return (
     letterData
-      .map(v => (v.position.x - aveX) * (v.position.y - aveY))
+      .map((v) => (v.position.x - aveX) * (v.position.y - aveY))
       .reduce((sum, v) => sum + v) /
     (letterData.length * sigmaX * sigmaY)
   );
 }
 
 function calcGaussian(letterData) {
-  const posXArr = letterData.map(v => v.position.x);
-  const posYArr = letterData.map(v => v.position.y);
+  const posXArr = letterData.map((v) => v.position.x);
+  const posYArr = letterData.map((v) => v.position.y);
 
   const aveX = calcAverage(posXArr);
   const aveY = calcAverage(posYArr);
@@ -41,18 +41,18 @@ function calcGaussian(letterData) {
   return {
     x: {
       average: aveX,
-      sigma: sigmaX
+      sigma: sigmaX,
     },
     y: {
       average: aveY,
-      sigma: sigmaY
+      sigma: sigmaY,
     },
-    relation: relation
+    relation: relation,
   };
 }
 
 export function createSpacialModel(tapData) {
-  Object.keys(tapData).filter(letter => {
+  Object.keys(tapData).filter((letter) => {
     gaussianData[letter] = calcGaussian(tapData[letter]);
   });
 }
@@ -68,7 +68,7 @@ export function isOutlier(letter, x, y) {
 
 export function getSMProbability(x, y) {
   let probabilities = [];
-  Object.keys(gaussianData).filter(letter => {
+  Object.keys(gaussianData).filter((letter) => {
     let data = gaussianData[letter];
     let [aX, aY] = [data.x.average, data.y.average];
     let [sX, sY] = [data.x.sigma, data.y.sigma];
@@ -79,11 +79,12 @@ export function getSMProbability(x, y) {
       (2 * rel * (x - aX) * (y - aY)) / (sX * sY) +
       (y - aY) ** 2 / sY ** 2;
 
+    const prob =
+      Math.exp(-(z / (2 * (1 - rel ** 2)))) /
+      (2 * Math.PI * sX * sY * Math.sqrt(1 - rel ** 2));
     probabilities.push({
       letter: letter,
-      probability:
-        Math.exp(-(z / (2 * (1 - rel ** 2)))) /
-        (2 * Math.PI * sX * sY * Math.sqrt(1 - rel ** 2))
+      probability: !isNaN(prob) ? prob : 0,
     });
   });
   probabilities.sort((a, b) => b.probability - a.probability);
@@ -93,8 +94,8 @@ export function getSMProbability(x, y) {
 export function drawCircle() {
   const targetRect = document.getElementById('target').getBoundingClientRect();
   const circleContainer = document.getElementById('circle-container');
-  Object.keys(gaussianData).filter(letter => {
-    const getH = letter => {
+  Object.keys(gaussianData).filter((letter) => {
+    const getH = (letter) => {
       if (kl.rowKeyList[0].indexOf(letter) !== -1)
         return kl.rowKeyList[0].indexOf(letter) * 30;
       if (kl.rowKeyList[1].indexOf(letter) !== -1)
