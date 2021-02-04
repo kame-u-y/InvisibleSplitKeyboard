@@ -29,7 +29,7 @@ function init() {
 
 function addInitCountEvent() {
   const initCount = document.getElementById('init-count');
-  initCount.addEventListener('click', ev => {
+  initCount.addEventListener('click', (ev) => {
     taskCount = 4;
     init();
   });
@@ -45,9 +45,9 @@ function addTapInfo(letter, x, y) {
   tapData[letter].push({
     position: {
       x: x,
-      y: y
+      y: y,
     },
-    timestamp: Date.now()
+    timestamp: Date.now(),
   });
 }
 
@@ -57,19 +57,19 @@ function addTargetTapEvent() {
     left: {
       isSpace: false,
       isBs: false,
-      touchStartX: -1
+      touchStartX: -1,
     },
     right: {
       isSpace: false,
       isBs: false,
-      touchStartX: -1
-    }
+      touchStartX: -1,
+    },
   };
 
-  const initStartX = isLeft => {
+  const initStartX = (isLeft) => {
     flags[isLeft ? 'left' : 'right'].touchStartX = -1;
   };
-  const isStarted = isLeft => {
+  const isStarted = (isLeft) => {
     return flags[isLeft ? 'left' : 'right'].touchStartX !== -1;
   };
 
@@ -178,11 +178,11 @@ function addTargetTapEvent() {
   };
 
   const addTargetEventListener = () => {
-    const isLeft = x => (x < window.outerWidth / 2.0 ? true : false);
+    const isLeft = (x) => (x < window.outerWidth / 2.0 ? true : false);
     // touchstart, mousedown
     target.addEventListener(
       'touchstart',
-      ev => {
+      (ev) => {
         ev.preventDefault();
         startEvent(
           ev.changedTouches[0].pageX,
@@ -191,14 +191,14 @@ function addTargetTapEvent() {
       },
       { passive: false }
     );
-    target.addEventListener('mousedown', ev => {
+    target.addEventListener('mousedown', (ev) => {
       startEvent(ev.pageX, isLeft(ev.pageX));
     });
 
     // touchmove, mousemove
     target.addEventListener(
       'touchmove',
-      ev => {
+      (ev) => {
         ev.preventDefault();
         moveEvent(
           ev.changedTouches[0].pageX,
@@ -207,14 +207,14 @@ function addTargetTapEvent() {
       },
       { passive: false }
     );
-    target.addEventListener('mousemove', ev => {
+    target.addEventListener('mousemove', (ev) => {
       moveEvent(ev.pageX, isLeft(ev.pageX));
     });
 
     //touchend, mouseup, click
     target.addEventListener(
       'touchend',
-      ev => {
+      (ev) => {
         ev.preventDefault();
         const touch = ev.changedTouches[0];
         endEvent(touch.pageX, isLeft(touch.pageX));
@@ -225,10 +225,10 @@ function addTargetTapEvent() {
       },
       { passive: false }
     );
-    target.addEventListener('mouseup', ev => {
+    target.addEventListener('mouseup', (ev) => {
       endEvent(ev.pageX, isLeft(ev.pageX));
     });
-    target.addEventListener('click', ev => {
+    target.addEventListener('click', (ev) => {
       const targetRect = target.getBoundingClientRect();
       const x = ev.clientX - targetRect.left;
       const y = ev.clientY - targetRect.top;
@@ -245,7 +245,7 @@ function addMoveKeyboardEvent() {
   let paddingBottom = -1;
   let isMoveKeyboard = false;
 
-  const startEvent = y => {
+  const startEvent = (y) => {
     isMoveKeyboard = true;
     startY = y;
     paddingBottom =
@@ -254,7 +254,7 @@ function addMoveKeyboardEvent() {
         : parseInt(target.style.paddingBottom);
   };
 
-  const moveEvent = y => {
+  const moveEvent = (y) => {
     if (!isMoveKeyboard || startY === -1) return;
     const movedY = paddingBottom + (startY - y);
     target.style.paddingBottom = `${movedY}px`;
@@ -269,48 +269,48 @@ function addMoveKeyboardEvent() {
   const moveKeyboardEventListener = () => {
     moveKeyboard.addEventListener(
       'touchstart',
-      ev => {
+      (ev) => {
         ev.preventDefault();
         ev.stopPropagation();
         startEvent(ev.changedTouches[0].pageY);
       },
       {
-        passive: false
+        passive: false,
       }
     );
-    moveKeyboard.addEventListener('mousedown', ev => {
+    moveKeyboard.addEventListener('mousedown', (ev) => {
       ev.stopPropagation();
       startEvent(ev.pageY);
     });
 
     moveKeyboard.addEventListener(
       'touchmove',
-      ev => {
+      (ev) => {
         ev.preventDefault();
         ev.stopPropagation();
         moveEvent(ev.changedTouches[0].pageY);
       },
       {
-        passive: false
+        passive: false,
       }
     );
-    moveKeyboard.addEventListener('mousemove', ev => {
+    moveKeyboard.addEventListener('mousemove', (ev) => {
       ev.stopPropagation();
       moveEvent(ev.pageY);
     });
 
     moveKeyboard.addEventListener(
       'touchend',
-      ev => {
+      (ev) => {
         ev.preventDefault();
         ev.stopPropagation();
         endEvent();
       },
       {
-        passive: false
+        passive: false,
       }
     );
-    moveKeyboard.addEventListener('mouseup', ev => {
+    moveKeyboard.addEventListener('mouseup', (ev) => {
       ev.stopPropagation();
       endEvent();
     });
