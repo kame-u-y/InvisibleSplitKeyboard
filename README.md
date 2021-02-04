@@ -2,11 +2,11 @@
 
 分割ソフトウェアキーボード入力時に発生する頻繁な視線移動を、透明化により自然に抑制する手法（卒論）
 
-<img width="400px" alt="スクリーンショット 2021-02-05 6 40 23" src="https://user-images.githubusercontent.com/20572112/106958737-196bcc00-677d-11eb-8470-219f0da96b5b.png">　<img width="400px" alt="スクリーンショット 2021-02-05 2 56 58" src="https://user-images.githubusercontent.com/20572112/106957813-d8bf8300-677b-11eb-96d8-56ce86cdce87.jpg">
+<img width="400px" alt="スクリーンショット 2021-02-05 6 40 23" src="https://user-images.githubusercontent.com/20572112/106958737-196bcc00-677d-11eb-8470-219f0da96b5b.png">
 
 <img width="600px" alt="スクリーンショット 2021-02-05 6 37 49" src="https://user-images.githubusercontent.com/20572112/106958496-c98d0500-677c-11eb-870c-796d6a7ce291.png">
 
-
+<img width="400px" alt="スクリーンショット 2021-02-05 2 56 58" src="https://user-images.githubusercontent.com/20572112/106957813-d8bf8300-677b-11eb-96d8-56ce86cdce87.jpg">
 
 
 
