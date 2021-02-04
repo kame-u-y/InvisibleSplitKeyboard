@@ -175,8 +175,15 @@ export function getTapData(user, keyboardType, spaceVisual, callback) {
                 0
               );
             });
-            console.log(userData);
-            userData[k] = userData[k].concat(defaultData[k]);
+            // console.log(userData);
+            // userData[k] = userData[k].concat(defaultData[k]);
+          });
+          Object.keys(defaultData).map((k) => {
+            if (!userData[k]) {
+              userData[k] = [];
+            }
+            userData[k] = defaultData[k].concat(userData[k]);
+            return;
           });
           callback(userData);
         }
