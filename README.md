@@ -56,7 +56,7 @@
 
 はじめにデータ保存用のユーザ名と、キーボードの見た目を選択（枠のみは「frame-only」）
 
-<img width="300px" alt="スクリーンショット 2021-02-05 8 40 45" src="https://user-images.githubusercontent.com/20572112/106969358-06adc300-678e-11eb-954a-ae8727cc5911.png">　<img width="300px" alt="スクリーンショット 2021-02-05 8 36 42" src="https://user-images.githubusercontent.com/20572112/106968979-5344ce80-678d-11eb-9df3-af496bbd27fb.png">
+<img width="300px" alt="スクリーンショット 2021-02-05 8 40 45" src="https://user-images.githubusercontent.com/20572112/106971852-11b72200-6793-11eb-9d6f-4fec5a2e9e14.png">　<img width="300px" alt="スクリーンショット 2021-02-05 8 36 42" src="https://user-images.githubusercontent.com/20572112/106968979-5344ce80-678d-11eb-9df3-af496bbd27fb.png">
 
 入力するキーのあるキーボードと反対側をタップした場合は「*」が入力される
 
