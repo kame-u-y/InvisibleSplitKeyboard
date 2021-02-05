@@ -12,13 +12,17 @@
 
 ## アプリのページ
 
-- [タップデータ収集用システム](https://kame-v-d.github.io/InvisibleSplitKeyboard/collectKeyboard)
+- [タップデータ収集用ページ](https://kame-v-d.github.io/InvisibleSplitKeyboard/collectKeyboard)
 
   - 各キーのタップ座標データを収集するためのシステム
 
   - キーボード周辺のどこをタップしても正しい入力がされる
+  
+- [タップの分布確認用ページ](https://kame-v-d.github.io/InvisibleSplitKeyboard/displayData)
 
-- [本番用システム](https://kame-v-d.github.io/InvisibleSplitKeyboard/nextAwesome)
+  - タップ座標データをロードし、各キーの二次元正規分布を確認できる
+  
+- [本番用ページ](https://kame-v-d.github.io/InvisibleSplitKeyboard/nextAwesome)
 
   - タップデータ収集用システムで収集したデータをもとに予測モデルを構築
 
