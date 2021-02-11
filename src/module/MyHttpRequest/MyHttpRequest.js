@@ -1,9 +1,12 @@
 import * as kl from '../KeyList/KeyList.js';
 
 export function postTapData(tapData) {
+  const keyboardType = $(
+    '#visual-mode input:radio[name=visual-mode]:checked'
+  ).val();
   const data = {
     user: $('#user-name').val(),
-    keyboardType: $('#visual-mode input:radio[name=visual-mode]:checked').val(),
+    keyboardType: keyboardType,
     spaceVisual:
       $('#space-visible').prop('checked') | (keyboardType === 'visible')
         ? 'visible'
