@@ -20,7 +20,35 @@ function httpRequest(options) {
   });
 }
 
-const inputData = {
+function getTapData() {
+  Promise.resolve()
+    .then(function(value) {
+      const data = {
+        user: 'kame-sample',
+        keyboardType: 'frame-only',
+        spaceVisual: 'invisible',
+        // tapData: inputData,
+      };
+
+      const options = {
+        url: 'http://localhost:8080/getTapData',
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json; charset=utf-8' },
+        json: data,
+      };
+      return httpRequest(options); // リクエスト1回目
+    })
+    .then(function(value) {
+      // リクエスト結果の処理
+      console.log(value.body);
+    })
+    .catch(function(reason) {
+      // エラー、rejectしたときの処理
+      console.log(reason);
+    });
+}
+
+const inputTapData = {
   a: [
     {
       x: 0,
@@ -41,29 +69,68 @@ const inputData = {
     },
   ],
 };
+function postTapData() {
+  Promise.resolve()
+    .then(function(value) {
+      const data = {
+        user: 'test-request',
+        keyboardType: 'frame-only',
+        spaceVisual: 'invisible',
+        tapData: inputTapData,
+      };
 
-Promise.resolve()
-  .then(function(value) {
-    const data = {
-      user: 'test-request',
-      keyboardType: 'frame-only',
-      spaceVisual: 'invisible',
-      tapData: inputData,
-    };
+      const options = {
+        url: 'http://localhost:8080/postTapData',
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json; charset=utf-8' },
+        json: data,
+      };
+      return httpRequest(options); // リクエスト1回目
+    })
+    .then(function(value) {
+      // リクエスト結果の処理
+      console.log(value.body);
+    })
+    .catch(function(reason) {
+      // エラー、rejectしたときの処理
+      console.log(reason);
+    });
+}
 
-    const options = {
-      url: 'http://localhost:8080/postTapData',
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json; charset=utf-8' },
-      json: data,
-    };
-    return httpRequest(options); // リクエスト1回目
-  })
-  .then(function(value) {
-    // リクエスト結果の処理
-    console.log(value.body);
-  })
-  .catch(function(reason) {
-    // エラー、rejectしたときの処理
-    console.log(reason);
-  });
+const inputTaskData = {
+  startTime: 1,
+  endTime: 2,
+  letterCount: 101,
+};
+function postTaskData() {
+  Promise.resolve()
+    .then((value) => {
+      console.log(value);
+      const data = {
+        user: 'test-request',
+        keyboardType: 'frame-only',
+        spaceVisual: 'invisible',
+        taskData: inputTaskData,
+      };
+
+      const options = {
+        url: 'http://localhost:8080/postTaskData',
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json; charset=utf-8' },
+        json: data,
+      };
+      return httpRequest(options); // リクエスト1回目
+    })
+    .then((value) => {
+      // リクエスト結果の処理
+      console.log(value.body);
+    })
+    .catch((reason) => {
+      // エラー、rejectしたときの処理
+      console.log(reason);
+    });
+}
+
+// getTapData();
+// postTapData();
+postTaskData();
