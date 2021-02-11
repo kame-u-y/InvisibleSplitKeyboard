@@ -64,9 +64,17 @@ app.get('/getTapData', (req, res) => {
     .get()
     .then((doc) => {
       if (!doc.exists) {
-        res.status(200).json({ status: `no such document` });
+        res.status(200).json({
+          isDataExist: false,
+          message: `no such document`,
+          data: null,
+        });
       } else {
-        res.status(200).json(doc.data());
+        res.status(200).json({
+          isDataExist: true,
+          message: `document was detected!`,
+          data: doc.data(),
+        });
       }
     })
     .catch((error) => {

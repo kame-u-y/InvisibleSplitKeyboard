@@ -27,60 +27,14 @@ export function postTapData(tapData) {
     .then((res) => res.json())
     .then((json) => {
       console.log(json);
+    })
+    .catch((error) => {
+      console.error('Error:', error);
     });
 }
 
 export function getTapData(user, keyboardType, spaceVisual, callback) {
-  let db = firebase.firestore();
   let defaultData = {};
-  let userData = {};
-  let isSetData = { default: false, user: false };
-
-  // // default data (each center of a key)
-  // db.collection('users')
-  //   .doc('awdef')
-  //   .collection('devices')
-  //   .doc('ipad9.7')
-  //   .collection('keyboardTypes')
-  //   .doc('eyes-on')
-  //   .collection('spaceVisual')
-  //   .doc('invisible')
-  //   .get()
-  //   .then((doc) => {
-  //     if (doc.exists) {
-  //       let data = Object.assign({}, doc.data());
-  //       Object.keys(data)
-  //         .filter((k) => !kl.keyList.find((v) => v === k))
-  //         .filter((k) => {
-  //           delete data[k];
-  //         });
-  //       // console.log(data);
-  //       // callback(data);
-  //       defaultData = data;
-  //       isSetData.default = true;
-  //       if (isSetData.default && isSetData.user) {
-  //         Object.keys(userData).filter((k) => {
-  //           // それぞれのキーに対してx座標が反対側のキーボードにあるやつを排除
-  //           let leftKey = 'qwertasdfgzxcv';
-  //           userData[k] = userData[k].filter((v) => {
-  //             return (
-  //               (v.position.x - window.outerWidth / 2.0) *
-  //                 (leftKey.match(k) ? -1 : 1) >
-  //               0
-  //             );
-  //           });
-  //           userData[k] = userData[k].concat(defaultData[k]);
-  //         });
-  //         callback(userData);
-  //       }
-  //     } else {
-  //       console.log('no such document');
-  //     }
-  //   })
-  //   .catch((error) => {
-  //     console.log('error getting document:', error);
-  //   });
-
   const target = document.getElementById('target');
   const targetRect = target.getBoundingClientRect();
   const letters = document.querySelectorAll('.letter');
@@ -89,8 +43,6 @@ export function getTapData(user, keyboardType, spaceVisual, callback) {
     const rect = v.getBoundingClientRect();
     const buttonX = (rect.left + rect.right) / 2;
     const buttonY = (rect.top + rect.bottom) / 2;
-    // const buttonX = v.clientLeft + v.clientWidth / 2;
-    // const buttonY = v.clientTop + v.clientHeight / 2;
     const x = buttonX - targetRect.left;
     const y = buttonY - targetRect.top;
     defaultData[letter] = [
@@ -103,58 +55,114 @@ export function getTapData(user, keyboardType, spaceVisual, callback) {
       },
     ];
   });
-  isSetData.default = true;
 
-  db.collection('users')
-    .doc(user)
-    .collection('devices')
-    .doc('ipad9.7')
-    .collection('keyboardTypes')
-    .doc(keyboardType)
-    .collection('spaceVisual')
-    .doc(spaceVisual)
-    .get()
-    .then((doc) => {
-      if (doc.exists) {
-        let data = Object.assign({}, doc.data());
+  let userData = {};
+
+  const data = {
+    user: user,
+    keyboardType: keyboardType,
+    spaceVisual: spaceVisual,
+  };
+
+  const params = {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json; charset=utf-8',
+    },
+    mode: 'cors',
+    body: JSON.stringify(data),
+  };
+
+  fetch('https://invisiblesplitkeyboard.an.r.appspot.com/getTapData', params)
+    .then((res) => res.json())
+    .then((json) => {
+      console.log(json);
+      if (!json.isDataExist) {
+        console.log('no such document');
+      } else {
+        let data = Object.assign({}, json.data);
         Object.keys(data)
           .filter((k) => !kl.keyList.find((v) => v === k))
           .filter((k) => {
             delete data[k];
           });
-        // callback(data);
         userData = data;
-        isSetData.user = true;
-        if (isSetData.default && isSetData.user) {
-          Object.keys(userData).filter((k) => {
-            // それぞれのキーに対してx座標が反対側のキーボードにあるやつを排除
-            let leftKey = 'qwertasdfgzxcv';
-            userData[k] = userData[k].filter((v) => {
-              return (
-                (v.position.x - window.outerWidth / 2.0) *
-                  (leftKey.match(k) ? -1 : 1) >
-                0
-              );
-            });
-            // console.log(userData);
-            // userData[k] = userData[k].concat(defaultData[k]);
+        Object.keys(userData).filter((k) => {
+          // それぞれのキーに対してx座標が反対側のキーボードにあるやつを排除
+          let leftKey = 'qwertasdfgzxcv';
+          userData[k] = userData[k].filter((v) => {
+            return (
+              (v.position.x - window.outerWidth / 2.0) *
+                (leftKey.match(k) ? -1 : 1) >
+              0
+            );
           });
-          Object.keys(defaultData).map((k) => {
-            if (!userData[k]) {
-              userData[k] = [];
-            }
-            userData[k] = defaultData[k].concat(userData[k]);
-            return;
-          });
-          callback(userData);
-        }
-      } else {
-        console.log('no such document');
+        });
+        Object.keys(defaultData).map((k) => {
+          if (!userData[k]) {
+            userData[k] = [];
+          }
+          userData[k] = defaultData[k].concat(userData[k]);
+          return;
+        });
+        console.log(userData);
+        callback(userData);
       }
     })
     .catch((error) => {
-      console.log('error getting document:', error);
+      console.error('Error:', error);
     });
+
+  // db.collection('users')
+  //   .doc(user)
+  //   .collection('devices')
+  //   .doc('ipad9.7')
+  //   .collection('keyboardTypes')
+  //   .doc(keyboardType)
+  //   .collection('spaceVisual')
+  //   .doc(spaceVisual)
+  //   .get()
+  //   .then((doc) => {
+  //     if (doc.exists) {
+  //       let data = Object.assign({}, doc.data());
+  //       Object.keys(data)
+  //         .filter((k) => !kl.keyList.find((v) => v === k))
+  //         .filter((k) => {
+  //           delete data[k];
+  //         });
+  //       // callback(data);
+  //       userData = data;
+  //       // isSetData.user = true;
+  //       // if (isSetData.default && isSetData.user) {
+  //       Object.keys(userData).filter((k) => {
+  //         // それぞれのキーに対してx座標が反対側のキーボードにあるやつを排除
+  //         let leftKey = 'qwertasdfgzxcv';
+  //         userData[k] = userData[k].filter((v) => {
+  //           return (
+  //             (v.position.x - window.outerWidth / 2.0) *
+  //               (leftKey.match(k) ? -1 : 1) >
+  //             0
+  //           );
+  //         });
+  //         // console.log(userData);
+  //         // userData[k] = userData[k].concat(defaultData[k]);
+  //       });
+  //       Object.keys(defaultData).map((k) => {
+  //         if (!userData[k]) {
+  //           userData[k] = [];
+  //         }
+  //         userData[k] = defaultData[k].concat(userData[k]);
+  //         return;
+  //       });
+  //       callback(userData);
+  //       // }
+  //     } else {
+  //       console.log('no such document');
+  //     }
+  //   })
+  //   .catch((error) => {
+  //     console.log('error getting document:', error);
+  //   });
 }
 
 export function postTaskData(taskData) {
