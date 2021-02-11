@@ -319,7 +319,7 @@ function addMoveKeyboardEvent() {
 }
 
 init();
-hr.initFirebase();
+// hr.initFirebase();
 re.addVisualEvent();
 addInitCountEvent();
 addTargetTapEvent();
