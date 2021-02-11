@@ -42,9 +42,11 @@
 
 - pure JavaScript：Webアプリケーションの実装
 
-- Node.js：LOOCVによる予測精度の検証
+- Node.js：ExpressによるAPI実装、LOOCVによる予測精度の検証
 
-- Firebase：タップ座標データの保存
+- Firestore：タップ座標データの保存
+
+- Google App Engine：Firestoreを扱うAPIサーバの構築
 
 - 予測アルゴリズム：空間モデルと言語モデルからなるベイズ
 
