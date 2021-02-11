@@ -19,6 +19,7 @@ export function postTapData(tapData) {
     headers: {
       'Content-Type': 'application/json; charset=utf-8',
     },
+    mode: 'cors',
     body: JSON.stringify(data),
   };
 
