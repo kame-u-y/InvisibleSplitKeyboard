@@ -57,23 +57,22 @@ export function getTapData(user, keyboardType, spaceVisual, callback) {
   });
 
   let userData = {};
-
-  const data = {
+  const params = {
     user: user,
     keyboardType: keyboardType,
     spaceVisual: spaceVisual,
   };
+  const query_params = new URLSearchParams(params);
+  const fetchURL =
+    'https://invisiblesplitkeyboard.an.r.appspot.com/getTapData?' +
+    query_params;
 
-  const params = {
+  const options = {
     method: 'GET',
-    headers: {
-      'Content-Type': 'application/json; charset=utf-8',
-    },
     mode: 'cors',
-    body: JSON.stringify(data),
   };
 
-  fetch('https://invisiblesplitkeyboard.an.r.appspot.com/getTapData', params)
+  fetch(fetchURL, options)
     .then((res) => res.json())
     .then((json) => {
       console.log(json);
