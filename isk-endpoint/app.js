@@ -54,13 +54,13 @@ app.post('/postTapData', (req, res) => {
 
 app.get('/getTapData', (req, res) => {
   db.collection('users')
-    .doc(req.body.user)
+    .doc(req.query.user)
     .collection('devices')
     .doc('ipad9.7')
     .collection('keyboardTypes')
-    .doc(req.body.keyboardType)
+    .doc(req.query.keyboardType)
     .collection('spaceVisual')
-    .doc(req.body.spaceVisual)
+    .doc(req.query.spaceVisual)
     .get()
     .then((doc) => {
       if (!doc.exists) {
