@@ -19,29 +19,102 @@ const express = require('express');
 const app = express();
 
 const bodyParser = require('body-parser');
-app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 const admin = require('firebase-admin');
 admin.initializeApp({
   credential: admin.credential.applicationDefault(),
-  databaseURL: "https://invisiblesplitkeyboard.firebaseio.com"
+  databaseURL: 'https://invisiblesplitkeyboard.firebaseio.com',
 });
 const db = admin.firestore();
 
-
 app.get('/', (req, res) => {
-  res.status(200).send('Hello, world!').end();
+  res
+    .status(200)
+    .send('Hello, world!')
+    .end();
 });
 
+/**
+ * interface req {
+ *  user: string;
+ *  keyboardType: string;
+ *  spaceVisual: string;
+ *  tapData: Map<
+ *   char: {
+ *    x:number;
+ *    y:number;
+ *   }
+ *  >
+ * }
+ */
 app.post('/postTapData', (req, res) => {
-    db.collection("messages").add({original: req.body.message});
-    res.status(200).json({message: `POST: ${req.body.message}1`})
-})
+  Object.keys(req.body.tapData).filter((v) => {
+    fsTapData[v] = admin.firestore.FieldValue.arrayUnion(
+      ...req.body.tapData[v]
+    );
+  });
+  // db.collection("messages").add({original: req.body.message});
+  db.collection('users')
+    .doc(req.body.user)
+    .collection('devices')
+    .doc('ipad9.7')
+    .collection('keyboardTypes')
+    .doc(req.body.keyboardType)
+    .collection('spaceVisual')
+    .doc(req.body.spaceVisual)
+    .set(fsTapData, { merge: true })
+    .then((docRef) => {
+      console.log(docRef);
+      res.status(201).json({ message: 'create complete' });
+    })
+    .catch((error) => {
+      console.log('Error adding document: ', error);
+    });
+});
 
 app.get('/getTapData', (req, res) => {
-    res.status(200).json({message: `GET: ${req.query.message}`});
-})
+  // db.collection('users')
+  //   .doc(req.user)
+  //   .collection('devices')
+  //   .doc('ipad9.7')
+  //   .collection('keyboardTypes')
+  //   .doc(req.keyboardType)
+  //   .collection('spaceVisual')
+  //   .doc(req.spaceVisual)
+  //   .get()
+  //   .then((doc) => {
+  //     if (!doc.exists) {
+  //       console.log('no such document');
+  //       res.status(200).json({ status: `no such document` });
+  //     } else {
+  //       res.status(200).json({ message: `GET: ${req.query.message}` });
+  //     }
+  //   })
+  //   .catch((error) => {
+  //     console.log('error getting document:', error);
+  //   });
+});
+
+app.post('/postTaskData', (req, res) => {
+  // db.collection('users')
+  //   .doc(req.user + '-taskData')
+  //   .collection('devices')
+  //   .doc('ipad9.7')
+  //   .collection('keyboardTypes')
+  //   .doc(req.keyboardType)
+  //   .collection('spaceVisual')
+  //   .doc(req.spaceVisual)
+  //   .set(req.postData, { merge: true })
+  //   .then((docRef) => {
+  //     console.log(docRef);
+  //   })
+  //   .catch((error) => {
+  //     console.log('Error adding document: ', error);
+  //   });
+  res.status(200).json({ message: `GET: ${req.query.message}` });
+});
 
 // Start the server
 const PORT = process.env.PORT || 8080;
