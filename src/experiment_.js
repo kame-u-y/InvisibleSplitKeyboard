@@ -16,7 +16,7 @@ let taskCount = 1;
 let taskData = {
   startTime: -1,
   endTime: -1,
-  letterCount: 0
+  letterCount: 0,
 };
 
 function init() {
@@ -45,12 +45,12 @@ function init() {
 
 function addInitCountEvent() {
   const initCount = document.getElementById('init-count');
-  initCount.addEventListener('click', ev => {
+  initCount.addEventListener('click', (ev) => {
     taskCount = 1;
     taskData = {
       startTime: -1,
       endTime: -1,
-      letterCount: 0
+      letterCount: 0,
     };
     init();
   });
@@ -66,9 +66,9 @@ function addTapInfo(letter, x, y) {
   tapData[letter].push({
     position: {
       x: x,
-      y: y
+      y: y,
     },
-    timestamp: Date.now()
+    timestamp: Date.now(),
   });
 }
 
@@ -78,19 +78,19 @@ function addTargetTapEvent() {
     left: {
       isSpace: false,
       isBs: false,
-      touchStartX: -1
+      touchStartX: -1,
     },
     right: {
       isSpace: false,
       isBs: false,
-      touchStartX: -1
-    }
+      touchStartX: -1,
+    },
   };
 
-  const initStartX = isLeft => {
+  const initStartX = (isLeft) => {
     flags[isLeft ? 'left' : 'right'].touchStartX = -1;
   };
-  const isStarted = isLeft => {
+  const isStarted = (isLeft) => {
     return flags[isLeft ? 'left' : 'right'].touchStartX !== -1;
   };
 
@@ -219,11 +219,11 @@ function addTargetTapEvent() {
   };
 
   const addTargetEventListener = () => {
-    const isLeft = x => (x < window.outerWidth / 2.0 ? true : false);
+    const isLeft = (x) => (x < window.outerWidth / 2.0 ? true : false);
     // touchstart, mousedown
     target.addEventListener(
       'touchstart',
-      ev => {
+      (ev) => {
         ev.preventDefault();
         startEvent(
           ev.changedTouches[0].pageX,
@@ -232,14 +232,14 @@ function addTargetTapEvent() {
       },
       { passive: false }
     );
-    target.addEventListener('mousedown', ev => {
+    target.addEventListener('mousedown', (ev) => {
       startEvent(ev.pageX, isLeft(ev.pageX));
     });
 
     // touchmove, mousemove
     target.addEventListener(
       'touchmove',
-      ev => {
+      (ev) => {
         ev.preventDefault();
         moveEvent(
           ev.changedTouches[0].pageX,
@@ -248,14 +248,14 @@ function addTargetTapEvent() {
       },
       { passive: false }
     );
-    target.addEventListener('mousemove', ev => {
+    target.addEventListener('mousemove', (ev) => {
       moveEvent(ev.pageX, isLeft(ev.pageX));
     });
 
     //touchend, mouseup, click
     target.addEventListener(
       'touchend',
-      ev => {
+      (ev) => {
         ev.preventDefault();
         const touch = ev.changedTouches[0];
         endEvent(touch.pageX, isLeft(touch.pageX));
@@ -266,10 +266,10 @@ function addTargetTapEvent() {
       },
       { passive: false }
     );
-    target.addEventListener('mouseup', ev => {
+    target.addEventListener('mouseup', (ev) => {
       endEvent(ev.pageX, isLeft(ev.pageX));
     });
-    target.addEventListener('click', ev => {
+    target.addEventListener('click', (ev) => {
       const targetRect = target.getBoundingClientRect();
       const x = ev.clientX - targetRect.left;
       const y = ev.clientY - targetRect.top;
@@ -360,7 +360,7 @@ function addTargetTapEvent() {
 // }
 
 init();
-hr.initFirebase();
+
 re.addVisualEvent();
 addInitCountEvent();
 addTargetTapEvent();
