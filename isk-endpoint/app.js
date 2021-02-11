@@ -4,6 +4,8 @@ const express = require('express');
 const app = express();
 
 const bodyParser = require('body-parser');
+const cors = require('cors');
+
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(
@@ -27,6 +29,7 @@ app.get('/', (req, res) => {
 });
 
 app.post('/postTapData', (req, res) => {
+  let fsTapData = {};
   Object.keys(req.body.tapData).filter((v) => {
     fsTapData[v] = admin.firestore.FieldValue.arrayUnion(
       ...req.body.tapData[v]
