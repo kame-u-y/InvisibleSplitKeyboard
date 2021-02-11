@@ -169,7 +169,7 @@ const addMoveKeyboardEvent = () => {
 };
 
 init();
-hr.initFirebase();
+
 re.addVisualEvent();
 addButtonEvent();
 addTargetTapEvent();

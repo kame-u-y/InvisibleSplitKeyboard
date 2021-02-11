@@ -244,7 +244,7 @@ const addMoveKeyboardEvent = () => {
 
 init();
 restrictScroll();
-hr.initFirebase();
+
 re.addVisualEvent();
 addButtonEvent();
 addTargetTapEvent();
