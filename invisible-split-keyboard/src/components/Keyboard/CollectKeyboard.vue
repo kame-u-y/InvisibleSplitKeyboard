@@ -4,7 +4,7 @@
       v-for="(rowList, side) in keyLayouts"
       :id="side + '-keyboard'"
       :key="side"
-      :style="keyboardModeStyle"
+      :class="getKeyboardClass()"
     >
       <ul
         v-for="(keyList, rowName) in rowList"
@@ -17,7 +17,6 @@
           :key="key"
           :class="getKeyClass(side, key)"
           :data-letter="getKeyValue(key)"
-          :style="keyModeStyle(key)"
         >
           {{ getKeyValue(key) }}
         </li>
@@ -27,9 +26,9 @@
 </template>
 
 <script>
+import { computed } from 'vue';
 import { letterList } from '../../modules/KeyList/KeyList';
 import collectTypingStore from '../../stores/collectTypingStore';
-import { getKeyboardStyles, getKeyStyles } from './functions/getKeyboardStyles';
 
 export default {
   name: 'CollectKeyboard',
@@ -51,27 +50,26 @@ export default {
     const collectStore = collectTypingStore();
     const keyboardMode = computed(() => collectStore.keyboardMode);
 
-    const keyboardModeStyle = getKeyboardStyles(keyboardMode);
-    const keyModeStyle = (key) => {
-      if (letterList.includes(key)) {
-        return getKeyStyles(keyboardMode);
-      } else {
-        return {};
-      }
+    const getKeyboardClass = () => {
+      return `kbd-${keyboardMode.value}`;
     };
-
     const getKeyClass = (side, key) => {
-      return `${side}-key ${letterList.includes(key) ? 'letter' : key}`;
+      const sideClass = `${side}-key`;
+      const valueClass = letterList.includes(key) ? 'letter' : key;
+      const modeClass = letterList.includes(key)
+        ? `key-${keyboardMode.value}`
+        : '';
+      return `${sideClass} ${valueClass} ${modeClass}`;
     };
     const getKeyValue = (key) => {
       return letterList.includes(key) ? key : '';
     };
+
     return {
       keyLayouts,
       keyboardMode,
-      keyboardModeStyle,
-      keyModeStyle,
       letterList,
+      getKeyboardClass,
       getKeyClass,
       getKeyValue,
     };
@@ -80,6 +78,16 @@ export default {
 </script>
 
 <style>
+html {
+  height: 100vh;
+}
+
+body {
+  height: 100vh;
+  background-color: white;
+  margin: 0;
+}
+
 #target {
   --lt-padding-left: 2.5mm;
   --lm-padding-left: 9mm;
@@ -129,9 +137,73 @@ export default {
   border: solid 3px rgba(0, 0, 0, 0);
 }
 
-/******************************/
-/******* default style ***********/
-/******************************/
+/******* mode keyboard style ***********/
+.kbd-eyes-on,
+.kbd-peripheral {
+  background-color: rgba(0, 0, 0, 1);
+  opacity: 1;
+  border-color: rgba(64, 64, 64, 0);
+}
+
+.kbd-stk-peripheral {
+  background-color: rgba(0, 0, 0, 1);
+  opacity: 0.5;
+  border-color: rgba(64, 64, 64, 0);
+}
+
+.kbd-borderless {
+  background-color: rgba(64, 64, 64, 1);
+  opacity: 1;
+  border-color: rgba(64, 64, 64, 0);
+}
+
+.kbd-stk-borderless {
+  background-color: rgba(64, 64, 64, 1);
+  opacity: 0.5;
+  border-color: rgba(64, 64, 64, 0);
+}
+
+.kbd-key-wired {
+  background-color: rgba(0, 0, 0, 0);
+  opacity: 1;
+  border-color: rgba(64, 64, 64, 1);
+}
+
+.kbd-stk-key-wired {
+  background-color: rgba(0, 0, 0, 0);
+  opacity: 0.5;
+  border-color: rgba(64, 64, 64, 1);
+}
+
+.kbd-key-invisible {
+  background-color: rgba(0, 0, 0, 1);
+  opacity: 1;
+  border-color: rgba(64, 64, 64, 0);
+}
+
+.kbd-stk-key-invisible {
+  background-color: rgba(0, 0, 0, 1);
+  opacity: 0.5;
+  border-color: rgba(64, 64, 64, 0);
+}
+
+.kbd-frame-only {
+  background-color: rgba(0, 0, 0, 0);
+  opacity: 1;
+  border-color: rgba(64, 64, 64, 1);
+}
+
+.kbd-stk-frame-only {
+  background-color: rgba(0, 0, 0, 0);
+  opacity: 0.5;
+  border-color: rgba(64, 64, 64, 1);
+}
+
+.kbd-invisible {
+  background-color: rgba(0, 0, 0, 0);
+  opacity: 0;
+  border-color: rgba(64, 64, 64, 0);
+}
 
 /******* keyboard row  ***********/
 .left-row {
@@ -204,6 +276,96 @@ export default {
 .period,
 .comma {
   width: calc(var(--letter-width) - 8px);
+}
+
+/******* mode letter style ***********/
+.key-eyes-on,
+.key-peripheral {
+  background-color: rgba(64, 64, 64, 1);
+  opacity: 1;
+  border-width: 0px;
+  border-color: rgb(64, 64, 64);
+  border-radius: 7px;
+}
+
+.key-stk-peripheral {
+  background-color: rgba(64, 64, 64, 1);
+  opacity: 0.5;
+  border-width: 0px;
+  border-color: rgb(64, 64, 64);
+  border-radius: 7px;
+}
+
+.key-borderless {
+  background-color: rgba(64, 64, 64, 1);
+  opacity: 1;
+  border-width: 0px;
+  border-color: rgb(64, 64, 64);
+  border-radius: 7px;
+}
+
+.key-stk-borderless {
+  background-color: rgba(64, 64, 64, 1);
+  opacity: 0.5;
+  border-width: 0px;
+  border-color: rgb(64, 64, 64);
+  border-radius: 7px;
+}
+
+.key-key-wired {
+  background-color: rgba(64, 64, 64, 0);
+  opacity: 1;
+  border-width: 3px;
+  border-color: rgb(64, 64, 64);
+  border-radius: 0px;
+}
+
+.key-stk-key-wired {
+  background-color: rgba(64, 64, 64, 0);
+  opacity: 0.5;
+  border-width: 0px;
+  border-color: rgb(64, 64, 64);
+  border-radius: 0px;
+}
+
+.key-key-invisible {
+  background-color: rgba(64, 64, 64, 1);
+  opacity: 1;
+  border-width: 0px;
+  border-color: rgb(64, 64, 64);
+  border-radius: 7px;
+}
+
+.key-stk-key-invisible {
+  background-color: rgba(64, 64, 64, 1);
+  opacity: 0.5;
+  border-width: 0px;
+  border-color: rgb(64, 64, 64);
+  border-radius: 7px;
+}
+
+.key-frame-only {
+  background-color: rgba(64, 64, 64, 0);
+  opacity: 1;
+  border-width: 3px;
+  border-color: rgb(64, 64, 64);
+  border-radius: 0px;
+}
+
+.key-stk-frame-only {
+  background-color: rgba(64, 64, 64, 0);
+  opacity: 0.5;
+  border-width: 0px;
+  border-color: rgb(64, 64, 64);
+  border-radius: 0px;
+}
+
+.key-invisible {
+  background-color: rgba(64, 64, 64, 0);
+  opacity: 0;
+  border-width: 0px;
+  border-color: rgb(64, 64, 64);
+  border-radius: 7px;
 }
 
 /******* key non-letter style  ***********/
