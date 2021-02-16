@@ -14,15 +14,3 @@ export default {
   setup() {},
 };
 </script>
-
-<style scoped>
-html {
-  height: 100vh;
-}
-
-body {
-  height: 100vh;
-  background-color: white;
-  margin: 0;
-}
-</style>

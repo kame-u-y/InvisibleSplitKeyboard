@@ -89,6 +89,8 @@ body {
 }
 
 #target {
+  --footer-bottom: 0px;
+
   --lt-padding-left: 2.5mm;
   --lm-padding-left: 9mm;
   --lb-padding-left: 2.5mm;
@@ -118,6 +120,14 @@ body {
   --move-keyboard-width: 41.743px; /* */
   --r-symbol-width: 98.6965px;
   --r-space-width: 98.6965px;
+
+  user-select: none;
+  position: fixed;
+  width: 100vw;
+  bottom: var(--footer-bottom);
+  background-color: rgba(255, 255, 255, 0);
+  padding-bottom: 30px;
+  padding-top: 150px;
 }
 
 /********* keyboard outline *********/
