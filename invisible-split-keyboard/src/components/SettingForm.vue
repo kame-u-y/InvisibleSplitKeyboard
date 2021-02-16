@@ -3,7 +3,7 @@
     <label>user name: </label><input id="user-name" type="text" />
     <label id="task-count">1</label>
     <div id="visual-mode">
-      <select name="keyboard-style">
+      <select name="keyboard-style" @change="setKeyboardMode('frame-only')">
         <option v-for="mode in modeList" :key="mode" :value="mode">{{
           mode
         }}</option>
@@ -14,9 +14,13 @@
 </template>
 
 <script>
-export default {
+import { defineComponent } from 'vue';
+import { useStore } from '../stores/collectTypingStore';
+
+export default defineComponent({
   name: 'SettingForm',
   setup() {
+    const { setKeyboardMode } = useStore();
     const modeList = [
       'eyes-on',
       'peripheral',
@@ -31,7 +35,7 @@ export default {
       'stk-frame-only',
       'invisible',
     ];
-    return { modeList };
+    return { setKeyboardMode, modeList };
   },
-};
+});
 </script>

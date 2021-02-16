@@ -1,19 +1,23 @@
-import { reactive } from 'vue';
-import { letterList } from '../modules/KeyList/KeyList';
+import { ref, inject, provide } from 'vue';
+// import { letterList } from '../modules/KeyList/KeyList';
 
-export default function collectTypingStore() {
-  const state = reactive({
-    keyboardMode: 'eyes-on',
-  });
-  return {
-    get keyboardMode() {
-      return state.keyboardMode;
-    },
-    setKeyboardMode(selectMode) {
-      state.keyboardMode = selectMode;
-    },
+export const key = Symbol();
+
+export const collectTypingStore = () => {
+  const keyboardMode = ref('eyes-on');
+  const setKeyboardMode = (selectMode) => {
+    keyboardMode.value = selectMode;
   };
-}
+  return { keyboardMode, setKeyboardMode };
+};
+
+export const provideStore = () => {
+  provide(key, collectTypingStore());
+};
+
+export const useStore = () => {
+  return inject(key);
+};
 
 // export default function collectTypingStore() {
 //   const state = reactive({

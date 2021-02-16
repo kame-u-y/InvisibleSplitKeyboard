@@ -26,13 +26,13 @@
 </template>
 
 <script>
-import { computed } from 'vue';
+import { useStore } from '../../stores/collectTypingStore';
 import { letterList } from '../../modules/KeyList/KeyList';
-import collectTypingStore from '../../stores/collectTypingStore';
 
 export default {
   name: 'CollectKeyboard',
   setup() {
+    const { keyboardMode } = useStore();
     const keyLayouts = {
       left: {
         'left-top': ['q', 'w', 'e', 'r', 't'],
@@ -47,8 +47,6 @@ export default {
         'right-special': ['move-keyboard', 'right-symbol', 'right-space'],
       },
     };
-    const collectStore = collectTypingStore();
-    const keyboardMode = computed(() => collectStore.keyboardMode);
 
     const getKeyboardClass = () => {
       return `kbd-${keyboardMode.value}`;
