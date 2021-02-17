@@ -3,7 +3,10 @@
     <label>user name: </label><input id="user-name" type="text" />
     <label id="task-count">1</label>
     <div id="visual-mode">
-      <select name="keyboard-style" @change="setKeyboardMode('frame-only')">
+      <select
+        name="keyboard-style"
+        @change="setKeyboardMode($event.target.value)"
+      >
         <option v-for="mode in modeList" :key="mode" :value="mode">{{
           mode
         }}</option>
@@ -30,7 +33,7 @@ export default defineComponent({
       'key-wired',
       'stk-key-wired',
       'key-invisible',
-      'stk-keyinvisible',
+      'stk-key-invisible',
       'frame-only',
       'stk-frame-only',
       'invisible',

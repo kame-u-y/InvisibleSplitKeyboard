@@ -2,15 +2,13 @@
   <div id="target">
     <div
       v-for="(rowList, side) in keyLayouts"
-      :id="side + '-keyboard'"
       :key="side"
-      :class="getKeyboardClass()"
+      :class="getKeyboardClass(side)"
     >
       <ul
-        v-for="(keyList, rowName) in rowList"
-        :id="rowName"
-        :key="rowName"
-        :class="side + '-row'"
+        v-for="(keyList, row) in rowList"
+        :key="row"
+        :class="getKeyRowClass(side, row)"
       >
         <li
           v-for="key in keyList"
@@ -48,8 +46,11 @@ export default {
       },
     };
 
-    const getKeyboardClass = () => {
-      return `kbd-${keyboardMode.value}`;
+    const getKeyboardClass = (side) => {
+      return `${side}-keyboard kbd-${keyboardMode.value}`;
+    };
+    const getKeyRowClass = (side, row) => {
+      return `${side}-row ${row}`;
     };
     const getKeyClass = (side, key) => {
       const sideClass = `${side}-key`;
@@ -68,6 +69,7 @@ export default {
       keyboardMode,
       letterList,
       getKeyboardClass,
+      getKeyRowClass,
       getKeyClass,
       getKeyValue,
     };
@@ -129,7 +131,7 @@ body {
 }
 
 /********* keyboard outline *********/
-#left-keyboard {
+.left-keyboard {
   float: left;
   background-color: rgb(0, 0, 0);
   padding: 4px;
@@ -137,80 +139,12 @@ body {
   border: solid 3px rgba(0, 0, 0, 0);
 }
 
-#right-keyboard {
+.right-keyboard {
   float: right;
   background-color: rgb(0, 0, 0);
   padding: 4px;
   border-radius: 4px;
   border: solid 3px rgba(0, 0, 0, 0);
-}
-
-/******* mode keyboard style ***********/
-.kbd-eyes-on,
-.kbd-peripheral {
-  background-color: rgba(0, 0, 0, 1);
-  opacity: 1;
-  border-color: rgba(64, 64, 64, 0);
-}
-
-.kbd-stk-peripheral {
-  background-color: rgba(0, 0, 0, 1);
-  opacity: 0.5;
-  border-color: rgba(64, 64, 64, 0);
-}
-
-.kbd-borderless {
-  background-color: rgba(64, 64, 64, 1);
-  opacity: 1;
-  border-color: rgba(64, 64, 64, 0);
-}
-
-.kbd-stk-borderless {
-  background-color: rgba(64, 64, 64, 1);
-  opacity: 0.5;
-  border-color: rgba(64, 64, 64, 0);
-}
-
-.kbd-key-wired {
-  background-color: rgba(0, 0, 0, 0);
-  opacity: 1;
-  border-color: rgba(64, 64, 64, 1);
-}
-
-.kbd-stk-key-wired {
-  background-color: rgba(0, 0, 0, 0);
-  opacity: 0.5;
-  border-color: rgba(64, 64, 64, 1);
-}
-
-.kbd-key-invisible {
-  background-color: rgba(0, 0, 0, 1);
-  opacity: 1;
-  border-color: rgba(64, 64, 64, 0);
-}
-
-.kbd-stk-key-invisible {
-  background-color: rgba(0, 0, 0, 1);
-  opacity: 0.5;
-  border-color: rgba(64, 64, 64, 0);
-}
-
-.kbd-frame-only {
-  background-color: rgba(0, 0, 0, 0);
-  opacity: 1;
-  border-color: rgba(64, 64, 64, 1);
-}
-
-.kbd-stk-frame-only {
-  background-color: rgba(0, 0, 0, 0);
-  opacity: 0.5;
-  border-color: rgba(64, 64, 64, 1);
-}
-
-.kbd-invisible {
-  background-color: rgba(0, 0, 0, 0);
-  opacity: 0;
-  border-color: rgba(64, 64, 64, 0);
 }
 
 /******* keyboard row  ***********/
@@ -228,23 +162,23 @@ body {
   padding-right: var(--r-padding-right);
 }
 
-#left-top {
+.left-top {
   padding-left: var(--lt-padding-left);
 }
 
-#left-middle {
+.left-middle {
   padding-left: var(--lm-padding-left);
 }
 
-#left-bottom {
+.left-bottom {
   padding-left: var(--lb-padding-left);
 }
 
-#left-special {
+.left-special {
   padding-left: var(--ls-padding-left);
 }
 
-#right-special {
+.right-special {
   padding-right: var(--rs-padding-right);
 }
 
@@ -264,6 +198,7 @@ body {
   box-sizing: border-box;
   border: solid 0px;
   margin: var(--letter-padding);
+  font-size: 27px;
 }
 
 .left-key {
@@ -279,14 +214,19 @@ body {
   width: calc(var(--letter-width) - 8px);
   border-collapse: collapse;
 }
-
 .right-key.letter,
 .period,
 .comma {
   width: calc(var(--letter-width) - 8px);
 }
 
-/******* mode letter style ***********/
+/******* mode style ***********/
+.kbd-eyes-on,
+.kbd-peripheral {
+  background-color: rgba(0, 0, 0, 1);
+  opacity: 1;
+  border-color: rgba(64, 64, 64, 0);
+}
 .key-eyes-on,
 .key-peripheral {
   background-color: rgba(64, 64, 64, 1);
@@ -295,15 +235,25 @@ body {
   border-color: rgb(64, 64, 64);
   border-radius: 7px;
 }
-
-.key-stk-peripheral {
-  background-color: rgba(64, 64, 64, 1);
+/** */
+.kbd-stk-peripheral {
+  background-color: rgb(0, 0, 0);
   opacity: 0.5;
+  border-color: rgba(64, 64, 64, 0);
+}
+.key-stk-peripheral {
+  background-color: rgb(64, 64, 64);
+  opacity: 1;
   border-width: 0px;
   border-color: rgb(64, 64, 64);
   border-radius: 7px;
 }
-
+/** */
+.kbd-borderless {
+  background-color: rgba(64, 64, 64, 1);
+  opacity: 1;
+  border-color: rgba(64, 64, 64, 0);
+}
 .key-borderless {
   background-color: rgba(64, 64, 64, 1);
   opacity: 1;
@@ -311,63 +261,103 @@ body {
   border-color: rgb(64, 64, 64);
   border-radius: 7px;
 }
-
-.key-stk-borderless {
-  background-color: rgba(64, 64, 64, 1);
+/** */
+.kbd-stk-borderless {
+  background-color: rgb(64, 64, 64);
   opacity: 0.5;
+  border-color: rgba(64, 64, 64, 0);
+}
+.key-stk-borderless {
+  background-color: rgb(64, 64, 64);
+  opacity: 1;
   border-width: 0px;
   border-color: rgb(64, 64, 64);
   border-radius: 7px;
 }
-
+/** */
+.kbd-key-wired {
+  background-color: rgba(0, 0, 0, 0);
+  opacity: 1;
+  border-color: rgba(64, 64, 64, 1);
+}
 .key-key-wired {
   background-color: rgba(64, 64, 64, 0);
   opacity: 1;
   border-width: 3px;
   border-color: rgb(64, 64, 64);
-  border-radius: 0px;
+  border-radius: 7px;
 }
-
+/** */
+.kbd-stk-key-wired {
+  background-color: rgba(0, 0, 0, 0);
+  opacity: 0.5;
+  border-color: rgba(64, 64, 64, 1);
+}
 .key-stk-key-wired {
-  background-color: rgba(64, 64, 64, 0);
-  opacity: 0.5;
-  border-width: 0px;
-  border-color: rgb(64, 64, 64);
-  border-radius: 0px;
-}
-
-.key-key-invisible {
-  background-color: rgba(64, 64, 64, 1);
-  opacity: 1;
-  border-width: 0px;
-  border-color: rgb(64, 64, 64);
-  border-radius: 7px;
-}
-
-.key-stk-key-invisible {
-  background-color: rgba(64, 64, 64, 1);
-  opacity: 0.5;
-  border-width: 0px;
-  border-color: rgb(64, 64, 64);
-  border-radius: 7px;
-}
-
-.key-frame-only {
   background-color: rgba(64, 64, 64, 0);
   opacity: 1;
   border-width: 3px;
   border-color: rgb(64, 64, 64);
+  border-radius: 7px;
+}
+/** */
+.kbd-key-invisible {
+  background-color: rgba(0, 0, 0, 1);
+  opacity: 1;
+  border-color: rgba(64, 64, 64, 0);
+}
+.key-key-invisible {
+  background-color: rgba(64, 64, 64, 1);
+  opacity: 0;
+  border-width: 0px;
+  border-color: rgb(64, 64, 64);
+  border-radius: 7px;
+}
+/** */
+.kbd-stk-key-invisible {
+  background-color: rgba(0, 0, 0, 1);
+  opacity: 0.5;
+  border-color: rgba(64, 64, 64, 0);
+}
+.key-stk-key-invisible {
+  background-color: rgba(64, 64, 64, 1);
+  opacity: 0;
+  border-width: 0px;
+  border-color: rgb(64, 64, 64);
+  border-radius: 7px;
+}
+/** */
+.kbd-frame-only {
+  background-color: rgba(0, 0, 0, 0);
+  opacity: 1;
+  border-color: rgba(64, 64, 64, 1);
+}
+.key-frame-only {
+  background-color: rgba(64, 64, 64, 0);
+  opacity: 0;
+  border-width: 3px;
+  border-color: rgb(64, 64, 64);
   border-radius: 0px;
 }
-
+/** */
+.kbd-stk-frame-only {
+  background-color: rgba(0, 0, 0, 0);
+  opacity: 0.5;
+  border-color: rgba(64, 64, 64, 1);
+}
 .key-stk-frame-only {
   background-color: rgba(64, 64, 64, 0);
-  opacity: 0.5;
+  opacity: 0;
   border-width: 0px;
   border-color: rgb(64, 64, 64);
   border-radius: 0px;
 }
-
+/** */
+.kbd-invisible {
+  background-color: rgba(0, 0, 0, 0);
+  opacity: 0;
+  border-color: rgba(64, 64, 64, 0);
+}
 .key-invisible {
   background-color: rgba(64, 64, 64, 0);
   opacity: 0;

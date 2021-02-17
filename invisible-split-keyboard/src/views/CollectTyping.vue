@@ -1,5 +1,4 @@
 <template>
-  <h1>CollectTyping</h1>
   <setting-form />
   <background-text />
   <collect-keyboard />
