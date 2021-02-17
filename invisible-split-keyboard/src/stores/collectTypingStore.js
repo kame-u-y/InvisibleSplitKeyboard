@@ -1,14 +1,55 @@
 import { ref, inject, provide } from 'vue';
+import { phrases } from '../modules/phraseSet';
+
 // import { letterList } from '../modules/KeyList/KeyList';
 
 export const key = Symbol();
 
 export const collectTypingStore = () => {
+  const userName = ref('');
   const keyboardMode = ref('eyes-on');
+  const bgTextVisible = ref(false);
+  const givenText = ref('＼＼しばしお待ちを／／');
+  const inputText = ref('');
+
+  const setUserName = (newUserName) => {
+    userName.value = newUserName;
+  };
+
   const setKeyboardMode = (selectMode) => {
     keyboardMode.value = selectMode;
   };
-  return { keyboardMode, setKeyboardMode };
+
+  const setBgTextVisible = (isVisible) => {
+    bgTextVisible.value = isVisible;
+  };
+
+  const remainPhrases = phrases.slice(0);
+  const updateGivenText = () => {
+    if (remainPhrases.length === 0) {
+      remainPhrases = phrases.slice(0);
+    }
+    const id = Math.floor(Math.random() * remainPhrases.length);
+    givenText.value = remainPhrases[id];
+    remainPhrases.splice(id, 1);
+  };
+
+  const setInputText = (inputLetter) => {
+    inputText.value += inputLetter;
+  };
+
+  return {
+    userName,
+    keyboardMode,
+    bgTextVisible,
+    givenText,
+    inputText,
+    setUserName,
+    setKeyboardMode,
+    setBgTextVisible,
+    updateGivenText,
+    setInputText,
+  };
 };
 
 export const provideStore = () => {

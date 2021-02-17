@@ -1,5 +1,5 @@
 <template>
-  <p id="background-text">
+  <p :class="getBgTextClass()">
     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam in massa a
     felis sollicitudin convallis nec non massa. Sed id dui ipsum. Nam luctus
     dictum erat, quis rutrum erat posuere sed. Suspendisse posuere, lacus sit
@@ -76,13 +76,25 @@
 </template>
 
 <script>
+import { useStore } from '../stores/collectTypingStore';
 export default {
   name: 'BackgroundText',
+  setup() {
+    const { bgTextVisible } = useStore();
+    const getBgTextClass = () => {
+      console.log(bgTextVisible.value);
+      return `bgtext-${bgTextVisible.value ? 'visible' : 'invisible'}`;
+    };
+    return { bgTextVisible, getBgTextClass };
+  },
 };
 </script>
 
 <style scoped>
-#background-text {
+.bgtext-visible {
+  opacity: 1;
+}
+.bgtext-invisible {
   opacity: 0;
 }
 </style>
