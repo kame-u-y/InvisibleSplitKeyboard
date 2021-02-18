@@ -1,122 +1,29 @@
 <template>
-  <div
-    id="target"
-    @touchstart.prevent.passive="
-      () => handleTouchStart($event.changedTouches[0].pageX)
-    "
-    @touchmove.prevent.passive="handleTouchMove($event.changedTouches[0].pageX)"
-    @touchEnd.prevent.passive="processTouchEnd($event)"
-    @mousedown="handleTouchStart($event.pageX)"
-    @mousemove="handleTouchMove($event.pageX)"
-    @mouseup="processMouseUp($event)"
-  >
-    <div
-      v-for="(rowList, side) in keyLayouts"
-      :key="side"
-      :class="getKeyboardClass(side)"
-    >
-      <ul
-        v-for="(keyList, row) in rowList"
-        :key="row"
-        :class="getKeyRowClass(side, row)"
-      >
-        <li
-          v-for="key in keyList"
-          :key="key"
-          :class="getKeyClass(side, key)"
-          :data-letter="getKeyValue(key)"
-        >
-          {{ getKeyValue(key) }}
-        </li>
-      </ul>
-    </div>
-  </div>
+  <keyboard-template
+    @startevent="handleTouchStart"
+    @moveevent="handleTouchMove"
+    @endevent="handleTouchEnd"
+  />
 </template>
 
 <script>
-import { useStore } from '../../../stores/collectTypingStore';
-import { letterList } from '../../../modules/keyList';
+import KeyboardTemplate from './KeyboardTemplate/KeyboardTemplate.vue';
 import { useTypingEvent } from './modules/TypingEvents';
-import { onMounted } from 'vue';
 
 export default {
+  components: { KeyboardTemplate },
   name: 'CollectKeyboard',
   setup() {
-    const { keyboardMode, updateGivenText } = useStore();
-    const keyLayouts = {
-      left: {
-        'left-top': ['q', 'w', 'e', 'r', 't'],
-        'left-middle': ['a', 's', 'd', 'f', 'g'],
-        'left-bottom': ['shift', 'z', 'x', 'c', 'v'],
-        'left-special': ['left-symbol', 'language', 'mic', 'left-space'],
-      },
-      right: {
-        'right-top': ['back', 'p', 'o', 'i', 'u', 'y'],
-        'right-middle': ['enter', 'l', 'k', 'j', 'h'],
-        'right-bottom': ['shift', 'period', 'comma', 'm', 'n', 'b'],
-        'right-special': ['move-keyboard', 'right-symbol', 'right-space'],
-      },
-    };
-
-    const getKeyboardClass = (side) => {
-      return `${side}-keyboard kbd-${keyboardMode.value}`;
-    };
-
-    const getKeyRowClass = (side, row) => {
-      return `${side}-row ${row}`;
-    };
-
-    const getKeyClass = (side, key) => {
-      const sideClass = `${side}-key`;
-      const valueClass = letterList.includes(key) ? 'letter' : key;
-      const modeClass = letterList.includes(key)
-        ? `key-${keyboardMode.value}`
-        : '';
-      return `${sideClass} ${valueClass} ${modeClass}`;
-    };
-
-    const getKeyValue = (key) => {
-      return letterList.includes(key) ? key : '';
-    };
-
     const {
       handleTouchStart,
       handleTouchMove,
       handleTouchEnd,
     } = useTypingEvent();
 
-    const processTouchEnd = (ev) => {
-      const touch = ev.changedTouches[0];
-      const pageX = touch.pageX;
-      const targetRect = ev.target.getBoundingClientRect();
-      const tapDataX = touch.clientX - targetRect.left;
-      const tapDataY = touch.clientY - targetRect.top;
-      handleTouchEnd(pageX, tapDataX, tapDataY);
-    };
-
-    const processMouseUp = (ev) => {
-      const targetRect = ev.target.getBoundingClientRect();
-      const tapDataX = ev.clientX - targetRect.left;
-      const tapDataY = ev.clientY - targetRect.top;
-      handleTouchEnd(ev.pageX, tapDataX, tapDataY);
-    };
-
-    onMounted(() => {
-      updateGivenText();
-    });
-
     return {
-      keyLayouts,
-      keyboardMode,
-      letterList,
-      getKeyboardClass,
-      getKeyRowClass,
-      getKeyClass,
-      getKeyValue,
       handleTouchStart,
       handleTouchMove,
-      processTouchEnd,
-      processMouseUp,
+      handleTouchEnd,
     };
   },
 };
