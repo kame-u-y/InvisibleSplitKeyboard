@@ -10,7 +10,7 @@ import { defineComponent } from 'vue';
 import { provideStore } from '../stores/collectTypingStore';
 import SettingForm from '../components/SettingForm.vue';
 import BackgroundText from '../components/BackgroundText.vue';
-import CollectKeyboard from '../components/Keyboard/CollectKeyboard.vue';
+import CollectKeyboard from '../components/Keyboard/CollectKeyboard/CollectKeyboard.vue';
 import TaskSentence from '../components/TaskSentence.vue';
 
 export default defineComponent({

@@ -1,8 +1,6 @@
 import { ref, inject, provide } from 'vue';
 import { phrases } from '../modules/phraseSet';
 
-// import { letterList } from '../modules/KeyList/KeyList';
-
 export const key = Symbol();
 
 export const collectTypingStore = () => {
@@ -11,7 +9,9 @@ export const collectTypingStore = () => {
   const bgTextVisible = ref(false);
   const givenText = ref('＼＼しばしお待ちを／／');
   const inputText = ref('');
+  const nextLetterNum = ref(0);
 
+  // about setting
   const setUserName = (newUserName) => {
     userName.value = newUserName;
   };
@@ -24,6 +24,7 @@ export const collectTypingStore = () => {
     bgTextVisible.value = isVisible;
   };
 
+  // about task
   const remainPhrases = phrases.slice(0);
   const updateGivenText = () => {
     if (remainPhrases.length === 0) {
@@ -34,8 +35,46 @@ export const collectTypingStore = () => {
     remainPhrases.splice(id, 1);
   };
 
-  const setInputText = (inputLetter) => {
-    inputText.value += inputLetter;
+  const goNextPhrase = () => {
+    // hr.postTapData(tapData);
+    // taskCount++;
+    // init();
+    // initFlag = ture;
+  };
+
+  const isCollectLetter = (isLeftTouch) => {
+    const isLeftLetter = 'qwertasdfgzxcv'.match(
+      givenText.value.charAt(nextLetterNum)
+    );
+    return (isLeftTouch && isLeftLetter) || (!isLeftLetter && !isLeftLetter);
+  };
+
+  const addInputLetter = () => {
+    inputText.value += isCollectLetter()
+      ? givenText.value.charAt(nextLetterNum)
+      : '*';
+    // add TapInfo;
+    nextLetterNum.value++;
+  };
+
+  const isCollectSpace = () => {
+    const givenWordList = givenText.value.split(' ');
+    const inputWordList = inputText.value.split(' ');
+    for (let i = 0; i < inputWordList.length; i++) {
+      if (inputWordList[i].length !== givenWordList[i].length) {
+        return false;
+      }
+    }
+    return true;
+  };
+
+  const addInputSpace = () => {
+    inputText.value += isCollectSpace() ? ' ' : '*';
+    nextLetterNum.value++;
+  };
+
+  const backInputText = () => {
+    inputText.value;
   };
 
   return {
@@ -48,7 +87,8 @@ export const collectTypingStore = () => {
     setKeyboardMode,
     setBgTextVisible,
     updateGivenText,
-    setInputText,
+    addInputLetter,
+    addInputSpace,
   };
 };
 

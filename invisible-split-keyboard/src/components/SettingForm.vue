@@ -17,12 +17,12 @@
         }}</option>
       </select>
       <input
-        type="checkbox"
         id="bg-text-visible"
+        type="checkbox"
         @change="setBgTextVisible($event.target.checked)"
       />bgTextVisible
     </div>
-    <button @click="updateGivenText()" value="hogehoge" />
+    <!-- <button @click="updateGivenText()" /> -->
   </div>
 </template>
 

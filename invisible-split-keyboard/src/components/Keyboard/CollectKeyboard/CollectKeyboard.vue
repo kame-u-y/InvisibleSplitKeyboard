@@ -4,6 +4,16 @@
       v-for="(rowList, side) in keyLayouts"
       :key="side"
       :class="getKeyboardClass(side)"
+      @touchstart.prevent.passive="
+        handleTouchStart($event.changedTouches[0].pageX)
+      "
+      @touchmove.prevent.passive="
+        handleTouchMove($event.changedTouches[0].pageX)
+      "
+      @touchEnd.prevent.passive="handleTouchEnd($event.changedTouches[0].pageX)"
+      @mousedown="handleTouchStart($event.pageX)"
+      @mousemove="handleTouchMove($event.pageX)"
+      @mouseup="handleTouchEnd($event.pageX)"
     >
       <ul
         v-for="(keyList, row) in rowList"
@@ -24,8 +34,13 @@
 </template>
 
 <script>
-import { useStore } from '../../stores/collectTypingStore';
-import { letterList } from '../../modules/KeyList/KeyList';
+import { useStore } from '../../../stores/collectTypingStore';
+import { letterList } from '../../../modules/keyList';
+import {
+  handleTouchStart,
+  handleTouchMove,
+  handleTouchEnd,
+} from './modules/TypingEvents';
 
 export default {
   name: 'CollectKeyboard',
@@ -63,6 +78,9 @@ export default {
     const getKeyValue = (key) => {
       return letterList.includes(key) ? key : '';
     };
+
+    ///////////////////////////////
+    // eventHandling
 
     return {
       keyLayouts,
@@ -415,17 +433,4 @@ body {
   border: solid 1px rgb(48, 48, 48);
   box-sizing: border-box;
 }
-
-/******************************/
-/********* eyes-on, peripheral ********/
-/******************************/
-/* #target {
-  --default-keyboard-alpha: 1;
-  --
-} */
-/* left,right-keyboard*/
-/* .defalut-keyboard {
-  background-color: rgba(64, 64, 64, var(--default-keyboard-alpha));
-  opacity: 1,
-} */
 </style>
