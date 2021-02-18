@@ -1,7 +1,7 @@
 import { useStore } from '../../../stores/collectTypingStore';
 
 export const useTypingEvent = () => {
-  const { addInputLetter, addInputSpace, backInputText } = useStore();
+  const { addCollectLetter, addCollectSpace, backCollectText } = useStore();
 
   const Touch_Status = {
     none: 'NONE',
@@ -79,13 +79,13 @@ export const useTypingEvent = () => {
     if (!isTouchStarted(side)) return;
 
     if (touchState[side].status === Touch_Status.click) {
-      addInputLetter(side === Touch_Side.left, tapDataX, tapDataY);
+      addCollectLetter(side === Touch_Side.left, tapDataX, tapDataY);
       console.log('end letter');
     } else if (touchState[side].status === Touch_Status.space) {
-      addInputSpace();
+      addCollectSpace();
       console.log('end space');
     } else if (touchState[side].status === Touch_Status.backSpace) {
-      backInputText();
+      backCollectText();
       console.log('end back');
     }
     initTouchStartX(side);

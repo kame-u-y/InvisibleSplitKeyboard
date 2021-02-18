@@ -1,38 +1,43 @@
 import { ref, inject, provide } from 'vue';
 import { phrases } from '../modules/phraseSet';
 import { postTapData } from '../modules/myHttpRequest';
+import { useDefaultStore } from './defaultTypingStore/defaultTypingStore';
 
 export const key = Symbol();
 
 export const collectTypingStore = () => {
-  const userName = ref('');
-  const keyboardMode = ref('eyes-on');
-  const bgTextVisible = ref(false);
-  const taskCount = ref(1);
-  const givenText = ref('＼＼しばしお待ちを／／');
-  const inputText = ref('');
-  let remainPhrases = phrases.slice(0);
+  const {
+    userName,
+    keyboardMode,
+    bgTextVisible,
+    taskCount,
+    givenText,
+    inputText,
+    remainPhrases,
+    setUserName,
+    setKeyboardMode,
+    setBgTextVisible,
+    incrementTaskCount,
+    updateGivenText,
+    initInputText,
+    addInputLetter,
+    addInputSpace,
+    backInputText,
+  } = useDefaultStore();
+
   let nextLetterNum = 0;
   let tapData = [];
 
-  // about setting
-  const setUserName = (newUserName) => {
-    userName.value = newUserName;
-  };
-
-  const setKeyboardMode = (selectMode) => {
-    keyboardMode.value = selectMode;
-  };
-
-  const setBgTextVisible = (isVisible) => {
-    bgTextVisible.value = isVisible;
-  };
-
-  const incrementTaskCount = () => {
-    taskCount.value++;
-  };
-
   // about task
+  const incrementNextLetterNum = () => {
+    nextLetterNum++;
+  };
+
+  const decrementNextLetterNum = () => {
+    if (nextLetterNum === 0) return;
+    nextLetterNum--;
+  };
+
   const initTapData = () => {
     tapData = [];
   };
@@ -54,20 +59,6 @@ export const collectTypingStore = () => {
     });
   };
 
-  const updateGivenText = () => {
-    if (remainPhrases.length === 0) {
-      remainPhrases = phrases.slice(0);
-    }
-    const id = Math.floor(Math.random() * remainPhrases.length);
-    givenText.value = remainPhrases[id];
-    remainPhrases.splice(id, 1);
-  };
-
-  const initInputText = () => {
-    inputText.value = '';
-    nextLetterNum = 0;
-  };
-
   const isCollectLetter = (isLeftTouch) => {
     const isLeftLetter = 'qwertasdfgzxcv'.match(
       givenText.value.charAt(nextLetterNum)
@@ -75,21 +66,18 @@ export const collectTypingStore = () => {
     return (isLeftTouch && isLeftLetter) || (!isLeftTouch && !isLeftLetter);
   };
 
-  const addInputLetter = (isLeftTouch, tapDataX, tapDataY) => {
-    if (nextLetterNum === givenText.value.length) {
-      return;
-    }
-    if (givenText.value.charAt(nextLetterNum) === ' ') {
-      return;
-    }
+  const addCollectLetter = (isLeftTouch, tapDataX, tapDataY) => {
+    if (nextLetterNum === givenText.value.length) return;
+    if (givenText.value.charAt(nextLetterNum) === ' ') return;
+
     if (isCollectLetter(isLeftTouch)) {
       const newLetter = givenText.value.charAt(nextLetterNum);
-      inputText.value += newLetter;
+      addInputLetter(newLetter);
       addTapData(newLetter, tapDataX, tapDataY);
     } else {
-      inputText.value += '*';
+      addInputLetter('*');
     }
-    nextLetterNum++;
+    incrementNextLetterNum();
   };
 
   const isCollectSpace = () => {
@@ -115,19 +103,23 @@ export const collectTypingStore = () => {
     updateGivenText();
   };
 
-  const addInputSpace = () => {
+  const addCollectSpace = () => {
     if (nextLetterNum === givenText.value.length) {
       goNextPhrase();
     } else {
-      inputText.value += isCollectSpace() ? ' ' : '*';
-      nextLetterNum++;
+      if (isCollectSpace()) {
+        addInputSpace();
+      } else {
+        addInputLetter('*');
+      }
+      incrementNextLetterNum();
     }
   };
 
-  const backInputText = () => {
+  const backCollectText = () => {
     inputText.value = inputText.value.slice(0, -1);
     delete tapData[nextLetterNum - 1];
-    nextLetterNum = nextLetterNum === 0 ? 0 : nextLetterNum - 1;
+    decrementNextLetterNum();
   };
 
   return {
@@ -141,10 +133,10 @@ export const collectTypingStore = () => {
     setKeyboardMode,
     setBgTextVisible,
     updateGivenText,
-    addInputLetter,
-    addInputSpace,
+    addCollectLetter,
+    addCollectSpace,
     goNextPhrase,
-    backInputText,
+    backCollectText,
   };
 };
 
