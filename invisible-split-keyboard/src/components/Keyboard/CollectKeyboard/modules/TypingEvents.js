@@ -74,12 +74,12 @@ export const useTypingEvent = () => {
     console.log('move', offsetX);
   };
 
-  const handleTouchEnd = (endX) => {
+  const handleTouchEnd = (endX, tapDataX, tapDataY) => {
     const side = getSide(endX);
     if (!isTouchStarted(side)) return;
 
     if (touchState[side].status === Touch_Status.click) {
-      addInputLetter(side === Touch_Side.left);
+      addInputLetter(side === Touch_Side.left, tapDataX, tapDataY);
       console.log('end letter');
     } else if (touchState[side].status === Touch_Status.space) {
       addInputSpace();

@@ -2,13 +2,13 @@
   <div
     id="target"
     @touchstart.prevent.passive="
-      handleTouchStart($event.changedTouches[0].pageX)
+      () => handleTouchStart($event.changedTouches[0].pageX)
     "
     @touchmove.prevent.passive="handleTouchMove($event.changedTouches[0].pageX)"
-    @touchEnd.prevent.passive="handleTouchEnd($event.changedTouches[0].pageX)"
+    @touchEnd.prevent.passive="processTouchEnd($event)"
     @mousedown="handleTouchStart($event.pageX)"
     @mousemove="handleTouchMove($event.pageX)"
-    @mouseup="handleTouchEnd($event.pageX)"
+    @mouseup="processMouseUp($event)"
   >
     <div
       v-for="(rowList, side) in keyLayouts"
@@ -85,6 +85,22 @@ export default {
       handleTouchEnd,
     } = useTypingEvent();
 
+    const processTouchEnd = (ev) => {
+      const touch = ev.changedTouches[0];
+      const pageX = touch.pageX;
+      const targetRect = ev.target.getBoundingClientRect();
+      const tapDataX = touch.clientX - targetRect.left;
+      const tapDataY = touch.clientY - targetRect.top;
+      handleTouchEnd(pageX, tapDataX, tapDataY);
+    };
+
+    const processMouseUp = (ev) => {
+      const targetRect = ev.target.getBoundingClientRect();
+      const tapDataX = ev.clientX - targetRect.left;
+      const tapDataY = ev.clientY - targetRect.top;
+      handleTouchEnd(ev.pageX, tapDataX, tapDataY);
+    };
+
     onMounted(() => {
       updateGivenText();
     });
@@ -99,7 +115,8 @@ export default {
       getKeyValue,
       handleTouchStart,
       handleTouchMove,
-      handleTouchEnd,
+      processTouchEnd,
+      processMouseUp,
     };
   },
 };

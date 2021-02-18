@@ -9,7 +9,9 @@ export const collectTypingStore = () => {
   const bgTextVisible = ref(false);
   const givenText = ref('＼＼しばしお待ちを／／');
   const inputText = ref('');
+  let remainPhrases = phrases.slice(0);
   let nextLetterNum = 0;
+  let tapData = [];
 
   // about setting
   const setUserName = (newUserName) => {
@@ -25,7 +27,27 @@ export const collectTypingStore = () => {
   };
 
   // about task
-  const remainPhrases = phrases.slice(0);
+  const initTapData = () => {
+    tapData = [];
+  };
+
+  const addTapData = (letter, x, y) => {
+    if (letter === ' ' || letter === '-' || letter === '?' || letter === '�') {
+      return;
+    }
+    letter = letter.toLowerCase();
+    if (!tapData[letter]) {
+      tapData[letter] = [];
+    }
+    tapData[letter].push({
+      position: {
+        x: x,
+        y: y,
+      },
+      timestamp: Date.now(),
+    });
+  };
+
   const updateGivenText = () => {
     if (remainPhrases.length === 0) {
       remainPhrases = phrases.slice(0);
@@ -47,20 +69,20 @@ export const collectTypingStore = () => {
     return (isLeftTouch && isLeftLetter) || (!isLeftTouch && !isLeftLetter);
   };
 
-  const addInputLetter = (isLeftTouch) => {
-    console.log(givenText.value.charAt(nextLetterNum));
+  const addInputLetter = (isLeftTouch, tapDataX, tapDataY) => {
     if (nextLetterNum === givenText.value.length) {
-      console.log('task ended');
       return;
     }
     if (givenText.value.charAt(nextLetterNum) === ' ') {
-      console.log('next is space');
       return;
     }
-    inputText.value += isCollectLetter(isLeftTouch)
-      ? givenText.value.charAt(nextLetterNum)
-      : '*';
-    // add TapInfo;
+    if (isCollectLetter(isLeftTouch)) {
+      const newLetter = givenText.value.charAt(nextLetterNum);
+      inputText.value += newLetter;
+      addTapData(newLetter, tapDataX, tapDataY);
+    } else {
+      inputText.value += '*';
+    }
     nextLetterNum++;
   };
 
@@ -77,15 +99,14 @@ export const collectTypingStore = () => {
 
   const goNextPhrase = () => {
     initInputText();
+    initTapData();
     updateGivenText();
   };
 
   const addInputSpace = () => {
     if (nextLetterNum === givenText.value.length) {
-      console.log('next phrase');
       goNextPhrase();
     } else {
-      console.log('space');
       inputText.value += isCollectSpace() ? ' ' : '*';
       nextLetterNum++;
     }
@@ -93,7 +114,7 @@ export const collectTypingStore = () => {
 
   const backInputText = () => {
     inputText.value = inputText.value.slice(0, -1);
-    // delete tapData[nextLetterNum - 1];
+    delete tapData[nextLetterNum - 1];
     nextLetterNum = nextLetterNum === 0 ? 0 : nextLetterNum - 1;
   };
 
