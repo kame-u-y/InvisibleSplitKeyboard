@@ -8,6 +8,7 @@ export const collectTypingStore = () => {
   const userName = ref('');
   const keyboardMode = ref('eyes-on');
   const bgTextVisible = ref(false);
+  const taskCount = ref(1);
   const givenText = ref('＼＼しばしお待ちを／／');
   const inputText = ref('');
   let remainPhrases = phrases.slice(0);
@@ -25,6 +26,10 @@ export const collectTypingStore = () => {
 
   const setBgTextVisible = (isVisible) => {
     bgTextVisible.value = isVisible;
+  };
+
+  const incrementTaskCount = () => {
+    taskCount.value++;
   };
 
   // about task
@@ -106,6 +111,7 @@ export const collectTypingStore = () => {
     postTapData(tapData, userName.value, keyboardMode.value);
     initInputText();
     initTapData();
+    incrementTaskCount();
     updateGivenText();
   };
 
@@ -128,6 +134,7 @@ export const collectTypingStore = () => {
     userName,
     keyboardMode,
     bgTextVisible,
+    taskCount,
     givenText,
     inputText,
     setUserName,

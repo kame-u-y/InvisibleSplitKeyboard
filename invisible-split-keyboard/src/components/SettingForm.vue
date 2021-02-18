@@ -6,7 +6,7 @@
       type="text"
       @change="setUserName($event.target.value)"
     />
-    <label id="task-count">1</label>
+    <label id="task-count">{{ taskCount }}</label>
     <div id="visual-mode">
       <select
         name="keyboard-style"
@@ -34,6 +34,7 @@ export default defineComponent({
   name: 'SettingForm',
   setup() {
     const {
+      taskCount,
       setKeyboardMode,
       setBgTextVisible,
       setUserName,
@@ -54,6 +55,7 @@ export default defineComponent({
       'invisible',
     ];
     return {
+      taskCount,
       setKeyboardMode,
       setBgTextVisible,
       setUserName,
