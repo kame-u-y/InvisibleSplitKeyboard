@@ -1,5 +1,6 @@
 import { ref, inject, provide } from 'vue';
 import { phrases } from '../modules/phraseSet';
+import { postTapData } from '../modules/myHttpRequest';
 
 export const key = Symbol();
 
@@ -98,6 +99,11 @@ export const collectTypingStore = () => {
   };
 
   const goNextPhrase = () => {
+    if (userName.value === '') {
+      alert('Please set user name');
+      return;
+    }
+    postTapData(tapData, userName.value, keyboardMode.value);
     initInputText();
     initTapData();
     updateGivenText();
