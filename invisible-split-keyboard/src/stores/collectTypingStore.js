@@ -7,10 +7,9 @@ export const collectTypingStore = () => {
   const userName = ref('');
   const keyboardMode = ref('eyes-on');
   const bgTextVisible = ref(false);
-  // const givenText = ref('＼＼しばしお待ちを／／');
-  const givenText = ref('moc text year');
+  const givenText = ref('＼＼しばしお待ちを／／');
   const inputText = ref('');
-  const nextLetterNum = ref(0);
+  let nextLetterNum = 0;
 
   // about setting
   const setUserName = (newUserName) => {
@@ -38,31 +37,31 @@ export const collectTypingStore = () => {
 
   const initInputText = () => {
     inputText.value = '';
-    nextLetterNum.value = 0;
+    nextLetterNum = 0;
   };
 
   const isCollectLetter = (isLeftTouch) => {
     const isLeftLetter = 'qwertasdfgzxcv'.match(
-      givenText.value.charAt(nextLetterNum.value)
+      givenText.value.charAt(nextLetterNum)
     );
     return (isLeftTouch && isLeftLetter) || (!isLeftTouch && !isLeftLetter);
   };
 
   const addInputLetter = (isLeftTouch) => {
-    console.log(givenText.value.charAt(nextLetterNum.value));
-    if (nextLetterNum.value === givenText.value.length) {
+    console.log(givenText.value.charAt(nextLetterNum));
+    if (nextLetterNum === givenText.value.length) {
       console.log('task ended');
       return;
     }
-    if (givenText.value.charAt(nextLetterNum.value) === ' ') {
+    if (givenText.value.charAt(nextLetterNum) === ' ') {
       console.log('next is space');
       return;
     }
     inputText.value += isCollectLetter(isLeftTouch)
-      ? givenText.value.charAt(nextLetterNum.value)
+      ? givenText.value.charAt(nextLetterNum)
       : '*';
     // add TapInfo;
-    nextLetterNum.value++;
+    nextLetterNum++;
   };
 
   const isCollectSpace = () => {
@@ -82,21 +81,20 @@ export const collectTypingStore = () => {
   };
 
   const addInputSpace = () => {
-    if (nextLetterNum.value === givenText.value.length) {
+    if (nextLetterNum === givenText.value.length) {
       console.log('next phrase');
       goNextPhrase();
     } else {
       console.log('space');
       inputText.value += isCollectSpace() ? ' ' : '*';
-      nextLetterNum.value++;
+      nextLetterNum++;
     }
   };
 
   const backInputText = () => {
     inputText.value = inputText.value.slice(0, -1);
-    // delete tapData[nextLetterNum.value - 1];
-    nextLetterNum.value =
-      nextLetterNum.value === 0 ? 0 : nextLetterNum.value - 1;
+    // delete tapData[nextLetterNum - 1];
+    nextLetterNum = nextLetterNum === 0 ? 0 : nextLetterNum - 1;
   };
 
   return {
