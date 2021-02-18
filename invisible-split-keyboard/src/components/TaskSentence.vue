@@ -10,12 +10,17 @@
 </template>
 
 <script>
+import { onMounted } from 'vue';
 import { useStore } from '../stores/collectTypingStore';
 
 export default {
   name: 'TaskSentence',
   setup() {
-    const { givenText, inputText } = useStore();
+    const { givenText, inputText, updateGivenText } = useStore();
+
+    onMounted(() => {
+      updateGivenText();
+    });
 
     return { givenText, inputText };
   },
