@@ -1,4 +1,4 @@
-import { useStore } from '../../../../stores/collectTypingStore';
+import { useStore } from '../../../stores/collectTypingStore';
 
 export const useTypingEvent = () => {
   const { addInputLetter, addInputSpace, backInputText } = useStore();
