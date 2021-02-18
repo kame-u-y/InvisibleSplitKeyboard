@@ -1,109 +1,100 @@
 import { useStore } from '../../../../stores/collectTypingStore';
-const {
-  givenText,
-  nextLetterNum,
-  addInputLetter,
-  addInputSpace,
-  backInputText,
-} = useStore();
 
-const Touch_Status = {
-  none: 'NONE',
-  click: 'CLICK',
-  space: 'SPACE',
-  backSpace: 'BACK',
-};
+export const useTypingEvent = () => {
+  const { addInputLetter, addInputSpace, backInputText } = useStore();
 
-const Touch_Side = {
-  left: 'left',
-  right: 'right',
-};
+  const Touch_Status = {
+    none: 'NONE',
+    click: 'CLICK',
+    space: 'SPACE',
+    backSpace: 'BACK',
+  };
 
-let touchState = {
-  left: {
-    startX: -1,
-    status: 'NONE',
-  },
-  right: {
-    startX: -1,
-    status: 'NONE',
-  },
-};
+  const Touch_Side = {
+    left: 'left',
+    right: 'right',
+  };
 
-const getSide = (x) => {
-  return x < window.outerWidth / 2.0 ? Touch_Side.left : Touch_Side.right;
-};
+  let touchState = {
+    left: {
+      startX: -1,
+      status: 'NONE',
+    },
+    right: {
+      startX: -1,
+      status: 'NONE',
+    },
+  };
 
-const initTouchStatus = () => {
-  touchState[side].status = Touch_Status.none;
-};
+  const getSide = (x) => {
+    return x < window.outerWidth / 2.0 ? Touch_Side.left : Touch_Side.right;
+  };
 
-const setTouchStatus = (side, status) => {
-  touchState[side].status = status;
-};
+  const initTouchStatus = (side) => {
+    touchState[side].status = Touch_Status.none;
+  };
 
-const initTouchStartX = (side) => {
-  touchState[side].startX = -1;
-};
+  const setTouchStatus = (side, status) => {
+    touchState[side].status = status;
+  };
 
-const setTouchStartX = (side, startX) => {
-  touchState[side].startX = startX;
-};
+  const initTouchStartX = (side) => {
+    touchState[side].startX = -1;
+  };
 
-const isTouchStarted = (side) => {
-  return touchState[side].startX !== -1;
-};
+  const setTouchStartX = (side, startX) => {
+    touchState[side].startX = startX;
+  };
 
-export const handleTouchStart = (startX) => {
-  const side = getSide(startX);
-  if (isTouchStarted(side)) return;
-  setTouchStartX(side, startX);
-};
+  const isTouchStarted = (side) => {
+    return touchState[side].startX !== -1;
+  };
 
-export const handleTouchMove = (moveX) => {
-  const side = getSide(moveX);
-  if (!isTouchStarted(side)) return;
-  const offsetX = moveX - touchState[side].startX;
-  if (moveX && offsetX > 100) {
-    setTouchStatus(side, Touch_Status.space);
-  } else if (moveX && offsetX < -70) {
-    setTouchStatus(side, Touch_Status.backSpace);
-  } else {
+  const handleTouchStart = (startX) => {
+    const side = getSide(startX);
+    if (isTouchStarted(side)) return;
+
+    setTouchStartX(side, startX);
     setTouchStatus(side, Touch_Status.click);
-  }
-};
+    console.log('start');
+  };
 
-const clickEnd = (side) => {
-  addInputLetter();
-  initTouchStartX(side);
-  return;
-};
+  const handleTouchMove = (moveX) => {
+    const side = getSide(moveX);
+    if (!isTouchStarted(side)) return;
 
-const spaceEnd = (side) => {
-  if (nextLetterNum === givenText.length) {
-    goNextPhrase();
-    initTouchStatus();
-  } else {
-    addInputSpace();
-  }
-  initTouchStartX(side);
-  return;
-};
+    const offsetX = moveX - touchState[side].startX;
+    if (moveX && offsetX > 100) {
+      setTouchStatus(side, Touch_Status.space);
+    } else if (moveX && offsetX < -70) {
+      setTouchStatus(side, Touch_Status.backSpace);
+    } else {
+      setTouchStatus(side, Touch_Status.click);
+    }
+    console.log('move', offsetX);
+  };
 
-const backSpaceEnd = (side) => {
-  backInputText();
-  initTouchStartX(side);
-  return;
-};
+  const handleTouchEnd = (endX) => {
+    const side = getSide(endX);
+    if (!isTouchStarted(side)) return;
 
-export const handleTouchEnd = (endX) => {
-  const side = getSide(endX);
-  if (!isTouchStarted(side)) return;
-  if (touchState[side].status === Touch_Status.click) {
-    clickEnd(side);
-  } else if (touchState[side].status === Touch_Status.space) {
-    spaceEnd(side);
-  } else if (touchState[side].status === Touch_Status.backSpace) {
-    backSpaceEnd(side);
-  }
+    if (touchState[side].status === Touch_Status.click) {
+      addInputLetter(side === Touch_Side.left);
+      console.log('end letter');
+    } else if (touchState[side].status === Touch_Status.space) {
+      addInputSpace();
+      console.log('end space');
+    } else if (touchState[side].status === Touch_Status.backSpace) {
+      backInputText();
+      console.log('end back');
+    }
+    initTouchStartX(side);
+    initTouchStatus(side);
+  };
+
+  return {
+    handleTouchStart,
+    handleTouchMove,
+    handleTouchEnd,
+  };
 };

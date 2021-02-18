@@ -7,7 +7,8 @@ export const collectTypingStore = () => {
   const userName = ref('');
   const keyboardMode = ref('eyes-on');
   const bgTextVisible = ref(false);
-  const givenText = ref('＼＼しばしお待ちを／／');
+  // const givenText = ref('＼＼しばしお待ちを／／');
+  const givenText = ref('moc text year');
   const inputText = ref('');
   const nextLetterNum = ref(0);
 
@@ -35,23 +36,30 @@ export const collectTypingStore = () => {
     remainPhrases.splice(id, 1);
   };
 
-  const goNextPhrase = () => {
-    // hr.postTapData(tapData);
-    // taskCount++;
-    // init();
-    // initFlag = ture;
+  const initInputText = () => {
+    inputText.value = '';
+    nextLetterNum.value = 0;
   };
 
   const isCollectLetter = (isLeftTouch) => {
     const isLeftLetter = 'qwertasdfgzxcv'.match(
-      givenText.value.charAt(nextLetterNum)
+      givenText.value.charAt(nextLetterNum.value)
     );
-    return (isLeftTouch && isLeftLetter) || (!isLeftLetter && !isLeftLetter);
+    return (isLeftTouch && isLeftLetter) || (!isLeftTouch && !isLeftLetter);
   };
 
-  const addInputLetter = () => {
-    inputText.value += isCollectLetter()
-      ? givenText.value.charAt(nextLetterNum)
+  const addInputLetter = (isLeftTouch) => {
+    console.log(givenText.value.charAt(nextLetterNum.value));
+    if (nextLetterNum.value === givenText.value.length) {
+      console.log('task ended');
+      return;
+    }
+    if (givenText.value.charAt(nextLetterNum.value) === ' ') {
+      console.log('next is space');
+      return;
+    }
+    inputText.value += isCollectLetter(isLeftTouch)
+      ? givenText.value.charAt(nextLetterNum.value)
       : '*';
     // add TapInfo;
     nextLetterNum.value++;
@@ -68,13 +76,27 @@ export const collectTypingStore = () => {
     return true;
   };
 
+  const goNextPhrase = () => {
+    initInputText();
+    updateGivenText();
+  };
+
   const addInputSpace = () => {
-    inputText.value += isCollectSpace() ? ' ' : '*';
-    nextLetterNum.value++;
+    if (nextLetterNum.value === givenText.value.length) {
+      console.log('next phrase');
+      goNextPhrase();
+    } else {
+      console.log('space');
+      inputText.value += isCollectSpace() ? ' ' : '*';
+      nextLetterNum.value++;
+    }
   };
 
   const backInputText = () => {
-    inputText.value;
+    inputText.value = inputText.value.slice(0, -1);
+    // delete tapData[nextLetterNum.value - 1];
+    nextLetterNum.value =
+      nextLetterNum.value === 0 ? 0 : nextLetterNum.value - 1;
   };
 
   return {
@@ -89,6 +111,8 @@ export const collectTypingStore = () => {
     updateGivenText,
     addInputLetter,
     addInputSpace,
+    goNextPhrase,
+    backInputText,
   };
 };
 
@@ -99,50 +123,3 @@ export const provideStore = () => {
 export const useStore = () => {
   return inject(key);
 };
-
-// export default function collectTypingStore() {
-//   const state = reactive({
-//     userName: '',
-//     keyboardMode: 'eyes-on',
-//     bgVisible: false,
-//     tapData: {},
-//     givenText: '',
-//     inputText: '',
-//     nextLetterNum: 0,
-//   });
-//   return {
-//     setUserName(inputName) {
-//       this.state.userName = inputName;
-//     },
-//     setMode(selectMode) {
-//       this.state.keyboardMode = selectMode;
-//     },
-//     setBgVisible(isCheck) {
-//       this.state.bgVisible = isCheck;
-//     },
-//     addTapData(newData) {
-//       letterList.map((letter) => {
-//         return (this.state.tapData[letter] = [
-//           ...tapData[letter],
-//           ...newData[letter],
-//         ]);
-//       });
-//     },
-//     setGivenText(givenText) {
-//       // phrase setから抽出
-//       this.state.givenText = givenText;
-//     },
-//     updateInputText(tapSide) {
-//       const getLetterSide = (letter) => true; // mock
-//       const nextLetter = givenText.indexOf(nextLetterNum);
-//       if (tapSide === getLetterSide(nextLetter)) {
-//         this.state.inputText += nextLetter;
-//       } else {
-//         this.state.inputText += '*';
-//       }
-//     },
-//     updateNextLetterNum(is) {
-//       this.state.nextLetterNum = num;
-//     },
-//   };
-// }

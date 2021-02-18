@@ -1,19 +1,19 @@
 <template>
-  <div id="target">
+  <div
+    id="target"
+    @touchstart.prevent.passive="
+      handleTouchStart($event.changedTouches[0].pageX)
+    "
+    @touchmove.prevent.passive="handleTouchMove($event.changedTouches[0].pageX)"
+    @touchEnd.prevent.passive="handleTouchEnd($event.changedTouches[0].pageX)"
+    @mousedown="handleTouchStart($event.pageX)"
+    @mousemove="handleTouchMove($event.pageX)"
+    @mouseup="handleTouchEnd($event.pageX)"
+  >
     <div
       v-for="(rowList, side) in keyLayouts"
       :key="side"
       :class="getKeyboardClass(side)"
-      @touchstart.prevent.passive="
-        handleTouchStart($event.changedTouches[0].pageX)
-      "
-      @touchmove.prevent.passive="
-        handleTouchMove($event.changedTouches[0].pageX)
-      "
-      @touchEnd.prevent.passive="handleTouchEnd($event.changedTouches[0].pageX)"
-      @mousedown="handleTouchStart($event.pageX)"
-      @mousemove="handleTouchMove($event.pageX)"
-      @mouseup="handleTouchEnd($event.pageX)"
     >
       <ul
         v-for="(keyList, row) in rowList"
@@ -36,16 +36,13 @@
 <script>
 import { useStore } from '../../../stores/collectTypingStore';
 import { letterList } from '../../../modules/keyList';
-import {
-  handleTouchStart,
-  handleTouchMove,
-  handleTouchEnd,
-} from './modules/TypingEvents';
+import { useTypingEvent } from './modules/TypingEvents';
+import { onMounted } from 'vue';
 
 export default {
   name: 'CollectKeyboard',
   setup() {
-    const { keyboardMode } = useStore();
+    const { keyboardMode, updateGivenText } = useStore();
     const keyLayouts = {
       left: {
         'left-top': ['q', 'w', 'e', 'r', 't'],
@@ -64,9 +61,11 @@ export default {
     const getKeyboardClass = (side) => {
       return `${side}-keyboard kbd-${keyboardMode.value}`;
     };
+
     const getKeyRowClass = (side, row) => {
       return `${side}-row ${row}`;
     };
+
     const getKeyClass = (side, key) => {
       const sideClass = `${side}-key`;
       const valueClass = letterList.includes(key) ? 'letter' : key;
@@ -75,12 +74,20 @@ export default {
         : '';
       return `${sideClass} ${valueClass} ${modeClass}`;
     };
+
     const getKeyValue = (key) => {
       return letterList.includes(key) ? key : '';
     };
 
-    ///////////////////////////////
-    // eventHandling
+    const {
+      handleTouchStart,
+      handleTouchMove,
+      handleTouchEnd,
+    } = useTypingEvent();
+
+    onMounted(() => {
+      updateGivenText();
+    });
 
     return {
       keyLayouts,
@@ -90,6 +97,9 @@ export default {
       getKeyRowClass,
       getKeyClass,
       getKeyValue,
+      handleTouchStart,
+      handleTouchMove,
+      handleTouchEnd,
     };
   },
 };
