@@ -5,13 +5,8 @@ export const useCollectTypingProcess = () => {
   const {
     userName,
     keyboardMode,
-    bgTextVisible,
-    taskCount,
     givenText,
     inputText,
-    setUserName,
-    setKeyboardMode,
-    setBgTextVisible,
     incrementTaskCount,
     updateGivenText,
     initInputText,
@@ -118,19 +113,8 @@ export const useCollectTypingProcess = () => {
   };
 
   return {
-    userName,
-    keyboardMode,
-    bgTextVisible,
-    taskCount,
-    givenText,
-    inputText,
-    setUserName,
-    setKeyboardMode,
-    setBgTextVisible,
-    updateGivenText,
     addCollectLetter,
     addCollectSpace,
-    goNextPhrase,
     backCollectText,
   };
 };
