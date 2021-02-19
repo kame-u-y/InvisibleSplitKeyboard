@@ -1,5 +1,4 @@
-import { ref, inject, provide } from 'vue';
-import { phrases } from '../modules/phraseSet';
+import { inject, provide } from 'vue';
 import { postTapData } from '../modules/myHttpRequest';
 import { useDefaultStore } from './defaultTypingStore/defaultTypingStore';
 
@@ -13,7 +12,6 @@ export const collectTypingStore = () => {
     taskCount,
     givenText,
     inputText,
-    remainPhrases,
     setUserName,
     setKeyboardMode,
     setBgTextVisible,
@@ -117,7 +115,7 @@ export const collectTypingStore = () => {
   };
 
   const backCollectText = () => {
-    inputText.value = inputText.value.slice(0, -1);
+    backInputText();
     delete tapData[nextLetterNum - 1];
     decrementNextLetterNum();
   };

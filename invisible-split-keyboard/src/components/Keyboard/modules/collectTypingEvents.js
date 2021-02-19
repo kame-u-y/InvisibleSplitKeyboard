@@ -18,11 +18,11 @@ export const useTypingEvent = () => {
   let touchState = {
     left: {
       startX: -1,
-      status: 'NONE',
+      status: Touch_Status.none,
     },
     right: {
       startX: -1,
-      status: 'NONE',
+      status: Touch_Status.none,
     },
   };
 

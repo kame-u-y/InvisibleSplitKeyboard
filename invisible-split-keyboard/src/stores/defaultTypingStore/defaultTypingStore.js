@@ -1,4 +1,5 @@
 import { ref } from 'vue';
+import { phrases } from '../../modules/phraseSet';
 
 export const useDefaultStore = () => {
   const userName = ref('');
