@@ -11,7 +11,7 @@
 
 <script>
 import { onMounted } from 'vue';
-import { useStore } from '../stores/collectTypingStore';
+import { useStore } from '../stores/typingStore';
 
 export default {
   name: 'TaskSentence',

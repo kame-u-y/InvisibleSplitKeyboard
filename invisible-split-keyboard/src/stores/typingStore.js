@@ -1,7 +1,9 @@
-import { ref } from 'vue';
-import { phrases } from '../../modules/phraseSet';
+import { inject, provide, ref } from 'vue';
+import { phrases } from '../modules/phraseSet';
 
-export const useDefaultStore = () => {
+export const key = Symbol();
+
+export const typingStore = () => {
   const userName = ref('');
   const keyboardMode = ref('eyes-on');
   const bgTextVisible = ref(false);
@@ -71,4 +73,12 @@ export const useDefaultStore = () => {
     addInputSpace,
     backInputText,
   };
+};
+
+export const provideStore = () => {
+  provide(key, typingStore());
+};
+
+export const useStore = () => {
+  return inject(key);
 };

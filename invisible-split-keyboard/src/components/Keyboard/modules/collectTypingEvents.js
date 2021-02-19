@@ -1,7 +1,11 @@
-import { useStore } from '../../../stores/collectTypingStore';
+import { useCollectTypingProcess } from './collectTypingProcess';
 
 export const useTypingEvent = () => {
-  const { addCollectLetter, addCollectSpace, backCollectText } = useStore();
+  const {
+    addCollectLetter,
+    addCollectSpace,
+    backCollectText,
+  } = useCollectTypingProcess();
 
   const Touch_Status = {
     none: 'NONE',

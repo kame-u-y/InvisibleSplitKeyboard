@@ -7,7 +7,7 @@
 
 <script>
 import { defineComponent } from 'vue';
-import { provideStore } from '../stores/collectTypingStore';
+import { provideStore } from '../stores/typingStore';
 import SettingForm from '../components/SettingForm.vue';
 import BackgroundText from '../components/BackgroundText.vue';
 import CollectKeyboard from '../components/Keyboard/CollectKeyboard.vue';

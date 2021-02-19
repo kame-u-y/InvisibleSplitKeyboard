@@ -8,7 +8,7 @@
 
 <script>
 import KeyboardTemplate from './KeyboardTemplate/KeyboardTemplate.vue';
-import { useTypingEvent } from './modules/TypingEvents';
+import { useTypingEvent } from './modules/collectTypingEvents';
 
 export default {
   components: { KeyboardTemplate },

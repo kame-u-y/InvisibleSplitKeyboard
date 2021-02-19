@@ -32,7 +32,7 @@
 </template>
 
 <script>
-import { useStore } from '../../../stores/collectTypingStore';
+import { useStore } from '../../../stores/typingStore';
 import { letterList } from '../../../modules/keyList';
 import { defineComponent } from 'vue';
 

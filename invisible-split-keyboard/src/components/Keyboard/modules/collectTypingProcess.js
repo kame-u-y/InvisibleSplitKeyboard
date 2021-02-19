@@ -1,10 +1,7 @@
-import { inject, provide } from 'vue';
-import { postTapData } from '../modules/myHttpRequest';
-import { useDefaultStore } from './defaultTypingStore/defaultTypingStore';
+import { postTapData } from '../../../modules/myHttpRequest';
+import { useStore } from '../../../stores/typingStore';
 
-export const key = Symbol();
-
-export const collectTypingStore = () => {
+export const useCollectTypingProcess = () => {
   const {
     userName,
     keyboardMode,
@@ -21,7 +18,7 @@ export const collectTypingStore = () => {
     addInputLetter,
     addInputSpace,
     backInputText,
-  } = useDefaultStore();
+  } = useStore();
 
   let nextLetterNum = 0;
   let tapData = [];
@@ -136,12 +133,4 @@ export const collectTypingStore = () => {
     goNextPhrase,
     backCollectText,
   };
-};
-
-export const provideStore = () => {
-  provide(key, collectTypingStore());
-};
-
-export const useStore = () => {
-  return inject(key);
 };

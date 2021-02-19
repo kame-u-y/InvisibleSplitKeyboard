@@ -28,7 +28,7 @@
 
 <script>
 import { defineComponent } from 'vue';
-import { useStore } from '../stores/collectTypingStore';
+import { useStore } from '../stores/typingStore';
 
 export default defineComponent({
   name: 'SettingForm',

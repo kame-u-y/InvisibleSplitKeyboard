@@ -76,7 +76,7 @@
 </template>
 
 <script>
-import { useStore } from '../stores/collectTypingStore';
+import { useStore } from '../stores/typingStore';
 export default {
   name: 'BackgroundText',
   setup() {
