@@ -49,7 +49,14 @@ export const useTypingEvent = () => {
   };
 
   const isSetSelectStartTime = (side) => {
-    return touchState[side].selectStartTime === -1;
+    return touchState[side].selectStartTime !== -1;
+  };
+
+  const isQuickSelection = (side) => {
+    return (
+      isSetSelectStartTime(side) &&
+      Date.now() - touchState[side].selectStartTime < 100
+    );
   };
 
   const isTouchStarted = (side) => {
@@ -67,9 +74,9 @@ export const useTypingEvent = () => {
     const side = getSide(moveX);
     if (!isTouchStarted(side)) return;
     const offsetX = moveX - touchState[side].startX;
-    if (offsetX > 10) {
-      if (isSetSelectStartTime(side)) {
-        setStartTime(side);
+    if (offsetX >= 10) {
+      if (!isSetSelectStartTime(side)) {
+        setSelectStartTime(side);
       }
       setTouchStatus(Touch_Status.select);
       selectCandidate(offsetX); //
@@ -87,12 +94,14 @@ export const useTypingEvent = () => {
     if (touchState[side].status === Touch_Status.click) {
       addPredictedLetter(endX, endY);
     } else if (touchState[side].status === Touch_Status.select) {
-      decideCandidateSelection(); //
+      decideCandidateSelection(isQuickSelection()); //
       // initCandidateId();
     } else if (touchState[side].status === Touch_Status.backSpace) {
       backPredictedText();
     }
     initTouchStartX();
+    initTouchStatus();
+    initSelectStartTime();
   };
 
   return { handleTouchStart, handleTouchMove, handleTouchEnd };
