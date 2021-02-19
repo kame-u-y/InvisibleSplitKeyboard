@@ -76,35 +76,48 @@ export default defineComponent({
       return letterList.includes(key) ? key : '';
     };
 
-    const getTouchPageX = (ev) => ev.changedTouches[0].pageX;
-
+    const getRelativeTouchPosition = (ev) => {
+      const touch = ev.changedTouches[0];
+      const targetRect = ev.target.getBoundingClientRect();
+      return {
+        x: touch.clientX - targetRect.left,
+        y: touch.clientY - targetRect.top,
+      };
+    };
+    const getRelativeMousePosition = (ev) => {
+      const targetRect = ev.target.getBoundingClientRect();
+      return {
+        x: ev.clientX - targetRect.left,
+        y: ev.clientY - targetRect.top,
+      };
+    };
+    // const getTouchPageX = (ev) => ev.changedTouches[0].pageX;
     const emitTouchStart = (ev) => {
-      context.emit('startevent', getTouchPageX(ev));
+      const pos = getRelativeTouchPosition(ev);
+      context.emit('startevent', pos.x);
     };
     const emitMouseDown = (ev) => {
       console.log('before');
-      context.emit('startevent', ev.pageX);
+      const pos = getRelativeMousePosition(ev);
+      context.emit('startevent', pos.x);
     };
 
     const emitTouchMove = (ev) => {
-      context.emit('moveevent', getTouchPageX(ev));
+      const pos = getRelativeTouchPosition(ev);
+      context.emit('moveevent', pos.x);
     };
     const emitMouseMove = (ev) => {
-      context.emit('moveevent', ev.pageX);
+      const pos = getRelativeMousePosition(ev);
+      context.emit('moveevent', pos.x);
     };
 
     const emitTouchEnd = (ev) => {
-      const touch = ev.changedTouches[0];
-      const targetRect = ev.target.getBoundingClientRect();
-      const tapDataX = touch.clientX - targetRect.left;
-      const tapDataY = touch.clientY - targetRect.top;
-      context.emit('endevent', touch.pageX, tapDataX, tapDataY);
+      const pos = getRelativeTouchPosition(ev);
+      context.emit('endevent', pos.x, pos.y);
     };
     const emitMouseUp = (ev) => {
-      const targetRect = ev.target.getBoundingClientRect();
-      const tapDataX = ev.clientX - targetRect.left;
-      const tapDataY = ev.clientY - targetRect.top;
-      context.emit('endevent', ev.pageX, tapDataX, tapDataY);
+      const pos = getRelativeMousePosition(ev);
+      context.emit('endevent', pos.x, pos.y);
     };
 
     return {
@@ -177,6 +190,10 @@ body {
   background-color: rgba(255, 255, 255, 0);
   padding-bottom: 30px;
   padding-top: 150px;
+}
+
+#target > * {
+  pointer-events: none;
 }
 
 /********* keyboard outline *********/
