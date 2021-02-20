@@ -1,5 +1,6 @@
 import { useSpacialModel } from './spacialModel.js';
 import { useLanguageModel } from './languageModel.js';
+import { useStore } from '../../stores/typingStore.js';
 
 /*
 構造
@@ -16,6 +17,16 @@ inputData = [
 */
 
 export const useWordPrediction = () => {
+  const {
+    initPredictedCandedates,
+    inputText,
+    initInputText,
+    addInputLetter,
+    addInputSpace,
+    setInputText,
+    backInputText,
+    setPredictedCandidates,
+  } = useStore();
   const {
     createSpacialModel,
     // isSpacialModelCreated,
@@ -43,12 +54,9 @@ export const useWordPrediction = () => {
 
   function initProbability() {
     letterPs = [];
-    document.getElementById('predicted-letter').innerText = '';
-    Array.from(document.getElementsByClassName('predicted-button')).filter(
-      (v) => {
-        v.innerText = '';
-      }
-    );
+    initInputText();
+    initPredictedCandedates();
+    initCandidates;
     typedLetters = '';
     rawInputs = '';
 
@@ -59,13 +67,16 @@ export const useWordPrediction = () => {
 
   function nextProbability() {
     letterPs = [];
-    Array.from(document.getElementsByClassName('predicted-button')).filter(
-      (v) => {
-        v.innerText = '';
-      }
-    );
-    document.getElementById('predicted-letter').innerText += ' ';
-    typedLetters = document.getElementById('predicted-letter').innerText;
+    // Array.from(document.getElementsByClassName('predicted-button')).filter(
+    //   (v) => {
+    //     v.innerText = '';
+    //   }
+    // );
+    initPredictedCandedates();
+    // document.getElementById('predicted-letter').innerText += ' ';
+    addInputSpace();
+    typedLetters = inputText.value;
+    // typedLetters = document.getElementById('predicted-letter').innerText;
 
     initialId = inputData.length;
   }
@@ -95,19 +106,25 @@ export const useWordPrediction = () => {
 
     if (letterPs.length === 0) {
       rawInputs += smTopOrder[0].letter;
-      document.getElementById('predicted-letter').innerText =
-        typedLetters + rawInputs;
-      let predictedButton = document.getElementsByClassName('predicted-button');
-      for (let i = 0; i < 5; i++) {
-        predictedButton[i].innerText = smTopOrder[i].letter;
-      }
+      // document.getElementById('predicted-letter').innerText =
+      //   typedLetters + rawInputs;
+      setInputText(typedLetters + rawInputs);
+
+      // let predictedButton = document.getElementsByClassName('predicted-button');
+      // for (let i = 0; i < 5; i++) {
+      // predictedButton[i].innerText = smTopOrder[i].letter;
+
+      // }
+      const candidates = smTopOrder.slice(0, 5).map((v) => v.letter);
+      setPredictedCandidates(candidates);
       letterPs = smTopOrder;
       return true;
     }
 
     rawInputs += smTopOrder[0].letter;
-    document.getElementById('predicted-letter').innerText =
-      typedLetters + rawInputs;
+    // document.getElementById('predicted-letter').innerText =
+    //   typedLetters + rawInputs;
+    setInputText(typedLetters + rawInputs);
 
     // 文字列の結合・確率を掛け合わせ
     let newLetterPs = [];
@@ -155,10 +172,14 @@ export const useWordPrediction = () => {
     unknownPLM.sort((a, b) => b.probability - a.probability);
     pLM = pLM.concat(unknownPLM);
     // console.log(pLM);
-    let predictedButton = document.getElementsByClassName('predicted-button');
-    for (let i = 0; i < 5; i++) {
-      predictedButton[i].innerText = pLM[i] ? pLM[i].letter : '';
-    }
+
+    // let predictedButton = document.getElementsByClassName('predicted-button');
+    // for (let i = 0; i < 5; i++) {
+    //   predictedButton[i].innerText = pLM[i] ? pLM[i].letter : '';
+    // }
+    const candidates = pLM.slice(0, 5).map((v) => v.letter);
+    setPredictedCandidates(candidates);
+
     // console.log(true);
   }
 
@@ -167,11 +188,12 @@ export const useWordPrediction = () => {
     console.log(-1);
     rawInputs = '';
     inputData.pop();
-    Array.from(document.getElementsByClassName('predicted-button')).filter(
-      (v) => {
-        v.innerText = '';
-      }
-    );
+    // Array.from(document.getElementsByClassName('predicted-button')).filter(
+    //   (v) => {
+    //     v.innerText = '';
+    //   }
+    // );
+    initPredictedCandedates();
     // console.log(inputData);
   }
 
@@ -181,11 +203,12 @@ export const useWordPrediction = () => {
     typedLetters = typedLetters.slice(0, -1);
     typedLetters = typedLetters.substring(0, typedLetters.lastIndexOf(' ') + 1);
     initialId = inputData[inputData.length - 1].initialId;
-    Array.from(document.getElementsByClassName('predicted-button')).filter(
-      (v) => {
-        v.innerText = '';
-      }
-    );
+    // Array.from(document.getElementsByClassName('predicted-button')).filter(
+    //   (v) => {
+    //     v.innerText = '';
+    //   }
+    // );
+    initPredictedCandedates();
     // console.log(inputData);
   }
 
@@ -209,11 +232,12 @@ export const useWordPrediction = () => {
     console.log(1);
     rawInputs = '';
     inputData.pop();
-    Array.from(document.getElementsByClassName('predicted-button')).filter(
-      (v) => {
-        v.innerText = '';
-      }
-    );
+    // Array.from(document.getElementsByClassName('predicted-button')).filter(
+    //   (v) => {
+    //     v.innerText = '';
+    //   }
+    // );
+    initPredictedCandedates;
     // console.log(inputData);
   }
 
@@ -232,21 +256,27 @@ export const useWordPrediction = () => {
   }
 
   function predictWordBS() {
-    let inputLetter = document.getElementById('predicted-letter');
-    if (inputLetter.innerText === '') return;
-    inputLetter.innerText = inputLetter.innerText.slice(0, -1);
+    // let inputLetter = document.getElementById('predicted-letter');
+    // if (inputLetter.innerText === '') return;
+    if (inputText === '') return;
+    // inputLetter.innerText = inputLetter.innerText.slice(0, -1);
+    backInputText();
+
     // console.log(
     //   `typedLetters=${typedLetters},inputLetters=${inputLetter.innerText};`
     // );
     letterPs = [];
-    if (typedLetters === '' && inputLetter.innerText === '') {
+    // if (typedLetters === '' && inputLetter.innerText === '') {
+    if (typedLetters === '' && inputText.value === '') {
       bsFirstLetter();
       return;
-    } else if (typedLetters.slice(0, -1) === inputLetter.innerText) {
+      // } else if (typedLetters.slice(0, -1) === inputLetter.innerText) {
+    } else if (typedLetters.slice(0, -1) === inputText.value) {
       console.log(0);
-      const lastLetter = inputLetter.innerText.charAt(
-        inputLetter.innerText.length - 1
-      );
+      // const lastLetter = inputLetter.innerText.charAt(
+      //   inputLetter.innerText.length - 1
+      // );
+      const lastLetter = inputText.value.charAt(inputText.value.length - 1);
       if (lastLetter === ' ') {
         bsSpaceSpace();
         return;
@@ -254,7 +284,8 @@ export const useWordPrediction = () => {
         bsSpace();
         return;
       }
-    } else if (typedLetters === inputLetter.innerText) {
+      // } else if (typedLetters === inputLetter.innerText) {
+    } else if (typedLetters === inputText.value) {
       bsInitialLetter();
       return;
     } else {
@@ -279,8 +310,9 @@ export const useWordPrediction = () => {
   }
 
   function pushedPredictedButton(value) {
-    document.getElementById('predicted-letter').innerText =
-      typedLetters + value;
+    // document.getElementById('predicted-letter').innerText =
+    //   typedLetters + value;
+    setInputText(typedLetters + value);
     rawInputs = '';
   }
 

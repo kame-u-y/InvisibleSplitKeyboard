@@ -1,17 +1,15 @@
 <template>
-  <div id="task-container">
-    <pre id="given-box">
+  <pre id="given-box">
         <span id="given-text">{{ givenText }}</span>
     </pre>
-    <pre id="input-box">
-        <span id="input-text">{{ inputText }}</span>
+  <pre id="input-box">
+        <span id="predicted-letter">{{ inputText }}</span>
     </pre>
-  </div>
 </template>
 
 <script>
 import { onMounted } from 'vue';
-import { useStore } from '../stores/typingStore';
+import { useStore } from '../../stores/typingStore';
 
 export default {
   name: 'TaskSentence',
@@ -28,11 +26,6 @@ export default {
 </script>
 
 <style scoped>
-#task-container {
-  margin: auto;
-  margin-left: 40%;
-}
-
 #given-box {
   height: 30px;
 }

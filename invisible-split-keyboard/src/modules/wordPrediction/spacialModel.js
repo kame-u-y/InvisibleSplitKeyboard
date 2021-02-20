@@ -56,6 +56,7 @@ export const useSpacialModel = () => {
     Object.keys(tapData).filter((letter) => {
       gaussianData[letter] = calcGaussian(tapData[letter]);
     });
+    console.log(gaussianData);
   }
 
   function isOutlier(letter, x, y) {

@@ -48,6 +48,8 @@ export const useTypingEvent = () => {
   };
 
   const setTouchStatus = (side, status) => {
+    // console.log(side);
+    // console.log(touchState[side]);
     touchState[side].status = status;
   };
 
@@ -101,7 +103,7 @@ export const useTypingEvent = () => {
       if (!isSetSelectStartTime(side)) {
         setSelectStartTime(side);
       }
-      setTouchStatus(Touch_Status.select);
+      setTouchStatus(side, Touch_Status.select);
       // 閾値の処理は全部まとめたくてここでid処理
       if (offsetX < Selection_Min) {
         selectCandidate(getSelectId(Selection_Min));
@@ -113,9 +115,9 @@ export const useTypingEvent = () => {
 
       // selectCandidateId(offsetX); // 選択の幅を内部で定義する
     } else if (offsetX < -70) {
-      setTouchStatus(Touch_Status.backSpace);
+      setTouchStatus(side, Touch_Status.backSpace);
     } else {
-      setTouchStatus(Touch_Status.click);
+      setTouchStatus(side, Touch_Status.click);
     }
   };
 
@@ -125,14 +127,14 @@ export const useTypingEvent = () => {
     if (touchState[side].status === Touch_Status.click) {
       addPredictedLetter(endX, endY);
     } else if (touchState[side].status === Touch_Status.select) {
-      decideCandidateSelection(isQuickSelection()); //
+      decideCandidateSelection(isQuickSelection(side)); //
       // initCandidateId();
     } else if (touchState[side].status === Touch_Status.backSpace) {
       backPredictedText();
     }
-    initTouchStartX();
-    initTouchStatus();
-    initSelectStartTime();
+    initTouchStartX(side);
+    initTouchStatus(side);
+    initSelectStartTime(side);
   };
 
   return { handleTouchStart, handleTouchMove, handleTouchEnd };

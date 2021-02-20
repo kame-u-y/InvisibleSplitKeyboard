@@ -4,25 +4,33 @@ import { useWordPrediction } from '../../../modules/wordPrediction/wordPredictio
 
 export const useAwesomeTypingProcess = () => {
   const {
+    givenText,
+    inputText,
     loadedTapDataList,
     currentDataInfo,
     isSetCurrentInfo,
     getCurrentTapData,
+    predictedCandedates,
+    selectedCandidateId,
+    setSelectedCandidateId,
+    initSelectedCandidateId,
   } = useStore();
 
-  const { createModel } = useWordPrediction();
+  const {
+    createModel,
+    predictWordBS,
+    pushedPredictedButton,
+    initProbability,
+    nextProbability,
+    predictWord,
+  } = useWordPrediction();
 
   // const loadedDatas = ref([]);
-  const selectedCandedateId = ref(-1);
 
   watch(currentDataInfo, () => {
-    console.log('watched');
+    console.log(getCurrentTapData());
     createModel(getCurrentTapData());
   });
-
-  const setSelectedCandidateId = (id) => {
-    selectedCandedateId.value = id;
-  };
 
   const selectCandidate = (selectId) => {
     setSelectedCandidateId(selectId);
@@ -31,14 +39,26 @@ export const useAwesomeTypingProcess = () => {
   const addPredictedLetter = (x, y) => {
     // predict word
     // addInputLetter
+    predictWord(x, y);
   };
 
   const decideCandidateSelection = (isQuickSelection) => {
     // selectedCandedateId
+    const id = isQuickSelection ? 0 : selectedCandidateId.value;
+    const selectedValue = predictedCandedates.value[id];
+    pushedPredictedButton(selectedValue);
+    initSelectedCandidateId();
+    if (givenText.value === inputText.value) {
+      incrementTaskCount();
+      initProbability();
+    } else {
+      nextProbability();
+    }
   };
 
   const backPredictedText = () => {
     // predict word bs
+    predictWordBS();
   };
 
   return {

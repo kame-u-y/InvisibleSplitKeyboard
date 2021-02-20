@@ -1,6 +1,8 @@
 <template>
   <collect-setting-form />
-  <task-sentence />
+  <div id="task-container">
+    <task-sentence />
+  </div>
   <background-text />
   <collect-keyboard />
 </template>
@@ -9,7 +11,7 @@
 import { defineComponent } from 'vue';
 import { provideStore } from '../stores/typingStore';
 import CollectSettingForm from '../components/SettingForm/CollectSettingForm';
-import TaskSentence from '../components/TaskSentence.vue';
+import TaskSentence from '../components/TaskSentence/TaskSentence.vue';
 import BackgroundText from '../components/BackgroundText.vue';
 import CollectKeyboard from '../components/Keyboard/CollectKeyboard.vue';
 
@@ -25,3 +27,10 @@ export default defineComponent({
   },
 });
 </script>
+
+<style scoped>
+#task-container {
+  margin: auto;
+  margin-left: 40%;
+}
+</style>

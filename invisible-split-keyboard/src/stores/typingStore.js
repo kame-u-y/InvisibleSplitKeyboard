@@ -1,6 +1,7 @@
 import { inject, provide, ref, reactive } from 'vue';
 import { phrases } from '../modules/phraseSet';
 import { getTapData } from '../modules/myHttpRequest';
+import { mockData } from './data/mockData';
 
 export const key = Symbol();
 
@@ -13,9 +14,24 @@ export const typingStore = () => {
   const inputText = ref('');
   let remainPhrases = phrases.slice(0);
 
+  const loadedTapDataList = [mockData];
+  const Initial_Info = {
+    user: '',
+    keyboard: '',
+    space: 'invisible',
+  };
+  const currentDataInfo = reactive(Initial_Info);
+
+  const predictedCandidates = ref(['', '', '', '', '']);
+  const selectedCandidateId = ref(-1);
+
   // about setting
   const setUserName = (newUserName) => {
     userName.value = newUserName;
+  };
+
+  const isSetUserName = () => {
+    return userName.value !== '';
   };
 
   const setKeyboardMode = (selectMode) => {
@@ -56,15 +72,11 @@ export const typingStore = () => {
     inputText.value = inputText.value.slice(0, -1);
   };
 
-  // tapdata
-  const loadedTapDataList = [];
-  const Initial_Info = {
-    user: '',
-    keyboard: '',
-    space: 'invisible',
+  const setInputText = (text) => {
+    inputText.value = text;
   };
-  const currentDataInfo = reactive(Initial_Info);
 
+  // tapdata
   const isSetCurrentInfo = () => {
     return currentDataInfo.value === Initial_Info;
   };
@@ -90,6 +102,10 @@ export const typingStore = () => {
   };
 
   const setCurrentDataInfo = () => {
+    if (!isSetUserName()) {
+      alert('Please set user name');
+      return;
+    }
     currentDataInfo.value = {
       user: userName.value,
       keyboard: keyboardMode.value,
@@ -98,14 +114,20 @@ export const typingStore = () => {
   };
 
   const getCurrentTapData = () => {
-    return loadedTapDataList.find((v) => {
-      v.user == currentDataInfo.user &&
-        v.keyboard === currentDataInfo.keyboard &&
-        v.space === currentDataInfo.space;
-    });
+    const found = loadedTapDataList.find(
+      (v) =>
+        v.user === currentDataInfo.value.user &&
+        v.keyboard === currentDataInfo.value.keyboard &&
+        v.space === currentDataInfo.value.space
+    );
+    return found.data;
   };
 
   const loadTapData = () => {
+    if (!isSetUserName()) {
+      alert('Please set user name');
+      return false;
+    }
     if (!isTapDataFetched()) {
       fetchTapData();
     }
@@ -113,29 +135,53 @@ export const typingStore = () => {
     return true;
   };
 
+  const initPredictedCandidates = () => {
+    predictedCandidates.value = ['', '', '', '', ''];
+  };
+
+  const setPredictedCandidates = (candidates) => {
+    const filled = Object.assign(['', '', '', '', ''], candidates);
+    predictedCandidates.value = filled;
+  };
+
+  const setSelectedCandidateId = (id) => {
+    selectedCandidateId.value = id;
+  };
+
+  const initSelectedCandidateId = () => {
+    selectedCandidateId.value = -1;
+  };
+
   return {
     userName,
-    keyboardMode,
-    bgTextVisible,
-    taskCount,
-    givenText,
-    inputText,
-    remainPhrases,
-    loadedTapDataList,
-    currentDataInfo,
     setUserName,
+    keyboardMode,
     setKeyboardMode,
+    bgTextVisible,
     setBgTextVisible,
+    taskCount,
     incrementTaskCount,
+    givenText,
     updateGivenText,
+    inputText,
     initInputText,
     addInputLetter,
     addInputSpace,
     backInputText,
-    isSetCurrentInfo,
+    setInputText,
+    remainPhrases,
+    loadedTapDataList,
+    currentDataInfo,
     setCurrentDataInfo,
+    isSetCurrentInfo,
     getCurrentTapData,
     loadTapData,
+    predictedCandidates,
+    selectedCandidateId,
+    initPredictedCandidates,
+    setPredictedCandidates,
+    setSelectedCandidateId,
+    initSelectedCandidateId,
   };
 };
 
