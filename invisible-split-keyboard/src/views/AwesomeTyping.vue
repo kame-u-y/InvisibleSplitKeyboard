@@ -1,6 +1,5 @@
 <template>
-  <h1>AwesomeTyping</h1>
-  <setting-form />
+  <awesome-setting-form />
   <task-sentence />
   <background-text />
   <awesome-keyboard />
@@ -9,12 +8,18 @@
 <script>
 import { defineComponent } from 'vue';
 import { provideStore } from '../stores/typingStore';
+import AwesomeSettingForm from '../components/SettingForm/AwesomeSettingForm';
+import TaskSentence from '../components/TaskSentence.vue';
 import BackgroundText from '../components/BackgroundText.vue';
 import AwesomeKeyboard from '../components/Keyboard/AwesomeKeyboard';
-import SettingForm from '../components/SettingForm.vue';
-import TaskSentence from '../components/TaskSentence.vue';
+
 export default defineComponent({
-  components: { SettingForm, TaskSentence, BackgroundText, AwesomeKeyboard },
+  components: {
+    AwesomeSettingForm,
+    TaskSentence,
+    BackgroundText,
+    AwesomeKeyboard,
+  },
   setup() {
     provideStore();
   },

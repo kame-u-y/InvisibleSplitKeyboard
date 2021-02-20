@@ -1,5 +1,6 @@
-import { inject, provide, ref } from 'vue';
+import { inject, provide, ref, reactive } from 'vue';
 import { phrases } from '../modules/phraseSet';
+import { getTapData } from '../modules/myHttpRequest';
 
 export const key = Symbol();
 
@@ -55,6 +56,63 @@ export const typingStore = () => {
     inputText.value = inputText.value.slice(0, -1);
   };
 
+  // tapdata
+  const loadedTapDataList = [];
+  const Initial_Info = {
+    user: '',
+    keyboard: '',
+    space: 'invisible',
+  };
+  const currentDataInfo = reactive(Initial_Info);
+
+  const isSetCurrentInfo = () => {
+    return currentDataInfo.value === Initial_Info;
+  };
+
+  const isTapDataFetched = () => {
+    return loadedTapDataList.find(
+      (v) =>
+        v.user === userName.value &&
+        v.keyboard === keyboardMode.value &&
+        v.space === 'invisible'
+    );
+  };
+
+  const fetchTapData = () => {
+    getTapData(userName.value, keyboardMode.value, (data) => {
+      loadedTapDataList.push({
+        user: userName.value,
+        keyboard: keyboardMode.value,
+        space: 'invisible',
+        data: data,
+      });
+    });
+  };
+
+  const setCurrentDataInfo = () => {
+    currentDataInfo.value = {
+      user: userName.value,
+      keyboard: keyboardMode.value,
+      space: 'invisible',
+    };
+  };
+
+  const getCurrentTapData = () => {
+    return loadedTapDataList.find((v) => {
+      v.user == currentDataInfo.user &&
+        v.keyboard === currentDataInfo.keyboard &&
+        v.space === currentDataInfo.space;
+    });
+  };
+
+  const loadTapData = () => {
+    if (!isTapDataFetched()) {
+      fetchTapData();
+    }
+    setCurrentDataInfo();
+    return true;
+  };
+
   return {
     userName,
     keyboardMode,
@@ -63,6 +121,8 @@ export const typingStore = () => {
     givenText,
     inputText,
     remainPhrases,
+    loadedTapDataList,
+    currentDataInfo,
     setUserName,
     setKeyboardMode,
     setBgTextVisible,
@@ -72,6 +132,10 @@ export const typingStore = () => {
     addInputLetter,
     addInputSpace,
     backInputText,
+    isSetCurrentInfo,
+    setCurrentDataInfo,
+    getCurrentTapData,
+    loadTapData,
   };
 };
 
