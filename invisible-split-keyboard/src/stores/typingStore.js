@@ -22,7 +22,7 @@ export const typingStore = () => {
   };
   const currentDataInfo = reactive(Initial_Info);
 
-  const predictedCandidates = ref(['', '', '', '', '']);
+  const predictedCandidates = ref([]);
   const selectedCandidateId = ref(-1);
 
   // about setting
@@ -136,12 +136,12 @@ export const typingStore = () => {
   };
 
   const initPredictedCandidates = () => {
-    predictedCandidates.value = ['', '', '', '', ''];
+    predictedCandidates.value = [];
   };
 
   const setPredictedCandidates = (candidates) => {
-    const filled = Object.assign(['', '', '', '', ''], candidates);
-    predictedCandidates.value = filled;
+    // const filled = Object.assign(['', '', '', '', ''], candidates);
+    predictedCandidates.value = candidates;
   };
 
   const setSelectedCandidateId = (id) => {

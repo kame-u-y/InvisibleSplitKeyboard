@@ -18,7 +18,7 @@ inputData = [
 
 export const useWordPrediction = () => {
   const {
-    initPredictedCandedates,
+    initPredictedCandidates,
     inputText,
     initInputText,
     addInputLetter,
@@ -55,7 +55,7 @@ export const useWordPrediction = () => {
   function initProbability() {
     letterPs = [];
     initInputText();
-    initPredictedCandedates();
+    initPredictedCandidates();
     initCandidates;
     typedLetters = '';
     rawInputs = '';
@@ -72,7 +72,7 @@ export const useWordPrediction = () => {
     //     v.innerText = '';
     //   }
     // );
-    initPredictedCandedates();
+    initPredictedCandidates();
     // document.getElementById('predicted-letter').innerText += ' ';
     addInputSpace();
     typedLetters = inputText.value;
@@ -193,7 +193,7 @@ export const useWordPrediction = () => {
     //     v.innerText = '';
     //   }
     // );
-    initPredictedCandedates();
+    initPredictedCandidates();
     // console.log(inputData);
   }
 
@@ -208,7 +208,7 @@ export const useWordPrediction = () => {
     //     v.innerText = '';
     //   }
     // );
-    initPredictedCandedates();
+    initPredictedCandidates();
     // console.log(inputData);
   }
 
@@ -237,7 +237,7 @@ export const useWordPrediction = () => {
     //     v.innerText = '';
     //   }
     // );
-    initPredictedCandedates;
+    initPredictedCandidates;
     // console.log(inputData);
   }
 

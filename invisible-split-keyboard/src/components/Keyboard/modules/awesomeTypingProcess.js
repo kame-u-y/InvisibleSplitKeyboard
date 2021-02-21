@@ -10,7 +10,7 @@ export const useAwesomeTypingProcess = () => {
     currentDataInfo,
     isSetCurrentInfo,
     getCurrentTapData,
-    predictedCandedates,
+    predictedCandidates,
     selectedCandidateId,
     setSelectedCandidateId,
     initSelectedCandidateId,
@@ -42,10 +42,14 @@ export const useAwesomeTypingProcess = () => {
     predictWord(x, y);
   };
 
+  const addPredictedSpace = () => {
+    nextProbability();
+  };
+
   const decideCandidateSelection = (isQuickSelection) => {
     // selectedCandedateId
     const id = isQuickSelection ? 0 : selectedCandidateId.value;
-    const selectedValue = predictedCandedates.value[id];
+    const selectedValue = predictedCandidates.value[id];
     pushedPredictedButton(selectedValue);
     initSelectedCandidateId();
     if (givenText.value === inputText.value) {
@@ -64,6 +68,7 @@ export const useAwesomeTypingProcess = () => {
   return {
     selectCandidate,
     addPredictedLetter,
+    addPredictedSpace,
     decideCandidateSelection,
     backPredictedText,
   };
