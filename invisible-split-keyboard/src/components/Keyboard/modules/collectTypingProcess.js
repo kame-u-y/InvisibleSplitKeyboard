@@ -28,6 +28,10 @@ export const useCollectTypingProcess = () => {
     nextLetterNum--;
   };
 
+  const initNextLetterNum = () => {
+    nextLetterNum = 0;
+  };
+
   const initTapData = () => {
     tapData = [];
   };
@@ -89,6 +93,7 @@ export const useCollectTypingProcess = () => {
     postTapData(tapData, userName.value, keyboardMode.value);
     initInputText();
     initTapData();
+    initNextLetterNum();
     incrementTaskCount();
     updateGivenText();
   };

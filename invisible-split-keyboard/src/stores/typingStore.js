@@ -58,7 +58,7 @@ export const typingStore = () => {
       remainPhrases = phrases.slice(0);
     }
     const id = Math.floor(Math.random() * remainPhrases.length);
-    givenText.value = remainPhrases[id];
+    givenText.value = remainPhrases[id].toLowerCase();
     remainPhrases.splice(id, 1);
   };
 
@@ -96,17 +96,6 @@ export const typingStore = () => {
     );
   };
 
-  const fetchTapData = () => {
-    getTapData(userName.value, keyboardMode.value, (data) => {
-      loadedTapDataList.push({
-        user: userName.value,
-        keyboard: keyboardMode.value,
-        space: 'invisible',
-        data: data,
-      });
-    });
-  };
-
   const setCurrentDataInfo = () => {
     if (!isSetUserName()) {
       alert('Please set user name');
@@ -117,6 +106,18 @@ export const typingStore = () => {
       keyboard: keyboardMode.value,
       space: 'invisible',
     };
+  };
+
+  const fetchTapData = () => {
+    getTapData(userName.value, keyboardMode.value, (data) => {
+      loadedTapDataList.push({
+        user: userName.value,
+        keyboard: keyboardMode.value,
+        space: 'invisible',
+        data: data,
+      });
+      setCurrentDataInfo();
+    });
   };
 
   const getCurrentTapData = () => {
@@ -136,8 +137,9 @@ export const typingStore = () => {
     }
     if (!isTapDataFetched()) {
       fetchTapData();
+    } else {
+      setCurrentDataInfo();
     }
-    setCurrentDataInfo();
     return true;
   };
 

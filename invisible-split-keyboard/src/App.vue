@@ -1,7 +1,7 @@
 <template>
   <div id="nav">
-    <router-link to="/" exact>Home</router-link>
-    <label> || </label>
+    <!-- <router-link to="/" exact>Home</router-link> -->
+    <!-- <label> || </label> -->
     <router-link to="/collectTyping">CollectTyping</router-link>
     <label> || </label>
     <router-link to="/awesomeTyping">AwesomeTyping</router-link>

@@ -1,4 +1,4 @@
-import { ref, onMounted, watch } from 'vue';
+import { watch } from 'vue';
 import { useStore } from '../../../stores/typingStore';
 import { useWordPrediction } from '../../../modules/wordPrediction/wordPrediction';
 
@@ -6,14 +6,16 @@ export const useAwesomeTypingProcess = () => {
   const {
     givenText,
     inputText,
-    loadedTapDataList,
+    // loadedTapDataList,
     currentDataInfo,
-    isSetCurrentInfo,
+    incrementTaskCount,
+    // isSetCurrentInfo,
     getCurrentTapData,
     predictedCandidates,
     selectedCandidateId,
     setSelectedCandidateId,
     initSelectedCandidateId,
+    updateGivenText,
   } = useStore();
 
   const {
@@ -55,6 +57,7 @@ export const useAwesomeTypingProcess = () => {
     if (givenText.value === inputText.value) {
       incrementTaskCount();
       initProbability();
+      updateGivenText();
     } else {
       nextProbability();
     }
