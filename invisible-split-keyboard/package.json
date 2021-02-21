@@ -7,12 +7,11 @@
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint"
   },
-  "dependencies": {
+  "dependencies": {},
+  "devDependencies": {
     "core-js": "^3.6.5",
     "vue": "^3.0.5",
-    "vue-router": "^4.0.3"
-  },
-  "devDependencies": {
+    "vue-router": "^4.0.3",
     "@vue/cli-plugin-babel": "~4.5.0",
     "@vue/cli-plugin-eslint": "~4.5.0",
     "@vue/cli-service": "~4.5.0",
