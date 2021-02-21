@@ -82,7 +82,6 @@ export default {
   setup() {
     const { bgTextVisible } = useStore();
     const getBgTextClass = () => {
-      console.log(bgTextVisible.value);
       return `bgtext-${bgTextVisible.value ? 'visible' : 'invisible'}`;
     };
     return { bgTextVisible, getBgTextClass };

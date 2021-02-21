@@ -31,7 +31,9 @@ export const useTypingEvent = () => {
   };
 
   const getSide = (x) => {
-    return x < window.outerWidth / 2.0 ? Touch_Side.left : Touch_Side.right;
+    return x < document.body.clientWidth / 2.0
+      ? Touch_Side.left
+      : Touch_Side.right;
   };
 
   const initTouchStatus = (side) => {

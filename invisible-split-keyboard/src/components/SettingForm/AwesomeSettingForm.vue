@@ -3,6 +3,8 @@
   <button @click="handleLoadClick">Load Data</button>
   <label id="is-loaded">{{ loadStatusLabel }}</label>
   <button @click="setCurrentDataInfo()" />
+  <label>visualize data: </label>
+  <input type="checkbox" @change="setDataVisible($event.target.checked)" />
 </template>
 
 <script>
@@ -13,7 +15,7 @@ import DefaultSettingForm from './DefaultSettingForm/DefaultSettingForm.vue';
 export default {
   components: { DefaultSettingForm },
   setup() {
-    const { loadTapData, setCurrentDataInfo } = useStore();
+    const { loadTapData, setCurrentDataInfo, setDataVisible } = useStore();
     const loadStatusLabel = ref('');
     const handleLoadClick = () => {
       const isLoaded = loadTapData();
@@ -21,7 +23,12 @@ export default {
         loadStatusLabel.value = 'load success';
       }
     };
-    return { setCurrentDataInfo, loadStatusLabel, handleLoadClick };
+    return {
+      setCurrentDataInfo,
+      loadStatusLabel,
+      handleLoadClick,
+      setDataVisible,
+    };
   },
 };
 </script>

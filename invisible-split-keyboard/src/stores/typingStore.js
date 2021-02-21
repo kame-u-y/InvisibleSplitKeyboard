@@ -10,6 +10,8 @@ export const typingStore = () => {
   const keyboardMode = ref('eyes-on');
   const bgTextVisible = ref(false);
   const taskCount = ref(1);
+  const dataVisible = ref(false);
+
   const givenText = ref('＼＼しばしお待ちを／／');
   const inputText = ref('');
   let remainPhrases = phrases.slice(0);
@@ -24,6 +26,10 @@ export const typingStore = () => {
 
   const predictedCandidates = ref([]);
   const selectedCandidateId = ref(-1);
+
+  const gaussianData = {};
+  const targetLeft = ref(0);
+  const targetTop = ref(0);
 
   // about setting
   const setUserName = (newUserName) => {
@@ -78,7 +84,7 @@ export const typingStore = () => {
 
   // tapdata
   const isSetCurrentInfo = () => {
-    return currentDataInfo.value === Initial_Info;
+    return currentDataInfo.value && currentDataInfo.value !== Initial_Info;
   };
 
   const isTapDataFetched = () => {
@@ -152,6 +158,15 @@ export const typingStore = () => {
     selectedCandidateId.value = -1;
   };
 
+  const setTargetRect = (rect) => {
+    targetLeft.value = rect.left;
+    targetTop.value = rect.top;
+  };
+
+  const setDataVisible = (visible) => {
+    dataVisible.value = visible;
+  };
+
   return {
     userName,
     setUserName,
@@ -161,6 +176,8 @@ export const typingStore = () => {
     setBgTextVisible,
     taskCount,
     incrementTaskCount,
+    dataVisible,
+    setDataVisible,
     givenText,
     updateGivenText,
     inputText,
@@ -182,6 +199,10 @@ export const typingStore = () => {
     setPredictedCandidates,
     setSelectedCandidateId,
     initSelectedCandidateId,
+    gaussianData,
+    targetLeft,
+    targetTop,
+    setTargetRect,
   };
 };
 

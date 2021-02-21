@@ -1,7 +1,9 @@
-import { letterList, rowLetterList } from '../keyList.js';
+import { useStore } from '../../stores/typingStore.js';
+import { rowLetterList } from '../keyList.js';
 
 export const useSpacialModel = () => {
-  let gaussianData = {};
+  const { gaussianData } = useStore();
+  // let gaussianData = {};
 
   function calcAverage(arr) {
     return arr.reduce((sum, v) => sum + v) / arr.length;

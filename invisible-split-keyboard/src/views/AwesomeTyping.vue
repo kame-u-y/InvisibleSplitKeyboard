@@ -1,29 +1,32 @@
 <template>
-  <awesome-setting-form />
+  <load-setting-form />
   <div id="task-container">
     <awesome-task-sentence />
     <predicted-candidates />
   </div>
   <background-text />
   <awesome-keyboard />
+  <visualized-tap-data />
 </template>
 
 <script>
 import { defineComponent } from 'vue';
 import { provideStore } from '../stores/typingStore';
-import AwesomeSettingForm from '../components/SettingForm/AwesomeSettingForm';
+import LoadSettingForm from '../components/SettingForm/LoadSettingForm';
 import AwesomeTaskSentence from '../components/TaskSentence/AwesomeTaskSentence.vue';
 import PredictedCandidates from '../components/PredictedCandidates.vue';
 import BackgroundText from '../components/BackgroundText.vue';
 import AwesomeKeyboard from '../components/Keyboard/AwesomeKeyboard';
+import VisualizedTapData from '../components/VisualizedTapData';
 
 export default defineComponent({
   components: {
-    AwesomeSettingForm,
+    LoadSettingForm,
     AwesomeTaskSentence,
     PredictedCandidates,
     BackgroundText,
     AwesomeKeyboard,
+    VisualizedTapData,
   },
   setup() {
     provideStore();

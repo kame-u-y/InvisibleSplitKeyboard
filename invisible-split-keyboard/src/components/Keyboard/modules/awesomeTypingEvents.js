@@ -11,7 +11,7 @@ export const useTypingEvent = () => {
     backPredictedText,
   } = useAwesomeTypingProcess();
 
-  const { predictedCandidates } = useStore();
+  const { predictedCandidates, isSetCurrentInfo } = useStore();
 
   const Touch_Status = {
     none: 'NONE',
@@ -107,6 +107,9 @@ export const useTypingEvent = () => {
   };
 
   const handleTouchStart = (startX) => {
+    if (!isSetCurrentInfo()) {
+      alert('Please load tap data before typing');
+    }
     const side = getSide(startX);
     if (isTouchStarted(side)) return;
     setTouchStartX(side, startX);

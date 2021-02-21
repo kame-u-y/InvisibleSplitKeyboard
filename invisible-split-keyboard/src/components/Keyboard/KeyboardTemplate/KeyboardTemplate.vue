@@ -1,6 +1,7 @@
 <template>
   <div
     id="target"
+    ref="target"
     @touchstart.prevent.passive="emitTouchStart($event)"
     @touchmove.prevent.passive="emitTouchMove($event)"
     @touchEnd.prevent.passive="emitTouchEnd($event)"
@@ -34,12 +35,13 @@
 <script>
 import { useStore } from '../../../stores/typingStore';
 import { letterList } from '../../../modules/keyList';
-import { defineComponent } from 'vue';
+import { ref, defineComponent, onMounted } from 'vue';
 
 export default defineComponent({
   name: 'CollectKeyboard',
+  emits: ['startevent', 'moveevent', 'endevent'],
   setup(props, context) {
-    const { keyboardMode } = useStore();
+    const { keyboardMode, setTargetRect } = useStore();
     const keyLayouts = {
       left: {
         'left-top': ['q', 'w', 'e', 'r', 't'],
@@ -54,6 +56,12 @@ export default defineComponent({
         'right-special': ['move-keyboard', 'right-symbol', 'right-space'],
       },
     };
+    const target = ref(null);
+
+    onMounted(() => {
+      const rect = target.value.getBoundingClientRect();
+      setTargetRect(rect);
+    });
 
     const getKeyboardClass = (side) => {
       return `${side}-keyboard kbd-${keyboardMode.value}`;
@@ -122,6 +130,7 @@ export default defineComponent({
 
     return {
       keyLayouts,
+      target,
       keyboardMode,
       letterList,
       getKeyboardClass,
