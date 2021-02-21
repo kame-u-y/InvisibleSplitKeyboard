@@ -33,7 +33,7 @@ export const useCollectTypingProcess = () => {
   };
 
   const initTapData = () => {
-    tapData = [];
+    tapData = {};
   };
 
   const addTapData = (letter, x, y) => {

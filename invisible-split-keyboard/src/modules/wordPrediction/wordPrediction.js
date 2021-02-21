@@ -56,7 +56,6 @@ export const useWordPrediction = () => {
     letterPs = [];
     initInputText();
     initPredictedCandidates();
-    initCandidates;
     typedLetters = '';
     rawInputs = '';
 
@@ -237,7 +236,7 @@ export const useWordPrediction = () => {
     //     v.innerText = '';
     //   }
     // );
-    initPredictedCandidates;
+    initPredictedCandidates();
     // console.log(inputData);
   }
 
