@@ -16,7 +16,7 @@ export const useCollectTypingProcess = () => {
   } = useStore();
 
   let nextLetterNum = 0;
-  let tapData = [];
+  let tapData = {};
 
   // about task
   const incrementNextLetterNum = () => {
@@ -90,6 +90,7 @@ export const useCollectTypingProcess = () => {
       alert('Please set user name');
       return;
     }
+    console.log(tapData);
     postTapData(tapData, userName.value, keyboardMode.value);
     initInputText();
     initTapData();

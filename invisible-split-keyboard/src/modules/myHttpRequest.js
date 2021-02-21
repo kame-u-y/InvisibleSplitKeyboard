@@ -1,13 +1,15 @@
 import { letterList } from './keyList';
 
 export function postTapData(tapData, userName, keyboardType) {
+  console.log(tapData);
   const data = {
     user: userName,
     keyboardType: keyboardType,
     spaceVisual: 'invisible',
     tapData: tapData,
   };
-
+  console.log(data);
+  console.log(JSON.stringify(data));
   const params = {
     method: 'POST',
     headers: {
@@ -16,6 +18,8 @@ export function postTapData(tapData, userName, keyboardType) {
     mode: 'cors',
     body: JSON.stringify(data),
   };
+
+  console.log(params);
 
   fetch('https://invisiblesplitkeyboard.an.r.appspot.com/postTapData', params)
     .then((res) => res.json())
