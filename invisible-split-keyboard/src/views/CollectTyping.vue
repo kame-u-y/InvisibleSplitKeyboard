@@ -1,5 +1,5 @@
 <template>
-  <collect-setting-form />
+  <post-setting-form />
   <div id="task-container">
     <task-sentence />
   </div>
@@ -10,17 +10,17 @@
 <script>
 import { defineComponent } from 'vue';
 import { provideStore } from '../stores/typingStore';
-import CollectSettingForm from '../components/SettingForm/CollectSettingForm';
+import PostSettingForm from '../components/SettingForm/PostSettingForm.vue';
 import TaskSentence from '../components/TaskSentence/TaskSentence.vue';
 import BackgroundText from '../components/BackgroundText.vue';
 import CollectKeyboard from '../components/Keyboard/CollectKeyboard.vue';
 
 export default defineComponent({
   components: {
-    CollectSettingForm,
+    PostSettingForm,
+    TaskSentence,
     BackgroundText,
     CollectKeyboard,
-    TaskSentence,
   },
   setup() {
     provideStore();

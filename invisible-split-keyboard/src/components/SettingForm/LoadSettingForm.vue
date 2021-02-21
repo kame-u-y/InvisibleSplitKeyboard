@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div>
+    <div class="form-row">
       <span class="form-item">
         <label>user: </label>
         <input
@@ -20,10 +20,13 @@
           }}</option>
         </select>
       </span>
-    </div>
-    <div>
       <span class="form-item">
-        <label id="task-count">task count:{{ taskCount }}</label>
+        <button @click="handleLoadClick">Load Data</button>
+      </span>
+    </div>
+    <div class="form-row">
+      <span class="form-item">
+        <label id="task-count">task-count:{{ taskCount }}</label>
       </span>
       <span class="form-item">
         <input
@@ -32,13 +35,19 @@
           @change="setBgTextVisible($event.target.checked)"
         />background
       </span>
+      <span class="form-item">
+        <input
+          type="checkbox"
+          @change="setDataVisible($event.target.checked)"
+        />visualized-data
+      </span>
     </div>
   </div>
 </template>
 
 <script>
-import { defineComponent } from 'vue';
-import { useStore } from '../../../stores/typingStore';
+import { defineComponent, ref } from 'vue';
+import { useStore } from '../../stores/typingStore';
 
 export default defineComponent({
   name: 'SettingForm',
@@ -49,6 +58,9 @@ export default defineComponent({
       setBgTextVisible,
       setUserName,
       updateGivenText,
+      loadTapData,
+      setCurrentDataInfo,
+      setDataVisible,
     } = useStore();
     const modeList = [
       'eyes-on',
@@ -64,6 +76,13 @@ export default defineComponent({
       'stk-frame-only',
       'invisible',
     ];
+    const loadStatusLabel = ref('');
+    const handleLoadClick = () => {
+      const isLoaded = loadTapData();
+      if (isLoaded) {
+        loadStatusLabel.value = 'load success';
+      }
+    };
     return {
       taskCount,
       setKeyboardMode,
@@ -71,13 +90,20 @@ export default defineComponent({
       setUserName,
       updateGivenText,
       modeList,
+      setCurrentDataInfo,
+      loadStatusLabel,
+      handleLoadClick,
+      setDataVisible,
     };
   },
 });
 </script>
 
 <style scoped>
+.form-row {
+  margin-top: 10px;
+}
 .form-item {
-  padding: 0 10px;
+  margin: 0 5px;
 }
 </style>

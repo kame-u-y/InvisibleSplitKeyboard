@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div>
+    <div class="form-row">
       <span class="form-item">
         <label>user: </label>
         <input
@@ -21,9 +21,9 @@
         </select>
       </span>
     </div>
-    <div>
+    <div class="form-row">
       <span class="form-item">
-        <label id="task-count">task count:{{ taskCount }}</label>
+        <label id="task-count">task-count:{{ taskCount }}</label>
       </span>
       <span class="form-item">
         <input
@@ -38,10 +38,10 @@
 
 <script>
 import { defineComponent } from 'vue';
-import { useStore } from '../../../stores/typingStore';
+import { useStore } from '../../stores/typingStore';
 
 export default defineComponent({
-  name: 'SettingForm',
+  name: 'PostSettingForm',
   setup() {
     const {
       taskCount,
@@ -50,6 +50,7 @@ export default defineComponent({
       setUserName,
       updateGivenText,
     } = useStore();
+
     const modeList = [
       'eyes-on',
       'peripheral',
@@ -77,7 +78,10 @@ export default defineComponent({
 </script>
 
 <style scoped>
+.form-row {
+  margin-top: 10px;
+}
 .form-item {
-  padding: 0 10px;
+  margin: 0 5px;
 }
 </style>
