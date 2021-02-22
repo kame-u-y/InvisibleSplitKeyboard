@@ -12,47 +12,47 @@
 
 ## アプリのページ
 
-- [タップデータ収集用ページ](https://kame-v-d.github.io/InvisibleSplitKeyboard/collectKeyboard)
+- [Web アプリケーション](https://kame-u-y.github.io/InvisibleSplitKeyboard/dist)
+
+- CollectTyping - タップデータ収集用ページ
 
   - 各キーのタップ座標データを収集するためのシステム
 
   - キーボード周辺のどこをタップしても正しい入力がされる
-  
-  - まずはこのページで予測用データを収集（10文程度である程度予測可能）
-  
-- [タップの分布確認用ページ](https://kame-v-d.github.io/InvisibleSplitKeyboard/displayData)
 
-  - タップ座標データをロードし、各キーの二次元正規分布を確認できる
-  
-- [本番用ページ](https://kame-v-d.github.io/InvisibleSplitKeyboard/nextAwesome)
+  - まずはこのページで予測用データを収集（10 文程度である程度予測可能）
+
+- AwesomeTyping - 本番用ページ
 
   - タップデータ収集用システムで収集したデータをもとに予測モデルを構築
 
-  - テキストボックス付近に5つの予測単語が表示され、スワイプジェスチャで選択可能
+  - テキストボックス付近に 5 つの予測単語が表示、キーボード上スワイプジェスチャで選択可能
+
+  - データをもとにした、各キーのタップ座標の二次元正規分布の確認も可能
 
 <br/>
 
 ## デモ動画
 
-[InvisibleSplitKeyboard - YouTube](https://youtu.be/UDp-I4-Mcms) 
+[InvisibleSplitKeyboard - YouTube](https://youtu.be/UDp-I4-Mcms)
 
 <br/>
 
 ## 使用技術等
 
-- pure JavaScript：Webアプリケーションの実装
+- Vue3：Web アプリケーションの実装
 
-- Node.js：ExpressによるAPI実装、LOOCVによる予測精度の検証
+- Node.js：Express による API 実装、LOOCV による予測精度の検証
 
 - Firestore：タップ座標データの保存
 
-- Google App Engine：Firestoreを扱うAPIサーバの構築
+- Google App Engine：Firestore を扱う API サーバの構築
 
 - 予測アルゴリズム：空間モデルと言語モデルからなるベイズ
 
   - 空間モデル...タップ座標データをもとにした各キーの二次元正規分布
-  
-  - 言語モデル...ANCコーパスをもとに作成した1-gram言語モデル
+
+  - 言語モデル...ANC コーパスをもとに作成した 1-gram 言語モデル
 
 <br/>
 
@@ -66,7 +66,7 @@
 
 <img width="300px" alt="スクリーンショット 2021-02-05 8 40 45" src="https://user-images.githubusercontent.com/20572112/106971852-11b72200-6793-11eb-9d6f-4fec5a2e9e14.png">　<img width="300px" alt="スクリーンショット 2021-02-05 8 36 42" src="https://user-images.githubusercontent.com/20572112/106968979-5344ce80-678d-11eb-9df3-af496bbd27fb.png">
 
-入力するキーのあるキーボードと反対側をタップした場合は「*」が入力される
+入力するキーのあるキーボードと反対側をタップした場合は「\*」が入力される
 
 <br/>
 
@@ -79,7 +79,6 @@
 - データロード完了で「load success」と表示
 
 <img width="480px" alt="スクリーンショット 2021-02-05 10 17 33" src="https://user-images.githubusercontent.com/20572112/106976245-6c547c00-679b-11eb-82c4-026a33f268a6.png">
-
 
 <br/>
 
@@ -99,7 +98,7 @@
 
 <br/>
 
-スマートフォンのqwertyキーボードに慣れた人を対象、被験者4人
+スマートフォンの qwerty キーボードに慣れた人を対象、被験者 4 人
 
 <img width="600px" alt="スクリーンショット 2021-02-05 10 24 02" src="https://user-images.githubusercontent.com/20572112/106976831-762aaf00-679c-11eb-88fa-a2f597f953a5.png">
 
@@ -111,5 +110,4 @@
 
 <img width="600px" alt="スクリーンショット 2021-02-05 10 24 54" src="https://user-images.githubusercontent.com/20572112/106976842-7a56cc80-679c-11eb-8ec8-96b86ebc3d42.png">
 
-枠のみのキーボードの予測精度は、第1候補のみでは不十分だが、第5候補までならば95%を超え十分
-
+枠のみのキーボードの予測精度は、第 1 候補のみでは不十分だが、第 5 候補までならば 95%を超え十分
