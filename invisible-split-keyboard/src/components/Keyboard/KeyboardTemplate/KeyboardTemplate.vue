@@ -2,9 +2,9 @@
   <div
     id="target"
     ref="target"
-    @touchstart.prevent.passive="emitTouchStart($event)"
-    @touchmove.prevent.passive="emitTouchMove($event)"
-    @touchEnd.prevent.passive="emitTouchEnd($event)"
+    @touchstart.prevent="emitTouchStart($event)"
+    @touchmove.prevent="emitTouchMove($event)"
+    @touchEnd.prevent="emitTouchEnd($event)"
     @mousedown="emitMouseDown($event)"
     @mousemove="emitMouseMove($event)"
     @mouseup="emitMouseUp($event)"
@@ -105,7 +105,6 @@ export default defineComponent({
       context.emit('startevent', pos.x);
     };
     const emitMouseDown = (ev) => {
-      console.log('before');
       const pos = getRelativeMousePosition(ev);
       context.emit('startevent', pos.x);
     };

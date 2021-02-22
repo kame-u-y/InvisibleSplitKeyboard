@@ -1,7 +1,7 @@
 <template>
   <load-setting-form />
   <div id="task-container">
-    <awesome-task-sentence />
+    <task-sentence />
     <predicted-candidates />
   </div>
   <background-text />
@@ -13,7 +13,7 @@
 import { defineComponent } from 'vue';
 import { provideStore } from '../stores/typingStore';
 import LoadSettingForm from '../components/SettingForm/LoadSettingForm';
-import AwesomeTaskSentence from '../components/TaskSentence/AwesomeTaskSentence.vue';
+import TaskSentence from '../components/TaskSentence.vue';
 import PredictedCandidates from '../components/PredictedCandidates.vue';
 import BackgroundText from '../components/BackgroundText.vue';
 import AwesomeKeyboard from '../components/Keyboard/AwesomeKeyboard';
@@ -22,7 +22,7 @@ import VisualizedTapData from '../components/VisualizedTapData';
 export default defineComponent({
   components: {
     LoadSettingForm,
-    AwesomeTaskSentence,
+    TaskSentence,
     PredictedCandidates,
     BackgroundText,
     AwesomeKeyboard,
@@ -37,6 +37,6 @@ export default defineComponent({
 <style scoped>
 #task-container {
   margin: auto;
-  margin-left: 40%;
+  margin-left: 35%;
 }
 </style>

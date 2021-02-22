@@ -11,7 +11,7 @@
 import { defineComponent } from 'vue';
 import { provideStore } from '../stores/typingStore';
 import PostSettingForm from '../components/SettingForm/PostSettingForm.vue';
-import TaskSentence from '../components/TaskSentence/TaskSentence.vue';
+import TaskSentence from '../components/TaskSentence.vue';
 import BackgroundText from '../components/BackgroundText.vue';
 import CollectKeyboard from '../components/Keyboard/CollectKeyboard.vue';
 
@@ -31,6 +31,6 @@ export default defineComponent({
 <style scoped>
 #task-container {
   margin: auto;
-  margin-left: 40%;
+  margin-left: 35%;
 }
 </style>

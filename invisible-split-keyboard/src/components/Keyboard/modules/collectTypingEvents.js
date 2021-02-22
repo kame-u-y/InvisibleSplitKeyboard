@@ -61,7 +61,6 @@ export const useTypingEvent = () => {
     if (isTouchStarted(side)) return;
     setTouchStartX(side, startX);
     setTouchStatus(side, Touch_Status.click);
-    console.log('start');
   };
 
   const handleTouchMove = (moveX) => {
@@ -75,7 +74,6 @@ export const useTypingEvent = () => {
     } else {
       setTouchStatus(side, Touch_Status.click);
     }
-    console.log('move', offsetX);
   };
 
   const handleTouchEnd = (endX, endY) => {
@@ -84,13 +82,10 @@ export const useTypingEvent = () => {
 
     if (touchState[side].status === Touch_Status.click) {
       addCollectLetter(side === Touch_Side.left, endX, endY);
-      console.log('end letter');
     } else if (touchState[side].status === Touch_Status.space) {
       addCollectSpace();
-      console.log('end space');
     } else if (touchState[side].status === Touch_Status.backSpace) {
       backCollectText();
-      console.log('end back');
     }
     initTouchStartX(side);
     initTouchStatus(side);

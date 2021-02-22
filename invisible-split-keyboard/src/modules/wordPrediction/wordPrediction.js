@@ -21,7 +21,6 @@ export const useWordPrediction = () => {
     initPredictedCandidates,
     inputText,
     initInputText,
-    addInputLetter,
     addInputSpace,
     setInputText,
     backInputText,
